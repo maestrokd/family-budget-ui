@@ -1,0 +1,22 @@
+name: Deploy App to PR-DEV
+
+on:
+  pull_request:
+    branches: [ "dev" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Logging
+        run: |
+          echo "Event: '${{ github.event_name }}'"
+          echo "Branch ref: '${{ github.ref }}'"
+          echo "Commit hash: '${{ github.sha }}'"
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "Source Branch: '${{ github.event.pull_request.head.ref }}'"
+            echo "Target Branch: '${{ github.event.pull_request.base.ref }}'"
+          fi
