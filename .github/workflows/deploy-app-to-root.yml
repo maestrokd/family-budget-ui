@@ -1,9 +1,6 @@
-name: Deploy App to PR-DEV
+name: Deploy App to ROOT
 
 on:
-  pull_request:
-    branches:
-      - dev
   workflow_dispatch:
 
 permissions:
@@ -37,12 +34,12 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build -- --base /family-budget-ui/prdev
+        run: npm run build -- --base /family-budget-ui/
 
-      - name: Deploy to GitHub Pages (prdev)
+      - name: Deploy to GitHub Pages (root)
         uses: JamesIves/github-pages-deploy-action@v4.7.3
         with:
           folder: dist
-          target-folder: prdev
+#          target-folder:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore: Deploy to PR-DEV"
+          commit-message: "chore: Deploy to root"
