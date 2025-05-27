@@ -1,13 +1,39 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+type Env = 'prod' | 'dev' | 'prdev'
+
 function App() {
   const [count, setCount] = useState(0)
 
+  // On mount, redirect root to /prod by default
+  useEffect(() => {
+    const path = window.location.pathname.replace(/\/$/, '')
+    const segments = path.split('/').filter(Boolean)
+    const last = segments[segments.length - 1]
+    // If not already in prod, dev or prdev, send to prod
+    if (!['prod', 'dev', 'prdev'].includes(last)) {
+      const target = `${window.location.origin}${path}/dev`
+      window.location.replace(target)
+    }
+  }, [])
+
+  const handleRedirect = (env: Env) => {
+    const base = window.location.pathname.replace(/\/$/, '')
+    const target = `${window.location.origin}${base}/${env}`
+    window.location.href = target
+  }
+
   return (
       <>
+        <div className="env-buttons">
+          <button onClick={() => handleRedirect('prod')}>PROD</button>
+          <button onClick={() => handleRedirect('dev')}>DEV</button>
+          <button onClick={() => handleRedirect('prdev')}>PRDEV</button>
+        </div>
+
         <div>
           <a href="https://vite.dev" target="_blank">
             <img src={viteLogo} className="logo" alt="Vite logo"/>
