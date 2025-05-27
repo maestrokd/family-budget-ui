@@ -41,10 +41,17 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Deploy to GitHub Pages (prod)
-        uses: JamesIves/github-pages-deploy-action@v4.7.3
+#      - name: Deploy to GitHub Pages (prod)
+#        uses: JamesIves/github-pages-deploy-action@v4.7.3
+#        with:
+#          folder: dist
+##          target-folder: prod
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#          commit-message: "chore: Deploy to PROD"
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          folder: dist
-#          target-folder: prod
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore: Deploy to PROD"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+#          destination_dir: 'prdev' # Subdirectory for development
