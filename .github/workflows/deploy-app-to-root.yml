@@ -1,4 +1,4 @@
-name: Deploy App to PROD
+name: Deploy App to PR-DEV
 
 on:
   workflow_dispatch:
@@ -35,16 +35,16 @@ jobs:
 
 #      - name: Update homepage in package.json
 #        run: |
-#          echo "Updating homepage to /prod"
-#          sed -i "s|\"homepage\": \".*\"|\"homepage\": \"https://maestrokd.github.io/family-budget-ui/prod\"|" package.json
+#          echo "Updating homepage to /prdev"
+#          sed -i "s|\"homepage\": \".*\"|\"homepage\": \"https://maestrokd.github.io/family-budget-ui/prdev\"|" package.json
 
       - name: Build
         run: npm run build
 
-      - name: Deploy to GitHub Pages (prod)
+      - name: Deploy to GitHub Pages (root)
         uses: JamesIves/github-pages-deploy-action@v4.7.3
         with:
           folder: dist
-#          target-folder: prod
+#          target-folder: prdev
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore: Deploy to PROD"
+          commit-message: "chore: Deploy to root"
