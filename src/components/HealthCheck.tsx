@@ -1,62 +1,90 @@
-import React, { useState } from 'react';
-import {fetchHealthCheck, type HealthResponse} from '../services/HealthService';
+import React from 'react'
+import {useQuery} from '@tanstack/react-query'
+import {fetchHealthCheck, type HealthResponse} from '../services/HealthService'
+import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card'
+import {Button} from '@/components/ui/button'
+import {Loader2Icon} from 'lucide-react'
+import {AnimatePresence, motion} from 'framer-motion'
 
 export const HealthCheck: React.FC = () => {
-  const [health, setHealth] = useState<HealthResponse | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleCheck = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await fetchHealthCheck();
-      setHealth(data);
-    } catch (err) {
-      setError('Failed to fetch health status');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {data, isFetching, isError, refetch, error} = useQuery<HealthResponse, Error>({
+        queryKey: ['health'],
+        queryFn: fetchHealthCheck,
+        enabled: false,
+      }
+  )
 
   return (
-      <div className="space-y-4">
-        {/* Environment Indicator */}
-        <div className="flex items-center space-x-2">
-          <span className="w-3 h-3 bg-blue-500 rounded-full" />
-          <span className="font-medium">FE Env: {import.meta.env.VITE_APP_TEST_VAR}</span>
-        </div>
-        <button
-            onClick={handleCheck}
-            disabled={loading}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-        >
-          {loading ? 'Checking...' : 'Check Health'}
-        </button>
+      <Card className="w-full shadow-lg rounded-2xl">
+        <CardHeader>
+          <CardTitle>Service Health</CardTitle>
+        </CardHeader>
 
-        {error && <p className="text-red-500">{error}</p>}
+        <CardContent className="space-y-6 p-6">
+          {/* FE Environment */}
+          <div className="flex items-center text-sm text-gray-700">
+          <span
+              className="inline-block w-4 h-4 bg-indigo-500 rounded-full"
+              aria-hidden="true"
+          />
+            <span className="ml-2">FE Env: <strong>{import.meta.env.VITE_APP_TEST_VAR}</strong></span>
+          </div>
 
-        {health && (
-            <div className="flex space-x-4">
-              {/* Status Indicator */}
-              <div className="flex items-center space-x-2">
-            <span
-                className={
-                  health.status === 'OK'
-                      ? 'w-3 h-3 bg-green-500 rounded-full'
-                      : 'w-3 h-3 bg-red-500 rounded-full'
-                }
-            />
-                <span className="font-medium">Status: {health.status}</span>
-              </div>
+          {/* Check Button */}
+          <Button
+              onClick={() => refetch()}
+              disabled={isFetching}
+              className="w-full flex justify-center"
+          >
+            {isFetching && <Loader2Icon className="w-5 h-5 mr-2 animate-spin"/>}
+            {isFetching ? 'Checking...' : 'Check Health'}
+          </Button>
 
-              {/* Environment Indicator */}
-              <div className="flex items-center space-x-2">
-                <span className="w-3 h-3 bg-blue-500 rounded-full" />
-                <span className="font-medium">BE Env: {health.env}</span>
-              </div>
-            </div>
-        )}
-      </div>
-  );
-};
+          {/* Error Message */}
+          <AnimatePresence>
+            {isError && (
+                <motion.p
+                    initial={{opacity: 0, y: -8}}
+                    animate={{opacity: 1, y: 0}}
+                    exit={{opacity: 0, y: -8}}
+                    className="text-sm text-red-600"
+                    role="alert"
+                    aria-live="assertive"
+                >
+                  {error?.message || 'Failed to fetch health status'}
+                </motion.p>
+            )}
+          </AnimatePresence>
+
+          {/* Result Panel */}
+          <AnimatePresence>
+            {data && (
+                <motion.div
+                    initial={{opacity: 0, height: 0}}
+                    animate={{opacity: 1, height: 'auto'}}
+                    exit={{opacity: 0, height: 0}}
+                    className="grid grid-cols-2 gap-4 border-t pt-4"
+                >
+                  <div className="flex items-center text-sm">
+                <span
+                    className={`inline-block w-4 h-4 rounded-full ${
+                        data.status === 'OK' ? 'bg-green-500' : 'bg-red-500'
+                    }`}
+                    aria-label={`Status ${data.status}`}
+                />
+                    <span className="ml-2">Status: <strong>{data.status}</strong></span>
+                  </div>
+                  <div className="flex items-center text-sm">
+                <span
+                    className="inline-block w-4 h-4 bg-indigo-500 rounded-full"
+                    aria-hidden="true"
+                />
+                    <span className="ml-2">BE Env: <strong>{data.env}</strong></span>
+                  </div>
+                </motion.div>
+            )}
+          </AnimatePresence>
+        </CardContent>
+      </Card>
+  )
+}

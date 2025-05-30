@@ -40,6 +40,7 @@ jobs:
         run: npm run build -- --base /family-budget-ui/prdev
         env:
           VITE_APP_TEST_VAR: prdev
+          VITE_FE_BASE_URL_PATH: ${{ secrets.FE_BASE_URL_PATH_PRDEV }}
           VITE_BE_REST_BASE_URL: ${{ secrets.BE_REST_BASE_URL_PRDEV }}
 
       - name: Deploy to GitHub Pages (prdev)

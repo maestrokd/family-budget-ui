@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
-import { fetchHealthMessage } from '../services/HealthService';
+import React, {useState} from 'react';
+import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
+import {Label} from '@/components/ui/label';
+import {Input} from '@/components/ui/input';
+import {Button} from '@/components/ui/button';
+import {Alert, AlertDescription, AlertTitle} from '@/components/ui/alert';
+import {fetchHealthMessage} from '@/services/HealthService';
 
 export const HealthCheckMessage: React.FC = () => {
   const [message, setMessage] = useState('');
@@ -22,30 +27,39 @@ export const HealthCheckMessage: React.FC = () => {
   };
 
   return (
-      <div className="space-y-4 mt-6">
-        <label className="block">
-          {/*<span className="text-gray-700">Message:</span>*/}
-          <input
-              type="text"
-              value={message}
-              onChange={e => setMessage(e.target.value)}
-              className="mt-1 block w-full border border-gray-300 rounded p-2"
-          />
-        </label>
-        <button
-            onClick={handleSend}
-            disabled={loading}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-        >
-          {loading ? 'Sending...' : 'Send Message'}
-        </button>
-        {error && <p className="text-red-500">{error}</p>}
-        {response && (
-            <div className="p-4 bg-gray-100 rounded">
-              {/*<p className="font-medium">Response:</p>*/}
-              <p>{response}</p>
-            </div>
-        )}
-      </div>
+      <Card className="max-w-md mx-auto mt-8">
+        <CardHeader>
+          <CardTitle className="text-xl">Send Custom Health Message</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label htmlFor="message" className="mb-1">Message</Label>
+            <Input
+                id="message"
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Enter your message"
+            />
+          </div>
+          <Button onClick={handleSend} disabled={loading} className="w-full">
+            {loading ? 'Sending...' : 'Send Message'}
+          </Button>
+          {error && (
+              <Alert variant="destructive">
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+          )}
+          {response && (
+              <Alert variant="default">
+                <AlertTitle>Response</AlertTitle>
+                <AlertDescription>
+                  <pre className="whitespace-pre-wrap">{response}</pre>
+                </AlertDescription>
+              </Alert>
+          )}
+        </CardContent>
+      </Card>
   );
 };
