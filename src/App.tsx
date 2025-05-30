@@ -1,7 +1,9 @@
-import {useState} from 'react'
+import  {useState} from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import {HealthCheck} from "./components/HealthCheck.tsx";
+import {HealthCheckMessage} from "./components/HealthCheckMessage.tsx";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -9,6 +11,13 @@ function App() {
   return (
       <>
         <div>
+          <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+            <div className="w-full max-w-sm bg-white shadow-lg rounded-lg p-6">
+              <h1 className="text-xl font-bold mb-4">Application Health</h1>
+              <HealthCheck/>
+              <HealthCheckMessage />
+            </div>
+          </div>
           <a href="https://vite.dev" target="_blank">
             <img src={viteLogo} className="logo" alt="Vite logo"/>
           </a>

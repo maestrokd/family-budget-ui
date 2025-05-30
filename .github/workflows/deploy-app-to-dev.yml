@@ -35,6 +35,9 @@ jobs:
 
       - name: Build
         run: npm run build -- --base /family-budget-ui/dev
+        env:
+          VITE_APP_TEST_VAR: dev
+          VITE_BE_REST_BASE_URL: ${{ secrets.BE_REST_BASE_URL_DEV }}
 
       - name: Deploy to GitHub Pages (dev)
         uses: JamesIves/github-pages-deploy-action@v4.7.3
