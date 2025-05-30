@@ -41,6 +41,14 @@ const data = {
           url: "#web/health/test",
         },
         {
+          title: "Health Tel Log",
+          url: `#web/health/telegram/log`,
+        },
+        {
+          title: "Health Tel",
+          url: "#web/health/telegram",
+        },
+        {
           title: "Broken",
           url: "#dsfgds",
         },
