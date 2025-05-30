@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { fetchHealthMessage } from '../services/HealthService';
+import React, {useState} from 'react';
+import {fetchHealthMessage} from '../services/HealthService';
 
 export const HealthCheckMessage: React.FC = () => {
   const [message, setMessage] = useState('');
