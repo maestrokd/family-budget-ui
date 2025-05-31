@@ -8,7 +8,7 @@ import {QueryProvider} from './providers/QueryProvider'
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <QueryProvider>
-        <BrowserRouter>
+        <BrowserRouter basename={import.meta.env.VITE_FE_BASE_URL_PATH}>
           <App/>
         </BrowserRouter>
       </QueryProvider>

@@ -12,12 +12,12 @@ const App: React.FC = () => (
 
     <Suspense fallback={<div className="text-gray-500">Loading...</div>}>
       <Routes>
-        <Route path={`${import.meta.env.VITE_FE_BASE_URL_PATH}/`} element={<WebLayout><WelcomePage/></WebLayout>}/>
-        <Route path={`${import.meta.env.VITE_FE_BASE_URL_PATH}/web/health`} element={<WebLayout><HealthDashboard/></WebLayout>}/>
-        <Route path={`${import.meta.env.VITE_FE_BASE_URL_PATH}/web/health/test`} element={<WebLayout><HealthDashboard/></WebLayout>}/>
-        <Route path={`${import.meta.env.VITE_FE_BASE_URL_PATH}/web/settings`} element={<WebLayout><SettingsPage/></WebLayout>}/>
-        <Route path={`${import.meta.env.VITE_FE_BASE_URL_PATH}/telegram/settings`} element={<TelegramLayout><SettingsPage/></TelegramLayout>}/>
-        <Route path={`${import.meta.env.VITE_FE_BASE_URL_PATH}/*`} element={<Navigate to={`${import.meta.env.VITE_FE_BASE_URL_PATH}/`} replace/>}/>
+        <Route path="/" element={<WebLayout><WelcomePage/></WebLayout>}/>
+        <Route path="/web/health" element={<WebLayout><HealthDashboard/></WebLayout>}/>
+        <Route path="/web/health/test" element={<WebLayout><HealthDashboard/></WebLayout>}/>
+        <Route path="/web/settings" element={<WebLayout><SettingsPage/></WebLayout>}/>
+        <Route path="/telegram/settings" element={<TelegramLayout><SettingsPage/></TelegramLayout>}/>
+        <Route path="/*" element={<Navigate to="/" replace/>}/>
       </Routes>
     </Suspense>
 )

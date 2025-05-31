@@ -37,7 +37,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build -- --base /family-budget-ui/prdev
+        run: npm run build -- --base /family-budget-ui/prdev/
         env:
           VITE_APP_TEST_VAR: prdev
           VITE_FE_BASE_URL_PATH: ${{ secrets.FE_BASE_URL_PATH_PRDEV }}
