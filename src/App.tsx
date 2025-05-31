@@ -13,11 +13,11 @@ const App: React.FC = () => (
     <Suspense fallback={<div className="text-gray-500">Loading...</div>}>
       <Routes>
         <Route path="/" element={<WebLayout><WelcomePage/></WebLayout>}/>
-        <Route path="/web/health" element={<WebLayout><HealthDashboard/></WebLayout>}/>
-        <Route path="/web/health/test" element={<WebLayout><HealthDashboard/></WebLayout>}/>
-        <Route path="/web/settings" element={<WebLayout><SettingsPage/></WebLayout>}/>
-        <Route path="/telegram/settings" element={<TelegramLayout><SettingsPage/></TelegramLayout>}/>
-        <Route path="/*" element={<Navigate to="/" replace/>}/>
+        <Route path="web/health" element={<WebLayout><HealthDashboard/></WebLayout>}/>
+        <Route path="web/health/test" element={<WebLayout><HealthDashboard/></WebLayout>}/>
+        <Route path="web/settings" element={<WebLayout><SettingsPage/></WebLayout>}/>
+        <Route path="telegram/settings" element={<TelegramLayout><SettingsPage/></TelegramLayout>}/>
+        <Route path="*" element={<Navigate to="/" replace/>}/>
       </Routes>
     </Suspense>
 )

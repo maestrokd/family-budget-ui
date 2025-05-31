@@ -1,7 +1,7 @@
 {
   "name": "family-budget-ui",
   "private": true,
-  "homepage": "https://maestrokd.github.io/family-budget-ui/prdev",
+  "homepage": "https://maestrokd.github.io/family-budget-ui/prdev/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
