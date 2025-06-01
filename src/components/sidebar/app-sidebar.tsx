@@ -34,19 +34,19 @@ const data = {
         },
         {
           title: "Health",
-          url: `${import.meta.env.VITE_FE_BASE_URL_PATH}/web/health`,
+          url: `${import.meta.env.VITE_FE_BASE_URL_PATH}#/web/health`,
         },
         {
           title: "Health Test",
-          url: `${import.meta.env.VITE_FE_BASE_URL_PATH}/web/health/test`,
+          url: `${import.meta.env.VITE_FE_BASE_URL_PATH}#/web/health/test`,
         },
         {
           title: "Broken",
-          url: `${import.meta.env.VITE_FE_BASE_URL_PATH}/dsfgds`,
+          url: `${import.meta.env.VITE_FE_BASE_URL_PATH}#/dsfgds`,
         },
         {
           title: "Settings",
-          url: `${import.meta.env.VITE_FE_BASE_URL_PATH}/web/settings`,
+          url: `${import.meta.env.VITE_FE_BASE_URL_PATH}#/web/settings`,
         },
       ],
     },
