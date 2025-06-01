@@ -1,44 +1,25 @@
-import  {useState} from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React, {Suspense} from 'react'
 import './App.css'
-import {HealthCheck} from "./components/HealthCheck.tsx";
-import {HealthCheckMessage} from "./components/HealthCheckMessage.tsx";
+import {Navigate, Route, Routes} from 'react-router-dom'
+import WebLayout from "@/components/layouts/WebLayout.tsx";
+import SettingsPage from "@/pages/SettingsPage.tsx";
+import TelegramLayout from './components/layouts/TelegramLayout';
 
-function App() {
-  const [count, setCount] = useState(0)
+const WelcomePage = React.lazy(() => import('@/pages/WelcomePage'))
+const HealthDashboard = React.lazy(() => import('@/pages/HealthDashboard'))
 
-  return (
-      <>
-        <div>
-          <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
-            <div className="w-full max-w-sm bg-white shadow-lg rounded-lg p-6">
-              <h1 className="text-xl font-bold mb-4">Application Health</h1>
-              <HealthCheck/>
-              <HealthCheckMessage />
-            </div>
-          </div>
-          <a href="https://vite.dev" target="_blank">
-            <img src={viteLogo} className="logo" alt="Vite logo"/>
-          </a>
-          <a href="https://react.dev" target="_blank">
-            <img src={reactLogo} className="logo react" alt="React logo"/>
-          </a>
-        </div>
-        <h1>Vite + React</h1>
-        <div className="card">
-          <button onClick={() => setCount((count) => count + 1)}>
-            count is {count}
-          </button>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test HMR
-          </p>
-        </div>
-        <p className="read-the-docs">
-          Click on the Vite and React logos to learn more
-        </p>
-      </>
-  )
-}
+const App: React.FC = () => (
+
+    <Suspense fallback={<div className="text-gray-500">Loading...</div>}>
+      <Routes>
+        <Route path="/" element={<WebLayout><WelcomePage/></WebLayout>}/>
+        <Route path="web/health" element={<WebLayout><HealthDashboard/></WebLayout>}/>
+        <Route path="web/health/test" element={<WebLayout><HealthDashboard/></WebLayout>}/>
+        <Route path="web/settings" element={<WebLayout><SettingsPage/></WebLayout>}/>
+        <Route path="telegram/settings" element={<TelegramLayout><SettingsPage/></TelegramLayout>}/>
+        <Route path="*" element={<Navigate to="/" replace/>}/>
+      </Routes>
+    </Suspense>
+)
 
 export default App

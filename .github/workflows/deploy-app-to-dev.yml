@@ -37,6 +37,7 @@ jobs:
         run: npm run build -- --base /family-budget-ui/dev
         env:
           VITE_APP_TEST_VAR: dev
+          VITE_FE_BASE_URL_PATH: ${{ secrets.FE_BASE_URL_PATH_DEV }}
           VITE_BE_REST_BASE_URL: ${{ secrets.BE_REST_BASE_URL_DEV }}
 
       - name: Deploy to GitHub Pages (dev)
