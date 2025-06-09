@@ -4,13 +4,19 @@ import './index.css'
 import App from './App.tsx'
 import {HashRouter} from 'react-router-dom'
 import {QueryProvider} from './providers/QueryProvider'
+import WebApp from '@twa-dev/sdk'
+import {AuthProvider} from "@/contexts/AuthContext.tsx";
+
+WebApp.ready();
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-      <QueryProvider>
-        <HashRouter>
-          <App/>
-        </HashRouter>
-      </QueryProvider>
+      <AuthProvider>
+        <QueryProvider>
+          <HashRouter>
+            <App/>
+          </HashRouter>
+        </QueryProvider>
+      </AuthProvider>
     </StrictMode>
 )
