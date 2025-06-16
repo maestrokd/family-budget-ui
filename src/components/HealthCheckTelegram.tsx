@@ -2,14 +2,12 @@ import React, {useEffect, useState} from 'react';
 import WebApp from '@twa-dev/sdk';
 import {useLocation} from 'react-router-dom';
 import {fetchHealthMessage} from '@/services/HealthService.ts';
-import {useAuth} from '@/contexts/AuthContext.tsx';
 import {Card, CardContent} from '@/components/ui/card';
 import {Button} from '@/components/ui/button';
 import {Alert, AlertDescription, AlertTitle} from '@/components/ui/alert';
 import {Loader2} from 'lucide-react';
 
 export const HealthCheckTelegram: React.FC = () => {
-  const {telegramAuth} = useAuth();
   const {search} = useLocation();
 
   const [telegramUserId, setTelegramUserId] = useState<number | null>(null);
@@ -47,7 +45,7 @@ export const HealthCheckTelegram: React.FC = () => {
     setError(null);
     setResponse(null);
     try {
-      const messagePayload = `${telegramUserId} + ${telegramAuth}`;
+      const messagePayload = `${telegramUserId}`;
       const data = await fetchHealthMessage(messagePayload);
       setResponse(data);
     } catch {
@@ -80,11 +78,6 @@ export const HealthCheckTelegram: React.FC = () => {
             <div className="flex items-center">
               <span className="font-medium mr-2">Query Auth Param:</span>
               <span>{authQueryParam ?? '—'}</span>
-            </div>
-
-            <div className="flex items-center">
-              <span className="font-medium mr-2">AuthContext Param:</span>
-              <span>{telegramAuth ?? '—'}</span>
             </div>
           </div>
 
