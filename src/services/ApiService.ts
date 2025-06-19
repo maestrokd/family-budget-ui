@@ -1,20 +1,29 @@
-import axios, {type AxiosInstance, type AxiosRequestConfig, type AxiosResponse} from "axios";
+import axios, {type AxiosError, type AxiosInstance, type AxiosRequestConfig, type AxiosResponse} from "axios";
 import axiosRetry from "axios-retry";
 import type {LoginResponse} from "./AuthService";
+import type {NavigateFunction} from "react-router-dom";
+
+let navigateFn: NavigateFunction | null = null;
+
+export const registerNavigate = (fn: NavigateFunction) => {
+  navigateFn = fn;
+};
 
 // 1. Create axios instance with baseURL & JSON headers
+// axios.defaults.withCredentials = true;
 const apiClient: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BE_REST_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
   // Treat 4xx as errors but only throw on 5xx by default
-  validateStatus: (status) => status < 500,
+  validateStatus: (status) => status < 400,
 });
 
 // 2. Retry on network errors / 5xx up to 3 times
 axiosRetry(apiClient, {
-  retries: 3,
+  retries: 0,
   retryDelay: axiosRetry.exponentialDelay,
 });
 
@@ -31,8 +40,55 @@ apiClient.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-// 4. Handle 401 by refreshing token and retrying
+
+
+// 4. Handle 401 by refreshing token and retrying once
 apiClient.interceptors.response.use(
+    (response: AxiosResponse) => response,
+    async (error: AxiosError) => {
+      const originalConfig = (error.config ?? {}) as AxiosRequestConfig & { _retry?: boolean };
+      const status = error.response?.status;
+
+      // On 401, attempt refresh only once and skip if refresh endpoint itself
+      if (status === 401 && !originalConfig._retry) {
+        // Avoid infinite loop: do not retry /auth/refresh
+        if (originalConfig.url?.endsWith('/auth/refresh')) {
+          localStorage.removeItem('token');
+          navigateFn?.('/login', { replace: true });
+          return Promise.reject(error);
+        }
+
+        originalConfig._retry = true;
+        try {
+          // call refresh endpoint (refresh token via HttpOnly cookie)
+          const refreshResp = await apiClient.post<LoginResponse>('/auth/refresh', undefined, { withCredentials: true });
+          const newToken = refreshResp.data.accessToken;
+          localStorage.setItem('token', newToken);
+          originalConfig.headers = originalConfig.headers ?? {};
+          originalConfig.headers.Authorization = `Bearer ${newToken}`;
+          return apiClient.request(originalConfig);
+        } catch {
+          // Refresh failed: clear token and stop
+          localStorage.removeItem('token');
+          return Promise.reject(error);
+        }
+      }
+
+      // All other errors
+      if (error.response) {
+        console.error('API Error:', error.response.status, error.response.data);
+      } else if (error.request) {
+        console.error('API Error: No response received', error.request);
+      } else {
+        console.error('API Error:', error.message);
+      }
+      return Promise.reject(error);
+    }
+);
+
+
+// 4. Handle 401 by refreshing token and retrying
+/*apiClient.interceptors.response.use(
     (response: AxiosResponse) => response,
     async (error) => {
       const {response, config} = error;
@@ -78,7 +134,7 @@ apiClient.interceptors.response.use(
       }
       return Promise.reject(error);
     }
-);
+);*/
 
 // 5. Generic HTTP methods returning `response.data`
 export const get = async <T>(

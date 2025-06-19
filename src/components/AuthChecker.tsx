@@ -8,6 +8,10 @@ const AuthChecker: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('AuthChecker - in ');
+    /*if (telegramAuth) {
+      navigate(pathname);
+    }*/
     const params = new URLSearchParams(search);
     const authParam = params.get('telegram_auth') || undefined;
     if (authParam) {

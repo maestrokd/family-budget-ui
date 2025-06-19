@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2 } from 'lucide-react';
 import { fetchTelegramHealth, type TelegramHealthResponse } from '@/services/HealthService.ts';
-import {loginWithTelegram} from "@/services/AuthService.ts";
 
 export const HealthCheckTelegramAuthCard: React.FC = () => {
   const [initDataString, setInitDataString] = useState<string | null>(null);
@@ -29,7 +28,6 @@ export const HealthCheckTelegramAuthCard: React.FC = () => {
     setHealthData(null);
     try {
       if (!initDataString) return;
-      await loginWithTelegram(initDataString);
       const data = await fetchTelegramHealth(initDataString);
       setHealthData(data);
     } catch {
