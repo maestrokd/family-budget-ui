@@ -1,19 +1,48 @@
-import axios, {type AxiosInstance, type AxiosRequestConfig, type AxiosResponse} from "axios";
+import axios, {type AxiosError, type AxiosInstance, type AxiosRequestConfig, type AxiosResponse} from "axios";
 import axiosRetry from "axios-retry";
+import type {LoginResponse} from "./AuthService";
+import type {NavigateFunction} from "react-router-dom";
+
+let navigateFn: NavigateFunction | null = null;
+let getTokenFn: (() => string | null) | null = null;
+let getIsTelegramFn: (() => boolean) | null = null;
+let setTokenFn: ((t: string|null) => void) | null = null;
+let loginWithTelegramFn: (() => void) | null = null;
+
+export const registerNavigate = (fn: NavigateFunction) => {
+  navigateFn = fn;
+};
+
+export function registerAuthContext(
+    getToken: () => string | null,
+    isTelegram: () => boolean,
+) {
+  getTokenFn = getToken;
+  getIsTelegramFn = isTelegram;
+}
+
+export function registerSetToken(fn: typeof setTokenFn) {
+  setTokenFn = fn;
+}
+export function registerLoginWithTelegram(fn: typeof loginWithTelegramFn) {
+  loginWithTelegramFn = fn;
+}
 
 // 1. Create axios instance with baseURL & JSON headers
+// axios.defaults.withCredentials = true;
 const apiClient: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BE_REST_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
   // Treat 4xx as errors but only throw on 5xx by default
-  validateStatus: (status) => status < 500,
+  validateStatus: (status) => status < 400,
 });
 
 // 2. Retry on network errors / 5xx up to 3 times
 axiosRetry(apiClient, {
-  retries: 3,
+  retries: 0,
   retryDelay: axiosRetry.exponentialDelay,
 });
 
@@ -21,7 +50,7 @@ axiosRetry(apiClient, {
 apiClient.interceptors.request.use(
     (config) => {
       config.headers = config.headers ?? {};
-      const token = localStorage.getItem('token');
+      const token = getTokenFn?.();
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -30,31 +59,125 @@ apiClient.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-// 4. Response interceptor: centralized logging & error handling
+
+
+// 4. Handle 401 by refreshing token and retrying once
 apiClient.interceptors.response.use(
     (response: AxiosResponse) => response,
-    (error) => {
-      const {response, request, message} = error;
-      if (response) {
-        console.error(
-            'API Error:',
-            response.status,
-            response.data
-        );
-        if (response.status === 401) {
-          // e.g. redirect to login, clear storage, etc.
+    async (error: AxiosError) => {
+      console.error(
+          'API Error:',
+          error.response?.status,
+          error.response?.data
+      );
+      const originalConfig = (error.config ?? {}) as AxiosRequestConfig & { _retry?: boolean };
+      const status = error.response?.status;
+
+      // On 401, attempt refresh only once and skip if refresh endpoint itself
+      if (status === 401 && !originalConfig._retry) {
+        // Avoid infinite loop: do not retry /auth/refresh
+        if (originalConfig.url?.endsWith('/auth/refresh')) {
+          // localStorage.removeItem('token');
+          setTokenFn?.(null);
+          navigateFn?.('/login', { replace: true });
+          return Promise.reject(error);
         }
-      } else if (request) {
-        console.error(
-            'API Error: No response received',
-            request
-        );
+
+        if (getIsTelegramFn?.()) {
+          console.info('Refresh byLogin with Telegram - in');
+          loginWithTelegramFn?.();
+          return apiClient.request(originalConfig);
+        }
+
+        originalConfig._retry = true;
+        try {
+          // call refresh endpoint (refresh token via HttpOnly cookie)
+          console.info('Refresh - in');
+          const refreshResp = await apiClient.post<LoginResponse>('/auth/refresh', undefined, { withCredentials: true });
+          console.info(
+              'Refresh response:',
+              refreshResp.status,
+              refreshResp.data
+          );
+          const newToken = refreshResp.data.accessToken;
+          // localStorage.setItem('token', newToken);
+          setTokenFn?.(newToken);
+          originalConfig.headers = originalConfig.headers ?? {};
+          originalConfig.headers.Authorization = `Bearer ${newToken}`;
+          return apiClient.request(originalConfig);
+        } catch (refreshError) {
+          // Refresh failed: clear token and stop
+          console.error(
+              'API Error:',
+              refreshError
+          );
+          // localStorage.removeItem('token');
+          setTokenFn?.(null);
+          return Promise.reject(error);
+        }
+      }
+
+      // All other errors
+      if (error.response) {
+        console.error('API Error:', error.response.status, error.response.data);
+      } else if (error.request) {
+        console.error('API Error: No response received', error.request);
       } else {
-        console.error('API Error:', message);
+        console.error('API Error:', error.message);
       }
       return Promise.reject(error);
     }
 );
+
+
+// 4. Handle 401 by refreshing token and retrying
+/*apiClient.interceptors.response.use(
+    (response: AxiosResponse) => response,
+    async (error) => {
+      const {response, config} = error;
+      console.error(
+          'API Error:',
+          response.status,
+          response.data
+      );
+      // on 401, try refresh once
+      if (response?.status === 401 && !config._retry) {
+        config._retry = true;
+        try {
+          // call refresh endpoint (refresh token is sent via HttpOnly cookie)
+          const refreshResp = await apiClient.post<LoginResponse>('/auth/refresh');
+          console.info(
+              'Refresh response:',
+              refreshResp.status,
+              refreshResp.data
+          );
+          const {accessToken} = refreshResp.data;
+          console.info(
+              'New access token:',
+              accessToken
+          );
+          localStorage.setItem('token', accessToken);
+          // update header and retry original request
+          config.headers = config.headers ?? {};
+          config.headers.Authorization = `Bearer ${accessToken}`;
+          return apiClient.request(config);
+        } catch {
+          // if refresh fails, clear token or redirect to login
+          localStorage.removeItem('token');
+        }
+      }
+
+      // log other errors
+      if (response) {
+        console.error('API Error:', response.status, response.data);
+      } else if (error.request) {
+        console.error('API Error: No response received', error.request);
+      } else {
+        console.error('API Error:', error.message);
+      }
+      return Promise.reject(error);
+    }
+);*/
 
 // 5. Generic HTTP methods returning `response.data`
 export const get = async <T>(

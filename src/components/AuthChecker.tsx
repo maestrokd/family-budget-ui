@@ -3,17 +3,34 @@ import {Outlet, useLocation, useNavigate} from 'react-router-dom';
 import {useAuth} from '../contexts/AuthContext';
 
 const AuthChecker: React.FC = () => {
-  const {telegramAuth, addTelegramAuth} = useAuth();
+  console.log('AuthChecker - in ');
+
+  const { isAuthenticated, isTelegram, /*telegramAuth,*/ loginWithTelegram/*, addTelegramAuth*/} = useAuth();
   const {search, pathname} = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const params = new URLSearchParams(search);
-    const authParam = params.get('telegram_auth') || undefined;
-    if (authParam) {
-      addTelegramAuth(authParam);
+    console.log('AuthChecker useEffect - in ');
+
+    if (isTelegram) {
+      loginWithTelegram()
+          .then(() => {
+            navigate(pathname + window.location.search, { replace: true });
+          })
+          .catch(() => {
+            navigate('#login', { replace: true });
+          });
+      return;
     }
-  }, [search, telegramAuth, addTelegramAuth, navigate, pathname]);
+
+    if (!isTelegram) {
+      if (!isAuthenticated) {
+        console.log('AuthChecker useEffect not authenticated - in ');
+        navigate('login', { replace: true });
+      }
+    }
+
+  }, [isAuthenticated, isTelegram, search, navigate, pathname]);
 
   return <Outlet/>;
 };
