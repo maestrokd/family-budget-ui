@@ -4,10 +4,29 @@ import type {LoginResponse} from "./AuthService";
 import type {NavigateFunction} from "react-router-dom";
 
 let navigateFn: NavigateFunction | null = null;
+let getTokenFn: (() => string | null) | null = null;
+let getIsTelegramFn: (() => boolean) | null = null;
+let setTokenFn: ((t: string|null) => void) | null = null;
+let loginWithTelegramFn: (() => void) | null = null;
 
 export const registerNavigate = (fn: NavigateFunction) => {
   navigateFn = fn;
 };
+
+export function registerAuthContext(
+    getToken: () => string | null,
+    isTelegram: () => boolean,
+) {
+  getTokenFn = getToken;
+  getIsTelegramFn = isTelegram;
+}
+
+export function registerSetToken(fn: typeof setTokenFn) {
+  setTokenFn = fn;
+}
+export function registerLoginWithTelegram(fn: typeof loginWithTelegramFn) {
+  loginWithTelegramFn = fn;
+}
 
 // 1. Create axios instance with baseURL & JSON headers
 // axios.defaults.withCredentials = true;
@@ -31,7 +50,7 @@ axiosRetry(apiClient, {
 apiClient.interceptors.request.use(
     (config) => {
       config.headers = config.headers ?? {};
-      const token = localStorage.getItem('token');
+      const token = getTokenFn?.();
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -46,6 +65,11 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
     (response: AxiosResponse) => response,
     async (error: AxiosError) => {
+      console.error(
+          'API Error:',
+          error.response?.status,
+          error.response?.data
+      );
       const originalConfig = (error.config ?? {}) as AxiosRequestConfig & { _retry?: boolean };
       const status = error.response?.status;
 
@@ -53,23 +77,42 @@ apiClient.interceptors.response.use(
       if (status === 401 && !originalConfig._retry) {
         // Avoid infinite loop: do not retry /auth/refresh
         if (originalConfig.url?.endsWith('/auth/refresh')) {
-          localStorage.removeItem('token');
+          // localStorage.removeItem('token');
+          setTokenFn?.(null);
           navigateFn?.('/login', { replace: true });
           return Promise.reject(error);
+        }
+
+        if (getIsTelegramFn?.()) {
+          console.info('Refresh byLogin with Telegram - in');
+          loginWithTelegramFn?.();
+          return apiClient.request(originalConfig);
         }
 
         originalConfig._retry = true;
         try {
           // call refresh endpoint (refresh token via HttpOnly cookie)
+          console.info('Refresh - in');
           const refreshResp = await apiClient.post<LoginResponse>('/auth/refresh', undefined, { withCredentials: true });
+          console.info(
+              'Refresh response:',
+              refreshResp.status,
+              refreshResp.data
+          );
           const newToken = refreshResp.data.accessToken;
-          localStorage.setItem('token', newToken);
+          // localStorage.setItem('token', newToken);
+          setTokenFn?.(newToken);
           originalConfig.headers = originalConfig.headers ?? {};
           originalConfig.headers.Authorization = `Bearer ${newToken}`;
           return apiClient.request(originalConfig);
-        } catch {
+        } catch (refreshError) {
           // Refresh failed: clear token and stop
-          localStorage.removeItem('token');
+          console.error(
+              'API Error:',
+              refreshError
+          );
+          // localStorage.removeItem('token');
+          setTokenFn?.(null);
           return Promise.reject(error);
         }
       }

@@ -1,44 +1,36 @@
 import React, {useEffect} from 'react';
 import {Outlet, useLocation, useNavigate} from 'react-router-dom';
 import {useAuth} from '../contexts/AuthContext';
-import WebApp from "@twa-dev/sdk";
-import {loginWithTelegram} from "@/services/AuthService.ts";
 
 const AuthChecker: React.FC = () => {
-  const {telegramAuth, addTelegramAuth} = useAuth();
+  console.log('AuthChecker - in ');
+
+  const { isAuthenticated, isTelegram, /*telegramAuth,*/ loginWithTelegram/*, addTelegramAuth*/} = useAuth();
   const {search, pathname} = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('AuthChecker - in ');
+    console.log('AuthChecker useEffect - in ');
 
-    const authenticate = async () => {
+    if (isTelegram) {
+      loginWithTelegram()
+          .then(() => {
+            navigate(pathname + window.location.search, { replace: true });
+          })
+          .catch(() => {
+            navigate('#login', { replace: true });
+          });
+      return;
+    }
 
-      if (WebApp) {
-        WebApp.ready();
-        const initDataString = WebApp.initData;
-        console.log('initDataString', initDataString);
-
-        if (initDataString) {
-          try {
-            await loginWithTelegram(initDataString);
-          } catch (err) {
-            console.error('Telegram login failed', err);
-            /*navigate('/login', {replace: true});
-            return;*/
-          }
-        }
+    if (!isTelegram) {
+      if (!isAuthenticated) {
+        console.log('AuthChecker useEffect not authenticated - in ');
+        navigate('login', { replace: true });
       }
     }
 
-    authenticate();
-
-    const params = new URLSearchParams(search);
-    const authParam = params.get('telegram_auth') || undefined;
-    if (authParam) {
-      addTelegramAuth(authParam);
-    }
-  }, [search, telegramAuth, addTelegramAuth, navigate, pathname]);
+  }, [isAuthenticated, isTelegram, search, navigate, pathname]);
 
   return <Outlet/>;
 };

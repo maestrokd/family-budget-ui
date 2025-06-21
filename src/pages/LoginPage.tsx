@@ -5,8 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useNavigate } from 'react-router-dom';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { login } from '@/services/AuthService';
 import { Loader2 } from 'lucide-react';
+import {useAuth} from "@/contexts/AuthContext.tsx";
 
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -14,6 +14,7 @@ export const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
