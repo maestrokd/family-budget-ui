@@ -1,1 +1,0 @@
-import{j as e}from"./index-BqlojyIY.js";const s=()=>e.jsx("div",{className:"flex items-center justify-center h-full p-6",children:e.jsx("h2",{className:"text-2xl font-semibold text-gray-800",children:"Welcome to the Service Dashboard"})});export{s as default};
