@@ -11,12 +11,12 @@ WebApp.ready();
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-      <AuthProvider>
         <QueryProvider>
-          <HashRouter>
-            <App/>
-          </HashRouter>
+            <HashRouter>
+                <AuthProvider>
+                    <App/>
+                </AuthProvider>
+            </HashRouter>
         </QueryProvider>
-      </AuthProvider>
     </StrictMode>
 )

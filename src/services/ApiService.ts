@@ -1,58 +1,92 @@
-import axios, {type AxiosInstance, type AxiosRequestConfig, type AxiosResponse} from "axios";
+import axios, {type AxiosError, type AxiosInstance, type AxiosRequestConfig, type AxiosResponse} from "axios";
 import axiosRetry from "axios-retry";
+import type {NavigateFunction} from "react-router-dom";
+
+let navigateFn: NavigateFunction | null = null;
+let refreshFn: (() => Promise<string>) | null = null;
+let logoutFn: (() => void) | null = null;
+
+export const registerNavigate = (fn: NavigateFunction) => {
+    navigateFn = fn;
+};
+
+export function registerRefreshFn(fn: () => Promise<string>) {
+    refreshFn = fn;
+}
+
+export function registerLogoutFn(fn: typeof logoutFn) {
+    logoutFn = fn;
+}
 
 // 1. Create axios instance with baseURL & JSON headers
 const apiClient: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BE_REST_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  // Treat 4xx as errors but only throw on 5xx by default
-  validateStatus: (status) => status < 500,
+    baseURL: import.meta.env.VITE_BE_REST_BASE_URL,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    withCredentials: true,
+    // Treat 4xx as errors but only throw on 5xx by default
+    validateStatus: (status) => status < 400,
 });
 
 // 2. Retry on network errors / 5xx up to 3 times
 axiosRetry(apiClient, {
-  retries: 3,
-  retryDelay: axiosRetry.exponentialDelay,
+    retries: 0,
+    retryDelay: axiosRetry.exponentialDelay,
 });
 
 // 3. Request interceptor: inject auth token if present
 apiClient.interceptors.request.use(
     (config) => {
-      config.headers = config.headers ?? {};
-      const token = localStorage.getItem('token');
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-      return config;
+        config.headers = config.headers ?? {};
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
     },
     (error) => Promise.reject(error)
 );
 
-// 4. Response interceptor: centralized logging & error handling
+
+// 4. Response interceptor: centralized logging & error handling, Handle 401 by refreshing token and retrying once
 apiClient.interceptors.response.use(
     (response: AxiosResponse) => response,
-    (error) => {
-      const {response, request, message} = error;
-      if (response) {
-        console.error(
-            'API Error:',
-            response.status,
-            response.data
-        );
-        if (response.status === 401) {
-          // e.g. redirect to login, clear storage, etc.
+    async (error: AxiosError) => {
+        console.error('API Error - in:', error.response?.status, error.response?.data);
+        const originalConfig = (error.config ?? {}) as AxiosRequestConfig & { _retry?: boolean };
+        const status = error.response?.status;
+
+        // On 401, attempt refresh only once and skip if refresh endpoint itself
+        if (status === 401 && !originalConfig._retry) {
+            // Avoid infinite loop: do not retry /auth/refresh
+            if (originalConfig.url?.endsWith('/auth/refresh')) {
+                logoutFn?.();
+                navigateFn?.('login', {replace: true});
+                return Promise.reject(error);
+            }
+
+            originalConfig._retry = true;
+            try {
+                await refreshFn?.();
+                return apiClient.request(originalConfig);
+            } catch (refreshError) {
+                // Refresh failed: clear token and stop
+                console.error('Refresh - API Error:', refreshError);
+                logoutFn?.();
+                return Promise.reject(error);
+            }
         }
-      } else if (request) {
-        console.error(
-            'API Error: No response received',
-            request
-        );
-      } else {
-        console.error('API Error:', message);
-      }
-      return Promise.reject(error);
+
+        // All other errors
+        if (error.response) {
+            console.error('API Error:', error.response.status, error.response.data);
+        } else if (error.request) {
+            console.error('API Error: No response received', error.request);
+        } else {
+            console.error('API Error:', error.message);
+        }
+        return Promise.reject(error);
     }
 );
 
@@ -92,9 +126,9 @@ export const del = async <T>(
 
 // 6. Default export for easy imports
 export default {
-  get,
-  post,
-  put,
-  patch,
-  del,
+    get,
+    post,
+    put,
+    patch,
+    del,
 };
