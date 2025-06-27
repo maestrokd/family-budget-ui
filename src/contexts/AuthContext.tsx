@@ -96,7 +96,11 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
                 const initDataString = WebApp.initData;
                 if (initDataString) {
                     setTelegramInitDataString(initDataString);
-                    token = await loginWithTelegram(initDataString);
+                    try {
+                        token = await loginWithTelegram(initDataString);
+                    } catch (e) {
+                        console.error('AuthProvider useEffect - loginWithTelegram - error', e);
+                    }
                 }
             } else {
                 const savedJwt = localStorage.getItem('token');
