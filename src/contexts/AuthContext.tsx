@@ -55,7 +55,7 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
     };
 
     const login = async (email: string, password: string): Promise<void> => {
-        const {accessToken} = await post<LoginResponse>('/auth/login', {username: email, password});
+        const {accessToken} = await post<LoginResponse>('/auth/login', {username: email, password, initData: telegramInitDataString});
         setToken(accessToken);
         localStorage.setItem('token', accessToken);
         const {sub, authorities} = jwtDecode<{ sub: string; authorities: string[] }>(accessToken);

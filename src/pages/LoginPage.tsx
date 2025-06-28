@@ -7,6 +7,7 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {Alert, AlertDescription} from '@/components/ui/alert';
 import {Loader2} from 'lucide-react';
 import {useAuth} from "@/contexts/AuthContext.tsx";
+import WebApp from "@twa-dev/sdk";
 
 export const LoginPage: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -15,7 +16,7 @@ export const LoginPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
     const location = useLocation();
-    const {login} = useAuth();
+    const {login, isTelegram} = useAuth();
     const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/';
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -25,7 +26,11 @@ export const LoginPage: React.FC = () => {
 
         try {
             await login(email, password);
-            navigate(from, {replace: true});
+            if (isTelegram) {
+                WebApp.close();
+            } else {
+                navigate(from, {replace: true});
+            }
         } catch (err) {
             setError('Invalid email or password');
         } finally {
