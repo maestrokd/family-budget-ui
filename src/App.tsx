@@ -25,6 +25,7 @@ const App: React.FC = () => {
         <Suspense fallback={<div className="text-gray-500">Loading...</div>}>
             <Routes>
                 <Route path="login" element={<LoginPage/>}/>
+                <Route path="telegram/login" element={<LoginPage/>}/>
                 <Route element={<PrivateRoute/>}>
                     <Route path="/" element={<WebLayout><WelcomePage/></WebLayout>}/>
                     <Route path="web/health" element={<WebLayout><HealthDashboard/></WebLayout>}/>
