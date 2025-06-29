@@ -3,11 +3,13 @@ import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
 import {Label} from '@/components/ui/label';
-import {useLocation, useNavigate} from 'react-router-dom';
+import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {Alert, AlertDescription} from '@/components/ui/alert';
 import {Loader2} from 'lucide-react';
 import {useAuth} from "@/contexts/AuthContext.tsx";
 import WebApp from "@twa-dev/sdk";
+import axios from "axios";
+import type {ApiErrorResponse} from "@/services/ApiService.ts";
 
 export const LoginPage: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -31,8 +33,13 @@ export const LoginPage: React.FC = () => {
             } else {
                 navigate(from, {replace: true});
             }
-        } catch (err) {
-            setError('Invalid email or password');
+        } catch (error: unknown) {
+            let message = 'Invalid email or password.';
+            if (axios.isAxiosError(error) && error.response?.data) {
+                const data = error.response.data as ApiErrorResponse;
+                message = data.message;
+            }
+            setError(message);
         } finally {
             setLoading(false);
         }
@@ -86,9 +93,9 @@ export const LoginPage: React.FC = () => {
                     </form>
                     <div className="mt-4 text-center text-sm">
                         Don't have an account?{' '}
-                        <a href="#" className="text-primary hover:underline">
+                        <Link to="/register" className="text-primary hover:underline">
                             Sign up
-                        </a>
+                        </Link>
                     </div>
                 </CardContent>
             </Card>

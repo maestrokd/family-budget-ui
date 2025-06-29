@@ -15,6 +15,8 @@ interface AuthContextType {
     isAuthenticated: boolean;
     principal: Principal | null;
     isTelegram: boolean;
+    sendConfirmationCode: (email: string) => Promise<void>;
+    doRegister: (email: string, password: string, confirmPassword: string, confirmationCode: string) => Promise<void>;
     login: (email: string, password: string) => Promise<void>;
     loginWithTelegram: () => Promise<string>;
     logout: () => void;
@@ -52,6 +54,18 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
             console.error('AuthProvider Refresh - error', e);
             throw e;
         }
+    };
+
+    const sendConfirmationCode = async (email: string): Promise<void> => {
+        await post<LoginResponse>('/auth/email/verification/send', {email, initData: telegramInitDataString});
+    };
+
+    const doRegister = async (email: string, password: string, confirmPassword: string, confirmationCode: string): Promise<void> => {
+        const {accessToken} = await post<LoginResponse>('/auth/registration', {email, emailVerificationCode: confirmationCode, password, confirmPassword, initData: telegramInitDataString});
+        setToken(accessToken);
+        localStorage.setItem('token', accessToken);
+        const {sub, authorities} = jwtDecode<{ sub: string; authorities: string[] }>(accessToken);
+        setPrincipal({id: sub, username: '', authorities: authorities});
     };
 
     const login = async (email: string, password: string): Promise<void> => {
@@ -133,6 +147,8 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
                 isAuthenticated: Boolean(token),
                 principal,
                 isTelegram: Boolean(telegramInitDataString),
+                sendConfirmationCode,
+                doRegister,
                 login,
                 loginWithTelegram,
                 logout,
