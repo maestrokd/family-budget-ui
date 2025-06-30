@@ -2,6 +2,19 @@ import axios, {type AxiosError, type AxiosInstance, type AxiosRequestConfig, typ
 import axiosRetry from "axios-retry";
 import type {NavigateFunction} from "react-router-dom";
 
+export interface ApiErrorDetail {
+    field: string;
+    message: string;
+}
+
+export interface ApiErrorResponse {
+    timestamp: string;
+    errorCode: string;
+    message: string;
+    path: string;
+    errors: ApiErrorDetail[];
+}
+
 let navigateFn: NavigateFunction | null = null;
 let refreshFn: (() => Promise<string>) | null = null;
 let logoutFn: (() => void) | null = null;
@@ -66,7 +79,8 @@ apiClient.interceptors.response.use(
                 return Promise.reject(error);
             }
             if (originalConfig.url?.endsWith('/auth/login')
-                || originalConfig.url?.endsWith('/auth/login/telegram')) {
+                || originalConfig.url?.endsWith('/auth/login/telegram')
+                || originalConfig.url?.endsWith('/auth/registration')) {
                 logoutFn?.();
                 return Promise.reject(error);
             }
