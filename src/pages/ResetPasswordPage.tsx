@@ -13,7 +13,7 @@ import type { ApiErrorResponse } from '@/services/ApiService.ts';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const RegistrationPage: React.FC = () => {
+const ResetPasswordPage: React.FC = () => {
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState<string | null>(null);
 
@@ -33,9 +33,8 @@ const RegistrationPage: React.FC = () => {
     const [secondsLeft, setSecondsLeft] = useState(0);
 
     const navigate = useNavigate();
-    const { sendConfirmationCode, doRegister, isTelegram } = useAuth();
+    const { sendConfirmationCode, doResetPassword, isTelegram } = useAuth();
 
-    // Countdown effect for resend timer
     useEffect(() => {
         if (secondsLeft <= 0) return;
         const timer = setInterval(() => {
@@ -93,11 +92,11 @@ const RegistrationPage: React.FC = () => {
         setCodeError(null);
 
         try {
-            await sendConfirmationCode(email, EmailVerificationType.EMAIL_VERIFICATION_CODE_WEB);
+            await sendConfirmationCode(email, EmailVerificationType.PASSWORD_RESET_EMAIL_VERIFICATION_CODE_WEB);
             setCodeSent(true);
             setSecondsLeft(60);
         } catch (error: unknown) {
-            let message = 'Failed to send confirmation code.';
+            let message = 'Failed to send reset code.';
             if (axios.isAxiosError(error) && error.response?.data) {
                 const data = error.response.data as ApiErrorResponse;
                 message = data.message;
@@ -142,14 +141,14 @@ const RegistrationPage: React.FC = () => {
         setSubmitError(null);
 
         try {
-            await doRegister(email, password, confirmPassword, confirmationCode);
+            await doResetPassword(email, password, confirmPassword, confirmationCode);
             if (isTelegram) {
                 WebApp.close();
             } else {
-                navigate('/', { replace: true });
+                navigate('/login', { replace: true });
             }
         } catch (error: unknown) {
-            let message = 'Registration failed. Please try again.';
+            let message = 'Reset password failed. Please try again.';
             if (axios.isAxiosError(error) && error.response?.data) {
                 const data = error.response.data as ApiErrorResponse;
                 message = data.message;
@@ -164,7 +163,7 @@ const RegistrationPage: React.FC = () => {
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
             <Card className="w-full max-w-md">
                 <CardHeader className="space-y-1">
-                    <CardTitle className="text-2xl font-bold text-center">Create your account</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-center">Reset your password</CardTitle>
                 </CardHeader>
 
                 <CardContent>
@@ -207,7 +206,7 @@ const RegistrationPage: React.FC = () => {
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
                                     Sending...
                                 </>
-                            ) : secondsLeft > 0 ? `Resend in ${secondsLeft}s` : 'Send Confirmation Code'}
+                            ) : secondsLeft > 0 ? `Resend in ${secondsLeft}s` : 'Send reset code'}
                         </Button>
 
                         {/* Confirmation Code */}
@@ -234,9 +233,9 @@ const RegistrationPage: React.FC = () => {
                             </div>
                         )}
 
-                        {/* Password */}
+                        {/* New Password */}
                         <div className="space-y-2">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor="password">New Password</Label>
                             <Input
                                 id="password"
                                 type="password"
@@ -258,9 +257,9 @@ const RegistrationPage: React.FC = () => {
                             )}
                         </div>
 
-                        {/* Confirm Password */}
+                        {/* Confirm New Password */}
                         <div className="space-y-2">
-                            <Label htmlFor="confirmPassword">Confirm Password</Label>
+                            <Label htmlFor="confirmPassword">Confirm New Password</Label>
                             <Input
                                 id="confirmPassword"
                                 type="password"
@@ -294,12 +293,12 @@ const RegistrationPage: React.FC = () => {
                             }
                         >
                             {submitLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            {submitLoading ? 'Creating account...' : 'Sign up'}
+                            {submitLoading ? 'Resetting...' : 'Reset Password'}
                         </Button>
                     </form>
 
                     <div className="mt-4 text-center text-sm">
-                        Already have an account?{' '}
+                        Remembered your password?{' '}
                         <Link to="/login" className="text-primary hover:underline">
                             Sign in
                         </Link>
@@ -310,4 +309,4 @@ const RegistrationPage: React.FC = () => {
     );
 };
 
-export default RegistrationPage;
+export default ResetPasswordPage;

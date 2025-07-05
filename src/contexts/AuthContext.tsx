@@ -10,13 +10,21 @@ interface Principal {
     username: string;
 }
 
+export const EmailVerificationType = {
+    EMAIL_VERIFICATION_CODE_WEB: 'EMAIL_VERIFICATION_CODE_WEB',
+    PASSWORD_RESET_EMAIL_VERIFICATION_CODE_WEB: 'PASSWORD_RESET_EMAIL_VERIFICATION_CODE_WEB'
+} as const;
+
+export type EmailVerificationType = typeof EmailVerificationType[keyof typeof EmailVerificationType];
+
 interface AuthContextType {
     token: string | null;
     isAuthenticated: boolean;
     principal: Principal | null;
     isTelegram: boolean;
-    sendConfirmationCode: (email: string) => Promise<void>;
+    sendConfirmationCode: (email: string, verificationCodeType: EmailVerificationType) => Promise<void>;
     doRegister: (email: string, password: string, confirmPassword: string, confirmationCode: string) => Promise<void>;
+    doResetPassword: (email: string, password: string, confirmPassword: string, confirmationCode: string) => Promise<void>;
     login: (email: string, password: string) => Promise<void>;
     loginWithTelegram: () => Promise<string>;
     logout: () => void;
@@ -56,8 +64,8 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
         }
     };
 
-    const sendConfirmationCode = async (email: string): Promise<void> => {
-        await post<LoginResponse>('/auth/email/verification/send', {email, initData: telegramInitDataString});
+    const sendConfirmationCode = async (email: string, verificationCodeType: EmailVerificationType): Promise<void> => {
+        await post<LoginResponse>('/auth/email/verification/send', {email, verificationCodeType, initData: telegramInitDataString});
     };
 
     const doRegister = async (email: string, password: string, confirmPassword: string, confirmationCode: string): Promise<void> => {
@@ -66,6 +74,10 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
         localStorage.setItem('token', accessToken);
         const {sub, authorities} = jwtDecode<{ sub: string; authorities: string[] }>(accessToken);
         setPrincipal({id: sub, username: '', authorities: authorities});
+    };
+
+    const doResetPassword = async (email: string, password: string, confirmPassword: string, confirmationCode: string): Promise<void> => {
+        await post<LoginResponse>('/auth/password/reset', {email, emailVerificationCode: confirmationCode, password, confirmPassword, initData: telegramInitDataString});
     };
 
     const login = async (email: string, password: string): Promise<void> => {
@@ -149,6 +161,7 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
                 isTelegram: Boolean(telegramInitDataString),
                 sendConfirmationCode,
                 doRegister,
+                doResetPassword,
                 login,
                 loginWithTelegram,
                 logout,

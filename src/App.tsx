@@ -10,6 +10,7 @@ import PrivateRoute from "@/components/PrivateRoute.tsx";
 import {LoginPage} from '@/pages/LoginPage';
 import {registerNavigate} from "@/services/ApiService.ts";
 import RegistrationPage from "@/pages/RegistrationPage.tsx";
+import ResetPasswordPage from "@/pages/ResetPasswordPage.tsx";
 
 const WelcomePage = React.lazy(() => import('@/pages/WelcomePage'))
 const HealthDashboard = React.lazy(() => import('@/pages/HealthDashboard'))
@@ -26,6 +27,7 @@ const App: React.FC = () => {
         <Suspense fallback={<div className="text-gray-500">Loading...</div>}>
             <Routes>
                 <Route path="register" element={<RegistrationPage/>}/>
+                <Route path="password/reset" element={<ResetPasswordPage/>}/>
                 <Route path="login" element={<LoginPage/>}/>
                 <Route path="telegram/login" element={<LoginPage/>}/>
                 <Route element={<PrivateRoute/>}>
