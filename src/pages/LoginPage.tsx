@@ -5,11 +5,12 @@ import {Input} from '@/components/ui/input';
 import {Label} from '@/components/ui/label';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {Alert, AlertDescription} from '@/components/ui/alert';
-import {Loader2} from 'lucide-react';
+import {AlertCircleIcon, Loader2} from 'lucide-react';
 import {useAuth} from "@/contexts/AuthContext.tsx";
 import WebApp from "@twa-dev/sdk";
 import axios from "axios";
 import type {ApiErrorResponse} from "@/services/ApiService.ts";
+import {notifier} from "@/services/NotificationService.ts";
 
 export const LoginPage: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -40,6 +41,7 @@ export const LoginPage: React.FC = () => {
                 message = data.message;
             }
             setError(message);
+            notifier.error(message)
         } finally {
             setLoading(false);
         }
@@ -54,6 +56,7 @@ export const LoginPage: React.FC = () => {
                 <CardContent>
                     {error && (
                         <Alert variant="destructive" className="mb-4">
+                            <AlertCircleIcon />
                             <AlertDescription>{error}</AlertDescription>
                         </Alert>
                     )}
@@ -73,9 +76,9 @@ export const LoginPage: React.FC = () => {
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
                                 <Label htmlFor="password">Password</Label>
-                                <a href="#" className="text-sm text-primary hover:underline">
+                                <Link to="/password/reset" className="text-sm text-primary hover:underline">
                                     Forgot password?
-                                </a>
+                                </Link>
                             </div>
                             <Input
                                 id="password"

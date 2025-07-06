@@ -10,6 +10,8 @@ import PrivateRoute from "@/components/PrivateRoute.tsx";
 import {LoginPage} from '@/pages/LoginPage';
 import {registerNavigate} from "@/services/ApiService.ts";
 import RegistrationPage from "@/pages/RegistrationPage.tsx";
+import ResetPasswordPage from "@/pages/ResetPasswordPage.tsx";
+import DefaultLayout from "@/components/layouts/DefaultLayout.tsx";
 
 const WelcomePage = React.lazy(() => import('@/pages/WelcomePage'))
 const HealthDashboard = React.lazy(() => import('@/pages/HealthDashboard'))
@@ -25,9 +27,10 @@ const App: React.FC = () => {
 
         <Suspense fallback={<div className="text-gray-500">Loading...</div>}>
             <Routes>
-                <Route path="register" element={<RegistrationPage/>}/>
-                <Route path="login" element={<LoginPage/>}/>
-                <Route path="telegram/login" element={<LoginPage/>}/>
+                <Route path="register" element={<DefaultLayout><RegistrationPage/></DefaultLayout>}/>
+                <Route path="password/reset" element={<DefaultLayout><ResetPasswordPage/></DefaultLayout>}/>
+                <Route path="login" element={<DefaultLayout><LoginPage/></DefaultLayout>}/>
+                <Route path="telegram/login" element={<DefaultLayout><LoginPage/></DefaultLayout>}/>
                 <Route element={<PrivateRoute/>}>
                     <Route path="/" element={<WebLayout><WelcomePage/></WebLayout>}/>
                     <Route path="web/health" element={<WebLayout><HealthDashboard/></WebLayout>}/>
