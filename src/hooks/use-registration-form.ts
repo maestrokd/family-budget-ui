@@ -5,6 +5,7 @@ import type {ApiErrorResponse} from "@/services/ApiService.ts";
 import {validatePassword} from "@/services/PasswordValidator.ts";
 import WebApp from "@twa-dev/sdk";
 import {useNavigate} from "react-router-dom";
+import {notifier} from "@/services/NotificationService.ts";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -88,7 +89,7 @@ export function useRegistrationForm({mode}: UseRegistrationFormProps): UseVerifi
         if (!value) {
             setEmailError(null);
         } else if (!emailRegex.test(value)) {
-            setEmailError('invalid email address');
+            setEmailError('Invalid email address');
         } else {
             setEmailError(null);
         }
@@ -103,6 +104,7 @@ export function useRegistrationForm({mode}: UseRegistrationFormProps): UseVerifi
             const type = FormMode.PASSWORD_RESET === mode ? EmailVerificationType.PASSWORD_RESET_EMAIL_VERIFICATION_CODE_WEB : EmailVerificationType.EMAIL_VERIFICATION_CODE_WEB;
             await sendConfirmationCode(email, type);
             setCodeSent(true);
+            notifier.success("Code sent to your email.")
             setSecondsLeft(60);
         } catch (error: unknown) {
             let message = 'Failed to send code.';
@@ -111,6 +113,7 @@ export function useRegistrationForm({mode}: UseRegistrationFormProps): UseVerifi
                 message = data.message;
             }
             setCodeError(message);
+            notifier.error(message)
         } finally {
             setSendCodeLoading(false);
         }
@@ -157,13 +160,11 @@ export function useRegistrationForm({mode}: UseRegistrationFormProps): UseVerifi
         try {
             if (FormMode.PASSWORD_RESET === mode) {
                 await doResetPassword(email, password, confirmPassword, confirmationCode);
-                if (isTelegram) {
-                    WebApp.close();
-                } else {
-                    navigate('/login', {replace: true});
-                }
+                notifier.success("Password reset successfully.")
+                navigate('/login', {replace: true});
             } else {
                 await doRegister(email, password, confirmPassword, confirmationCode);
+                notifier.success("New account created successfully.")
                 if (isTelegram) {
                     WebApp.close();
                 } else {
@@ -177,6 +178,7 @@ export function useRegistrationForm({mode}: UseRegistrationFormProps): UseVerifi
                 message = data.message;
             }
             setSubmitError(message);
+            notifier.error(message)
         } finally {
             setSubmitLoading(false);
         }

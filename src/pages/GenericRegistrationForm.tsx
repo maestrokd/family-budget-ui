@@ -4,7 +4,7 @@ import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
 import {Label} from '@/components/ui/label';
 import {Alert, AlertDescription} from '@/components/ui/alert';
-import {Loader2} from 'lucide-react';
+import {AlertCircleIcon, Loader2} from 'lucide-react';
 import {Link} from 'react-router-dom';
 import {FormMode, useRegistrationForm} from "@/hooks/use-registration-form.ts";
 
@@ -59,9 +59,10 @@ const GenericRegistrationForm: React.FC<VerificationFormProps> = ({
                 </CardHeader>
 
                 <CardContent>
-                    {(submitError || confirmError) && (
+                    {(submitError || confirmError || codeError) && (
                         <Alert variant="destructive" className="mb-4" role="alert" aria-live="assertive">
-                            <AlertDescription>{submitError || confirmError}</AlertDescription>
+                            <AlertCircleIcon />
+                            <AlertDescription>{submitError ?? confirmError ?? codeError}</AlertDescription>
                         </Alert>
                     )}
 

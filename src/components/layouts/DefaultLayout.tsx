@@ -1,11 +1,11 @@
 import React, {type ReactNode} from 'react';
-import {Toaster} from "@/components/ui/sonner.tsx";
+import {Toaster} from "@/components/ui/sonner";
 
 interface LayoutProps {
     children: ReactNode;
 }
 
-const TelegramLayout: React.FC<LayoutProps> = ({children}) => {
+const DefaultLayout: React.FC<LayoutProps> = ({children}) => {
     return (
         <>
             {/*<header className="flex h-16 shrink-0 items-center gap-2">*/}
@@ -18,4 +18,4 @@ const TelegramLayout: React.FC<LayoutProps> = ({children}) => {
     );
 };
 
-export default TelegramLayout;
+export default DefaultLayout;

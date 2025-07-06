@@ -8,7 +8,7 @@ const RegistrationPage: React.FC = () => {
         <GenericRegistrationForm
             formMode={FormMode.REGISTRATION}
             title="Create your account"
-            sendCodeLabel="Send Confirmation Code"
+            sendCodeLabel="Send confirmation code"
             submitLoadingLabel="Creating account..."
             submitLabel="Sign up"
             secondaryText="Already have an account?"
