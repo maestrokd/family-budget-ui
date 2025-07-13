@@ -1,0 +1,107 @@
+{
+  "welcome": "Добро пожаловать в MyApp",
+  "dashboard": {
+    "title": "Панель управления сервисом",
+    "welcome": "Добро пожаловать на панель управления сервисом!",
+    "current_language": "Текущий язык: {{lng}}"
+  },
+  "lang": {
+    "code": {
+      "en": "En",
+      "uk": "Ук",
+      "ru": "Ру"
+    }
+  },
+  "login": {
+    "button": "Войти",
+    "placeholder": "Введите имя пользователя"
+  },
+  "pages": {
+    "loginPage": {
+      "titlePrompt": "Войдите в свой аккаунт",
+      "email": {
+        "label": "Email",
+        "placeholder": "Введите вашу электронную почту"
+      },
+      "password": {
+        "label": "Пароль",
+        "placeholder": "Введите ваш пароль",
+        "forgotPasswordLinkText": "Забыли пароль?"
+      },
+      "submitButton": "Войти",
+      "submitButtonLoading": "Выполняется вход...",
+      "registrationPrompt": "Нет аккаунта?",
+      "registrationLinkText": "Зарегистрироваться",
+      "notifications": {
+        "submitError": "Не удаётся найти этот email или пароль. Попробуйте снова."
+      }
+    },
+    "registrationPage": {
+      "titlePrompt": "Регистрация",
+      "email": {
+        "label": "Email",
+        "placeholder": "Введите вашу электронную почту"
+      },
+      "confirmationCode": {
+        "label": "Код подтверждения",
+        "placeholder": "Введите код подтверждения",
+        "sendCodeButton": "Отправить код подтверждения",
+        "sendCodeButtonRe": "Повторно через {{secondsLeft}} с",
+        "sendCodeButtonLoading": "Отправляем код..."
+      },
+      "password": {
+        "label": "Пароль",
+        "placeholder": "Введите ваш пароль"
+      },
+      "confirmPassword": {
+        "label": "Подтвердите пароль",
+        "placeholder": "Подтвердите ваш пароль"
+      },
+      "submitButton": "Зарегистрироваться",
+      "submitButtonLoading": "Создание аккаунта...",
+      "loginPrompt": "Уже есть аккаунт?",
+      "loginLinkText": "Войти",
+      "validation": {
+        "invalidEmail": "Неверный адрес электронной почты",
+        "passwordsMismatch": "Пароли не совпадают"
+      },
+      "notifications": {
+        "submitSuccess": "Новый аккаунт успешно создан.",
+        "submitError": "Не удалось зарегистрироваться. Пожалуйста, попробуйте снова.",
+        "codeSentSuccess": "Код отправлен на вашу электронную почту.",
+        "codeSentError": "Не удалось отправить код."
+      }
+    },
+    "resetPasswordPage": {
+      "titlePrompt": "Сбросьте пароль",
+      "email": {
+        "label": "Электронная почта",
+        "placeholder": "Введите вашу электронную почту"
+      },
+      "confirmationCode": {
+        "label": "Код сброса",
+        "placeholder": "Введите код сброса",
+        "sendCodeButton": "Отправить код сброса пароля",
+        "sendCodeButtonLoading": "Отправляем код..."
+      },
+      "password": {
+        "label": "Пароль",
+        "placeholder": "Введите ваш пароль"
+      },
+      "confirmPassword": {
+        "label": "Подтвердите пароль",
+        "placeholder": "Подтвердите ваш пароль"
+      },
+      "submitButton": "Сбросить пароль",
+      "submitButtonLoading": "Сброс...",
+      "loginPrompt": "Вспомнили пароль?",
+      "loginLinkText": "Войти",
+      "notifications": {
+        "submitSuccess": "Пароль успешно сброшен.",
+        "submitError": "Не удалось сбросить пароль. Пожалуйста, попробуйте снова.",
+        "codeSentSuccess": "Код отправлен на вашу электронную почту.",
+        "codeSentError": "Не удалось отправить код."
+      }
+    }
+  }
+}

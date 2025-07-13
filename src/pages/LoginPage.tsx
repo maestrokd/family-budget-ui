@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useTranslation} from "react-i18next";
 import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
@@ -11,8 +12,11 @@ import WebApp from "@twa-dev/sdk";
 import axios from "axios";
 import type {ApiErrorResponse} from "@/services/ApiService.ts";
 import {notifier} from "@/services/NotificationService.ts";
+import LanguageSelector, {LanguageSelectorMode} from "@/components/LanguageSelector.tsx";
 
 export const LoginPage: React.FC = () => {
+    const {t} = useTranslation();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -35,7 +39,7 @@ export const LoginPage: React.FC = () => {
                 navigate(from, {replace: true});
             }
         } catch (error: unknown) {
-            let message = 'Invalid email or password.';
+            let message = t('pages.loginPage.notifications.submitError');
             if (axios.isAxiosError(error) && error.response?.data) {
                 const data = error.response.data as ApiErrorResponse;
                 message = data.message;
@@ -49,9 +53,12 @@ export const LoginPage: React.FC = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <Card className="w-full max-w-md">
+            <Card className="relative w-full max-w-md">
+                <div className="absolute top-4 right-6">
+                    <LanguageSelector mode={LanguageSelectorMode.ICON} />
+                </div>
                 <CardHeader className="space-y-1">
-                    <CardTitle className="text-2xl font-bold text-center">Sign in to your account</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-center">{t('pages.loginPage.titlePrompt')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     {error && (
@@ -62,7 +69,7 @@ export const LoginPage: React.FC = () => {
                     )}
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
+                            <Label htmlFor="email">{t('pages.loginPage.email.label')}</Label>
                             <Input
                                 id="email"
                                 placeholder="name@example.com"
@@ -75,9 +82,9 @@ export const LoginPage: React.FC = () => {
                         </div>
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
-                                <Label htmlFor="password">Password</Label>
+                                <Label htmlFor="password">{t('pages.loginPage.password.label')}</Label>
                                 <Link to="/password/reset" className="text-sm text-primary hover:underline">
-                                    Forgot password?
+                                    {t('pages.loginPage.password.forgotPasswordLinkText')}
                                 </Link>
                             </div>
                             <Input
@@ -91,13 +98,13 @@ export const LoginPage: React.FC = () => {
                         </div>
                         <Button className="w-full" type="submit" disabled={loading}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin"/>}
-                            {loading ? 'Signing in...' : 'Sign in'}
+                            {loading ? t('pages.loginPage.submitButtonLoading') : t('pages.loginPage.submitButton')}
                         </Button>
                     </form>
                     <div className="mt-4 text-center text-sm">
-                        Don't have an account?{' '}
+                        {t('pages.loginPage.registrationPrompt')}{' '}
                         <Link to="/register" className="text-primary hover:underline">
-                            Sign up
+                            {t('pages.loginPage.registrationLinkText')}
                         </Link>
                     </div>
                 </CardContent>

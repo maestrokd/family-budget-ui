@@ -1,18 +1,20 @@
 import React from 'react';
+import {useTranslation} from "react-i18next";
 import {FormMode} from "@/hooks/use-registration-form.ts";
 import GenericRegistrationForm from "@/pages/GenericRegistrationForm.tsx";
 
 const RegistrationPage: React.FC = () => {
+    const {t} = useTranslation();
 
     return (
         <GenericRegistrationForm
             formMode={FormMode.REGISTRATION}
-            title="Create your account"
-            sendCodeLabel="Send confirmation code"
-            submitLoadingLabel="Creating account..."
-            submitLabel="Sign up"
-            secondaryText="Already have an account?"
-            secondaryLinkText="Sign in"
+            title={t('pages.registrationPage.titlePrompt')}
+            sendCodeLabel={t('pages.registrationPage.confirmationCode.sendCodeButton')}
+            submitLoadingLabel={t('pages.registrationPage.submitButtonLoading')}
+            submitLabel={t('pages.registrationPage.submitButton')}
+            secondaryText={t('pages.registrationPage.loginPrompt')}
+            secondaryLinkText={t('pages.registrationPage.loginLinkText')}
             secondaryLinkTo="/login"
         />
     );

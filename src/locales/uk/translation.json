@@ -1,0 +1,107 @@
+{
+  "welcome": "Ласкаво просимо до MyApp",
+  "dashboard": {
+    "title": "Панель керування сервісом",
+    "welcome": "Ласкаво просимо на панель керування сервісом!",
+    "current_language": "Обрана мова: {{lng}}"
+  },
+  "lang": {
+    "code": {
+      "en": "En",
+      "uk": "Ук",
+      "ru": "Ру"
+    }
+  },
+  "login": {
+    "button": "Увійти",
+    "placeholder": "Введіть ім’я користувача"
+  },
+  "pages": {
+    "loginPage": {
+      "titlePrompt": "Вхід до акаунту",
+      "email": {
+        "label": "Email",
+        "placeholder": "Введіть вашу електронну пошту"
+      },
+      "password": {
+        "label": "Пароль",
+        "placeholder": "Введіть ваш пароль",
+        "forgotPasswordLinkText": "Забули пароль?"
+      },
+      "submitButton": "Увійти",
+      "submitButtonLoading": "Вхід до облікового запису в процесі...",
+      "registrationPrompt": "Не маєте облікового запису?",
+      "registrationLinkText": "Зареєструватися",
+      "notifications": {
+        "submitError": "Ми не можемо знайти цей емейл або пароль. Спробуйте ще раз."
+      }
+    },
+    "registrationPage": {
+      "titlePrompt": "Реєстрація",
+      "email": {
+        "label": "Email",
+        "placeholder": "Введіть вашу електронну пошту"
+      },
+      "confirmationCode": {
+        "label": "Код підтвердження",
+        "placeholder": "Введіть код підтвердження",
+        "sendCodeButton": "Надіслати код підтвердження",
+        "sendCodeButtonRe": "Повторно через {{secondsLeft}} с",
+        "sendCodeButtonLoading": "Надсилаємо код..."
+      },
+      "password": {
+        "label": "Пароль",
+        "placeholder": "Введіть ваш пароль"
+      },
+      "confirmPassword": {
+        "label": "Підтвердьте пароль",
+        "placeholder": "Підтвердіть ваш пароль"
+      },
+      "submitButton": "Зареєструватися",
+      "submitButtonLoading": "Створення облікового запису...",
+      "loginPrompt": "Вже є обліковий запис?",
+      "loginLinkText": "Увійти",
+      "validation": {
+        "invalidEmail": "Невірна електронна адреса",
+        "passwordsMismatch": "Паролі не співпадають"
+      },
+      "notifications": {
+        "submitSuccess": "Новий обліковий запис успішно створено.",
+        "submitError": "Не вдалося зареєструватися. Будь ласка, спробуйте ще раз.",
+        "codeSentSuccess": "Код надіслано на вашу електронну пошту.",
+        "codeSentError": "Не вдалося надіслати код."
+      }
+    },
+    "resetPasswordPage": {
+      "titlePrompt": "Відновіть пароль",
+      "email": {
+        "label": "Електронна пошта",
+        "placeholder": "Введіть вашу електронну пошту"
+      },
+      "confirmationCode": {
+        "label": "Код оновлення",
+        "placeholder": "Введіть код оновлення",
+        "sendCodeButton": "Надіслати код оновлення паролю",
+        "sendCodeButtonLoading": "Надсилаємо код..."
+      },
+      "password": {
+        "label": "Пароль",
+        "placeholder": "Введіть ваш пароль"
+      },
+      "confirmPassword": {
+        "label": "Підтвердьте пароль",
+        "placeholder": "Підтвердіть ваш пароль"
+      },
+      "submitButton": "Оновити пароль",
+      "submitButtonLoading": "Оновлення...",
+      "loginPrompt": "Згадали пароль?",
+      "loginLinkText": "Увійти",
+      "notifications": {
+        "submitSuccess": "Пароль успішно оновлено.",
+        "submitError": "Не вдалося оновити пароль. Будь ласка, спробуйте ще раз.",
+        "codeSentSuccess": "Код надіслано на вашу електронну пошту.",
+        "codeSentError": "Не вдалося надіслати код."
+      }
+    }
+  }
+}
