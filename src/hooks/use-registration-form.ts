@@ -1,5 +1,6 @@
 import {type ChangeEvent, type FormEvent, useEffect, useState} from 'react';
 import axios from 'axios';
+import {useTranslation} from "react-i18next";
 import {EmailVerificationType, useAuth} from "@/contexts/AuthContext.tsx";
 import type {ApiErrorResponse} from "@/services/ApiService.ts";
 import {validatePassword} from "@/services/PasswordValidator.ts";
@@ -43,6 +44,8 @@ interface UseVerificationFormReturn {
 }
 
 export function useRegistrationForm({mode}: UseRegistrationFormProps): UseVerificationFormReturn {
+    const {t} = useTranslation();
+
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState<string | null>(null);
 
@@ -89,7 +92,7 @@ export function useRegistrationForm({mode}: UseRegistrationFormProps): UseVerifi
         if (!value) {
             setEmailError(null);
         } else if (!emailRegex.test(value)) {
-            setEmailError('Invalid email address');
+            setEmailError(t('pages.registrationPage.validation.invalidEmail'));
         } else {
             setEmailError(null);
         }
@@ -104,10 +107,10 @@ export function useRegistrationForm({mode}: UseRegistrationFormProps): UseVerifi
             const type = FormMode.PASSWORD_RESET === mode ? EmailVerificationType.PASSWORD_RESET_EMAIL_VERIFICATION_CODE_WEB : EmailVerificationType.EMAIL_VERIFICATION_CODE_WEB;
             await sendConfirmationCode(email, type);
             setCodeSent(true);
-            notifier.success("Code sent to your email.")
+            notifier.success(t('pages.registrationPage.notifications.codeSentSuccess'))
             setSecondsLeft(60);
         } catch (error: unknown) {
-            let message = 'Failed to send code.';
+            let message = t('pages.registrationPage.notifications.codeSentError');
             if (axios.isAxiosError(error) && error.response?.data) {
                 const data = error.response.data as ApiErrorResponse;
                 message = data.message;
@@ -129,7 +132,7 @@ export function useRegistrationForm({mode}: UseRegistrationFormProps): UseVerifi
         setPassword(value);
         setPasswordErrors(validatePassword(value));
         if (confirmPassword && value !== confirmPassword) {
-            setConfirmError('passwords do not match');
+            setConfirmError(t('pages.registrationPage.validation.passwordsMismatch'));
         } else {
             setConfirmError(null);
         }
@@ -139,7 +142,7 @@ export function useRegistrationForm({mode}: UseRegistrationFormProps): UseVerifi
         const value = e.target.value;
         setConfirmPassword(value);
         if (password && password !== value) {
-            setConfirmError('passwords do not match');
+            setConfirmError(t('pages.registrationPage.validation.passwordsMismatch'));
         } else {
             setConfirmError(null);
         }
@@ -160,11 +163,11 @@ export function useRegistrationForm({mode}: UseRegistrationFormProps): UseVerifi
         try {
             if (FormMode.PASSWORD_RESET === mode) {
                 await doResetPassword(email, password, confirmPassword, confirmationCode);
-                notifier.success("Password reset successfully.")
+                notifier.success(t('pages.resetPasswordPage.notifications.submitSuccess'))
                 navigate('/login', {replace: true});
             } else {
                 await doRegister(email, password, confirmPassword, confirmationCode);
-                notifier.success("New account created successfully.")
+                notifier.success(t('pages.registrationPage.notifications.submitSuccess'))
                 if (isTelegram) {
                     WebApp.close();
                 } else {
@@ -172,7 +175,9 @@ export function useRegistrationForm({mode}: UseRegistrationFormProps): UseVerifi
                 }
             }
         } catch (error: unknown) {
-            let message = FormMode.PASSWORD_RESET === mode ? 'Reset password failed. Please try again.' : 'Registration failed. Please try again.';
+            let message = FormMode.PASSWORD_RESET === mode
+                ? t('pages.resetPasswordPage.notifications.submitError')
+                : t('pages.registrationPage.notifications.submitError');
             if (axios.isAxiosError(error) && error.response?.data) {
                 const data = error.response.data as ApiErrorResponse;
                 message = data.message;

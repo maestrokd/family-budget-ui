@@ -1,4 +1,5 @@
 import React from 'react';
+import {useTranslation} from "react-i18next";
 import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
@@ -7,6 +8,7 @@ import {Alert, AlertDescription} from '@/components/ui/alert';
 import {AlertCircleIcon, Loader2} from 'lucide-react';
 import {Link} from 'react-router-dom';
 import {FormMode, useRegistrationForm} from "@/hooks/use-registration-form.ts";
+import LanguageSelector, {LanguageSelectorMode} from "@/components/LanguageSelector.tsx";
 
 export interface VerificationFormProps {
     formMode: FormMode;
@@ -51,9 +53,14 @@ const GenericRegistrationForm: React.FC<VerificationFormProps> = ({
         handleSubmit,
     } = useRegistrationForm({mode: formMode});
 
+    const {t} = useTranslation();
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <Card className="w-full max-w-md">
+            <Card className="relative w-full max-w-md">
+                <div className="absolute top-4 right-6">
+                    <LanguageSelector mode={LanguageSelectorMode.ICON}/>
+                </div>
                 <CardHeader className="space-y-1">
                     <CardTitle className="text-2xl font-bold text-center">{title}</CardTitle>
                 </CardHeader>
@@ -61,7 +68,7 @@ const GenericRegistrationForm: React.FC<VerificationFormProps> = ({
                 <CardContent>
                     {(submitError || confirmError || codeError) && (
                         <Alert variant="destructive" className="mb-4" role="alert" aria-live="assertive">
-                            <AlertCircleIcon />
+                            <AlertCircleIcon/>
                             <AlertDescription>{submitError ?? confirmError ?? codeError}</AlertDescription>
                         </Alert>
                     )}
@@ -69,7 +76,7 @@ const GenericRegistrationForm: React.FC<VerificationFormProps> = ({
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {/* Email */}
                         <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
+                            <Label htmlFor="email">{t('pages.registrationPage.email.label')}</Label>
                             <Input
                                 id="email"
                                 type="email"
@@ -97,15 +104,17 @@ const GenericRegistrationForm: React.FC<VerificationFormProps> = ({
                             {sendCodeLoading ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
-                                    Sending...
+                                    {t('pages.registrationPage.confirmationCode.sendCodeButtonLoading')}
                                 </>
-                            ) : secondsLeft > 0 ? `Resend in ${secondsLeft}s` : sendCodeLabel}
+                            ) : secondsLeft > 0 ? t('pages.registrationPage.confirmationCode.sendCodeButtonRe', {secondsLeft}) : sendCodeLabel}
                         </Button>
 
                         {/* Confirmation Code */}
                         {codeSent && (
                             <div className="space-y-2">
-                                <Label htmlFor="confirmationCode">Confirmation Code</Label>
+                                <Label htmlFor="confirmationCode">
+                                    {t('pages.registrationPage.confirmationCode.label')}
+                                </Label>
                                 <Input
                                     id="confirmationCode"
                                     type="text"
@@ -125,7 +134,7 @@ const GenericRegistrationForm: React.FC<VerificationFormProps> = ({
 
                         {/* Password */}
                         <div className="space-y-2">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor="password">{t('pages.registrationPage.password.label')}</Label>
                             <Input
                                 id="password"
                                 type="password"
@@ -149,7 +158,7 @@ const GenericRegistrationForm: React.FC<VerificationFormProps> = ({
 
                         {/* Confirm Password */}
                         <div className="space-y-2">
-                            <Label htmlFor="confirmPassword">Confirm Password</Label>
+                            <Label htmlFor="confirmPassword">{t('pages.registrationPage.confirmPassword.label')}</Label>
                             <Input
                                 id="confirmPassword"
                                 type="password"

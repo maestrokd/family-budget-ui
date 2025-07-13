@@ -1,0 +1,107 @@
+{
+  "welcome": "Welcome to MyApp",
+  "dashboard": {
+    "title": "Service Dashboard",
+    "welcome": "Welcome to the Service Dashboard!",
+    "current_language": "Current language: {{lng}}"
+  },
+  "lang": {
+    "code": {
+      "en": "En",
+      "uk": "Ук",
+      "ru": "Ру"
+    }
+  },
+  "login": {
+    "button": "Log in",
+    "placeholder": "Enter your username"
+  },
+  "pages": {
+    "loginPage": {
+      "titlePrompt": "Sign in to your account",
+      "email": {
+        "label": "Email",
+        "placeholder": "Enter your email"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Enter your password",
+        "forgotPasswordLinkText": "Forgot password?"
+      },
+      "submitButton": "Sign in",
+      "submitButtonLoading": "Signing in...",
+      "registrationPrompt": "Don't have an account?",
+      "registrationLinkText": "Sign up",
+      "notifications": {
+        "submitError": "We can't find that email or password. Try again."
+      }
+    },
+    "registrationPage": {
+      "titlePrompt": "Create your account",
+      "email": {
+        "label": "Email",
+        "placeholder": "Enter your email"
+      },
+      "confirmationCode": {
+        "label": "Confirmation Code",
+        "placeholder": "Enter the confirmation code",
+        "sendCodeButton": "Send confirmation Code",
+        "sendCodeButtonRe": "Resend in {{secondsLeft}} s",
+        "sendCodeButtonLoading": "Sending Code..."
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Enter your password"
+      },
+      "confirmPassword": {
+        "label": "Confirm Password",
+        "placeholder": "Confirm your password"
+      },
+      "submitButton": "Sign up",
+      "submitButtonLoading": "Creating account...",
+      "loginPrompt": "Already have an account?",
+      "loginLinkText": "Sign in",
+      "validation": {
+        "invalidEmail": "Invalid email address",
+        "passwordsMismatch": "Passwords do not match"
+      },
+      "notifications": {
+        "submitSuccess": "New account created successfully.",
+        "submitError": "Registration failed. Please try again.",
+        "codeSentSuccess": "Code sent to your email.",
+        "codeSentError": "Failed to send code."
+      }
+    },
+    "resetPasswordPage": {
+      "titlePrompt": "Reset your password",
+      "email": {
+        "label": "Email",
+        "placeholder": "Enter your email"
+      },
+      "confirmationCode": {
+        "label": "Confirmation Code",
+        "placeholder": "Enter the reset code",
+        "sendCodeButton": "Send reset Code",
+        "sendCodeButtonLoading": "Sending Code..."
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Enter your password"
+      },
+      "confirmPassword": {
+        "label": "Confirm Password",
+        "placeholder": "Confirm your password"
+      },
+      "submitButton": "Reset Password",
+      "submitButtonLoading": "Resetting...",
+      "loginPrompt": "Remembered your password?",
+      "loginLinkText": "Sign in",
+      "notifications": {
+        "submitSuccess": "Password reset successfully.",
+        "submitError": "Reset password failed. Please try again.",
+        "codeSentSuccess": "Code sent to your email.",
+        "codeSentError": "Failed to send code."
+      }
+    }
+  }
+}

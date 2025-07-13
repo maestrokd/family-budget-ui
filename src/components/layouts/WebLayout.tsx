@@ -4,6 +4,7 @@ import {AppSidebar} from "@/components/sidebar/app-sidebar.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
 import {BreadcrumbComponent} from "@/components/BreadcrumbComponent.tsx";
 import {Toaster} from "@/components/ui/sonner.tsx";
+import LanguageSelector, {LanguageSelectorMode} from "@/components/LanguageSelector.tsx";
 
 interface LayoutProps {
     children: ReactNode;
@@ -14,14 +15,20 @@ const WebLayout: React.FC<LayoutProps> = ({children}) => {
         <SidebarProvider>
             <AppSidebar/>
             <SidebarInset>
-                <header className="flex h-16 shrink-0 items-center gap-2">
-                    <div className="flex items-center gap-2 px-4">
+                <header className="flex h-16 shrink-0 items-center justify-between px-4">
+                    {/* Left: Sidebar trigger + breadcrumb */}
+                    <div className="flex items-center gap-2">
                         <SidebarTrigger className="-ml-1"/>
                         <Separator
                             orientation="vertical"
                             className="mr-2 data-[orientation=vertical]:h-4"
                         />
                         <BreadcrumbComponent/>
+                    </div>
+
+                    {/* Right: Language marker + dropdown */}
+                    <div className="flex items-center gap-2">
+                        <LanguageSelector mode={LanguageSelectorMode.FULL}/>
                     </div>
                 </header>
                 <main>{children}</main>
