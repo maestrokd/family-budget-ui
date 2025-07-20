@@ -1,8 +1,7 @@
 import {type ChangeEvent, type FormEvent, useEffect, useState} from 'react';
-import axios from 'axios';
 import {useTranslation} from "react-i18next";
 import {EmailVerificationType, useAuth} from "@/contexts/AuthContext.tsx";
-import type {ApiErrorResponse} from "@/services/ApiService.ts";
+import {extractErrorCode} from "@/services/ApiService.ts";
 import {validatePassword} from "@/services/PasswordValidator.ts";
 import WebApp from "@twa-dev/sdk";
 import {useNavigate} from "react-router-dom";
@@ -110,11 +109,10 @@ export function useRegistrationForm({mode}: UseRegistrationFormProps): UseVerifi
             notifier.success(t('pages.registrationPage.notifications.codeSentSuccess'))
             setSecondsLeft(60);
         } catch (error: unknown) {
-            let message = t('pages.registrationPage.notifications.codeSentError');
-            if (axios.isAxiosError(error) && error.response?.data) {
-                const data = error.response.data as ApiErrorResponse;
-                message = data.message;
-            }
+            const errorCode = extractErrorCode(error);
+            const messageKey =  errorCode ? `errors.codes.${errorCode}` : 'pages.registrationPage.notifications.codeSentError';
+            const message = t(messageKey, { defaultValue: t('errors.codes.UNKNOWN') })
+
             setCodeError(message);
             notifier.error(message)
         } finally {
@@ -175,13 +173,14 @@ export function useRegistrationForm({mode}: UseRegistrationFormProps): UseVerifi
                 }
             }
         } catch (error: unknown) {
-            let message = FormMode.PASSWORD_RESET === mode
+            const defaultMessageKey = FormMode.PASSWORD_RESET === mode
                 ? t('pages.resetPasswordPage.notifications.submitError')
                 : t('pages.registrationPage.notifications.submitError');
-            if (axios.isAxiosError(error) && error.response?.data) {
-                const data = error.response.data as ApiErrorResponse;
-                message = data.message;
-            }
+
+            const errorCode = extractErrorCode(error);
+            const messageKey =  errorCode ? `errors.codes.${errorCode}` : defaultMessageKey;
+            const message = t(messageKey, { defaultValue: t('errors.codes.UNKNOWN') });
+
             setSubmitError(message);
             notifier.error(message)
         } finally {

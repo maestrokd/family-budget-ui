@@ -9,8 +9,7 @@ import {Alert, AlertDescription} from '@/components/ui/alert';
 import {AlertCircleIcon, Loader2} from 'lucide-react';
 import {useAuth} from "@/contexts/AuthContext.tsx";
 import WebApp from "@twa-dev/sdk";
-import axios from "axios";
-import type {ApiErrorResponse} from "@/services/ApiService.ts";
+import {extractErrorCode} from "@/services/ApiService.ts";
 import {notifier} from "@/services/NotificationService.ts";
 import LanguageSelector, {LanguageSelectorMode} from "@/components/LanguageSelector.tsx";
 
@@ -39,11 +38,10 @@ export const LoginPage: React.FC = () => {
                 navigate(from, {replace: true});
             }
         } catch (error: unknown) {
-            let message = t('pages.loginPage.notifications.submitError');
-            if (axios.isAxiosError(error) && error.response?.data) {
-                const data = error.response.data as ApiErrorResponse;
-                message = data.message;
-            }
+            const errorCode = extractErrorCode(error);
+            const messageKey =  errorCode ? `errors.codes.${errorCode}` : 'pages.loginPage.notifications.submitError';
+            const message = t(messageKey, { defaultValue: t('errors.codes.UNKNOWN') });
+
             setError(message);
             notifier.error(message)
         } finally {
