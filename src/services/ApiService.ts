@@ -15,6 +15,41 @@ export interface ApiErrorResponse {
     errors: ApiErrorDetail[];
 }
 
+export class ApiError extends Error {
+    errorCode: string;
+
+    constructor(
+        errorCode: string,
+        message: string,
+    ) {
+        super(message);
+        this.errorCode = errorCode;
+        Object.setPrototypeOf(this, ApiError.prototype);
+    }
+}
+
+export function isApiErrorResponse(obj: unknown): obj is ApiErrorResponse {
+    return Boolean(
+        obj &&
+        typeof obj === 'object' &&
+        'errorCode' in obj &&
+        'message' in obj
+    );
+}
+
+export function extractErrorCode(error: unknown): string | null {
+    if (axios.isAxiosError(error)
+        && error.response?.data
+        && isApiErrorResponse(error.response.data)) {
+        const data = error.response.data;
+        return data.errorCode;
+    }
+    if (error instanceof ApiError) {
+        return error.errorCode;
+    }
+    return null;
+}
+
 let navigateFn: NavigateFunction | null = null;
 let refreshFn: (() => Promise<string>) | null = null;
 let logoutFn: (() => void) | null = null;
@@ -99,13 +134,14 @@ apiClient.interceptors.response.use(
 
         // All other errors
         if (error.response) {
-            console.error('API Error:', error.response.status, error.response.data);
+            console.error('API Error: Response.', error.message, error.response.status, error.response.data);
+            return Promise.reject(error);
         } else if (error.request) {
-            console.error('API Error: No response received', error.request);
+            console.error('API Error: No response received : Request.', error.message, error.request);
         } else {
             console.error('API Error:', error.message);
         }
-        return Promise.reject(error);
+        return Promise.reject(new ApiError('TECHNICAL_ERROR', 'Technical error'));
     }
 );
 
