@@ -2,7 +2,7 @@
   "welcome": "Ласкаво просимо до MyApp",
   "dashboard": {
     "title": "Панель керування сервісом",
-    "welcome": "Ласкаво просимо на панель керування сервісом!",
+    "welcome": "Ласкаво просимо до панелі керування сервісом!",
     "current_language": "Обрана мова: {{lng}}"
   },
   "lang": {
@@ -112,7 +112,12 @@
       "INVALID_CREDENTIALS": "Ми не можемо знайти цей емейл або пароль. Спробуйте ще раз.",
       "INVALID_VERIFICATION_CODE": "Невірний код перевірки. Будь ласка, спробуйте ще раз.",
       "PROFILE_NOT_FOUND": "Ми не можемо знайти цей аккаунт.",
-      "EMAIL_ALREADY_EXISTS": "Email вже існує."
+      "EMAIL_ALREADY_EXISTS": "Email вже існує.",
+      "RATE_LIMIT_EXCEEDED": "Забагато спроб. Спробуйте пізніше.",
+      "USER_BLOCKED": "Користувача заблоковано.",
+      "AUTHENTICATION_FAILED": "Помилка автентифікації.",
+      "TOKEN_NOT_VALID": "Недійсний токен.",
+      "MISSING_COOKIE": "Недійсний або відсутній cookie."
     }
   }
 }

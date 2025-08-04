@@ -112,7 +112,12 @@
       "INVALID_CREDENTIALS": "Не удаётся найти этот email или пароль. Попробуйте снова.",
       "INVALID_VERIFICATION_CODE": "Неверный код подтверждения. Пожалуйста, попробуйте ещё раз.",
       "PROFILE_NOT_FOUND": "Не удаётся найти этот аккаунт.",
-      "EMAIL_ALREADY_EXISTS": "Email уже зарегистрирован."
+      "EMAIL_ALREADY_EXISTS": "Email уже зарегистрирован.",
+      "RATE_LIMIT_EXCEEDED": "Слишком много попыток. Попробуйте позже.",
+      "USER_BLOCKED": "Пользователь заблокирован.",
+      "AUTHENTICATION_FAILED": "Ошибка аутентификации.",
+      "TOKEN_NOT_VALID": "Недействительный токен.",
+      "MISSING_COOKIE": "Недействительный или отсутствующий файл cookie."
     }
   }
 }

@@ -112,7 +112,12 @@
       "INVALID_CREDENTIALS": "We can't find that email or password. Try again.",
       "INVALID_VERIFICATION_CODE": "Invalid verification code. Please try again.",
       "PROFILE_NOT_FOUND": "We can't find that profile.",
-      "EMAIL_ALREADY_EXISTS": "Email already exists."
+      "EMAIL_ALREADY_EXISTS": "Email already exists.",
+      "RATE_LIMIT_EXCEEDED": "Too many attempts. Try again later.",
+      "USER_BLOCKED": "User blocked.",
+      "AUTHENTICATION_FAILED": "Authentication failed.",
+      "TOKEN_NOT_VALID": "Token not valid.",
+      "MISSING_COOKIE": "Invalid or absent cookie."
     }
   }
 }
