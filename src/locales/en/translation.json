@@ -16,6 +16,31 @@
     "button": "Log in",
     "placeholder": "Enter your username"
   },
+  "common": {
+    "form": {
+      "back": "Back",
+      "save": "Save",
+      "update": "Update"
+    },
+    "list": {
+      "loading": "Loading...",
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page",
+      "actions": "Actions",
+      "edit": "Edit",
+      "remove": "Remove",
+      "create": "Create",
+      "cancel": "Cancel",
+      "search": "Search",
+      "input": {
+        "keywordSearch": {
+          "label": "Keyword Search",
+          "placeholder": "Search..."
+        }
+      }
+    }
+  },
   "pages": {
     "loginPage": {
       "titlePrompt": "Sign in to your account",
@@ -102,6 +127,133 @@
         "codeSentSuccess": "Code sent to your email.",
         "codeSentError": "Failed to send code."
       }
+    },
+    "createSheetProfilePage": {
+      "title": "Create a new Sheet Profile",
+      "instruction": {
+        "photoInstructionMobile": "Photo instructions (Mobile)",
+        "photoInstructionWeb": "Photo instructions (Web)",
+        "step1": {
+          "title": "Step 1: Copy the Google spreadsheet template",
+          "description1": "Please open and copy the following spreadsheet template",
+          "description2": "Follow the buttons in the Google Sheets UI: click File → Make a copy… then confirm the copy dialog.",
+          "sheetTemplateLinkTitle": "Spreadsheet Template"
+        },
+        "step2": {
+          "title": "Step 2: Share the copied template with the worker via email",
+          "description": "Provide an 'edit' access to your new sheet for the user",
+          "descriptionT": "Use the Share button, enter agent’s email with edit access, and click Send."
+        },
+        "step3": {
+          "title": "Step 3: Copy the spreadsheet link or ID",
+          "description1": "Provide your new Spreadsheet's Id or a shared link during registration.",
+          "description2": "Click the Share and Copy link button to copy the spreadsheet URL or copy the ID from URL (the long code in the URL)."
+        },
+        "step4": {
+          "title": "Step 4: Get and enter the spreadsheet verification code",
+          "description1": "1. Click 'Send verification code' button.",
+          "description2": "2. Open your Spreadsheet.",
+          "description3": "3. Open your 'Source-Category' tab.",
+          "description4": "4. Copy code from cell 'B2:B2'."
+        }
+      },
+      "input": {
+        "sheetId": {
+          "label": "Spreadsheet Link or ID",
+          "placeholder": "Enter Google Sheets URL or ID",
+          "error": "Invalid spreadsheet link or ID."
+        },
+        "verificationCode": {
+          "label": "Verification Code",
+          "placeholder": "Enter the code sent to your spreadsheet"
+        },
+        "profileName": {
+          "label": "Sheet Profile Name",
+          "hint": "Family budget, Expenses, Vacation, Car Business, etc.",
+          "placeholder": "Enter a unique profile name"
+        }
+      },
+      "validation": {
+        "sheetIdInvalid": "Please enter a valid Google Sheets link or ID.",
+        "profileNameRequired": "Please enter a profile name.",
+        "profileNameTaken": "That profile name is already taken."
+      },
+      "button": {
+        "sendCode": {
+          "default": "Send verification code",
+          "loading": "Sending code…",
+          "resend": "Resend in {{secondsLeft}} s"
+        },
+        "create": {
+          "default": "Create Sheet Profile",
+          "loading": "Creating…"
+        }
+      },
+      "notifications": {
+        "codeSentSuccess": "Verification code sent successfully.",
+        "codeSentError": "Failed to send verification code. Please try again.",
+        "createSuccess": "Sheet Profile created successfully.",
+        "createError": "Failed to create Sheet Profile. Please try again."
+      }
+    },
+    "editSheetProfilePage": {
+      "title": "Edit Sheet Profile",
+      "input": {
+        "sheetId": {
+          "label": "Spreadsheet ID"
+        },
+        "profileName": {
+          "label": "Sheet Profile Name",
+          "hint": "Family budget, Expenses, Vacation, Car Business, etc.",
+          "placeholder": "Enter a unique profile name"
+        },
+        "agentType": {
+          "label": "Agent Type"
+        },
+        "verified": {
+          "label": "Verified"
+        }
+      },
+      "validation": {
+        "profileNameTaken": "That profile name is already taken."
+      },
+      "button": {
+        "update": {
+          "default": "Update Sheet Profile",
+          "loading": "Updating…"
+        }
+      },
+      "notifications": {
+        "missingSheetProfileUuid": "Sheet Profile UUID is missing.",
+        "profileNotFound": "Sheet Profile not found.",
+        "updateSuccess": "Sheet Profile updated successfully.",
+        "updateError": "Failed to update Sheet Profile. Please try again."
+      }
+    },
+    "sheetProfilesPage": {
+      "title": "Sheet Profiles",
+      "empty": "No Sheet Profiles found.",
+      "loadFailed": "Failed to load Sheet Profiles. Please try again.",
+      "input": {
+        "keywordSearch": {
+          "label": "Spreadsheet Link or ID",
+          "placeholder": "Enter Google Sheets URL or ID"
+        }
+      },
+      "button": {
+        "create": {
+          "default": "Create Sheet Profile",
+          "tooltip": "Create Sheet Profile"
+        }
+      },
+      "table": {
+        "columns": {
+          "name": "Name",
+          "spreadsheetId": "Spreadsheet ID",
+          "agentType": "Agent Type",
+          "verified": "Verified"
+        }
+      }
     }
   },
   "errors": {
@@ -117,7 +269,10 @@
       "USER_BLOCKED": "User blocked.",
       "AUTHENTICATION_FAILED": "Authentication failed.",
       "TOKEN_NOT_VALID": "Token not valid.",
-      "MISSING_COOKIE": "Invalid or absent cookie."
+      "MISSING_COOKIE": "Invalid or absent cookie.",
+      "SPREADSHEET_ID_EXISTS": "Spreadsheet ID already registered.",
+      "SPREADSHEET_NAME_EXISTS": "Sheet Profile name already exists.",
+      "SPREADSHEET_ACCESS_DENIED": "Access to the spreadsheet was not provided."
     }
   }
 }

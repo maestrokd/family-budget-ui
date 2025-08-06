@@ -16,6 +16,31 @@
     "button": "Войти",
     "placeholder": "Введите имя пользователя"
   },
+  "common": {
+    "form": {
+      "back": "Назад",
+      "save": "Сохранить",
+      "update": "Обновить"
+    },
+    "list": {
+      "loading": "Загрузка...",
+      "previous": "Предыдущая",
+      "next": "Следующая",
+      "page": "Страница",
+      "actions": "Действия",
+      "edit": "Редактировать",
+      "remove": "Удалить",
+      "create": "Создать",
+      "cancel": "Отменить",
+      "search": "Поиск",
+      "input": {
+        "keywordSearch": {
+          "label": "Поиск",
+          "placeholder": "Поиск..."
+        }
+      }
+    }
+  },
   "pages": {
     "loginPage": {
       "titlePrompt": "Войдите в свой аккаунт",
@@ -102,6 +127,133 @@
         "codeSentSuccess": "Код отправлен на вашу электронную почту.",
         "codeSentError": "Не удалось отправить код."
       }
+    },
+    "createSheetProfilePage": {
+      "title": "Создание нового профиля таблицы",
+      "instruction": {
+        "photoInstructionMobile": "Фото инструкция (Mobile)",
+        "photoInstructionWeb": "Фото инструкция (Web)",
+        "step1": {
+          "title": "Шаг 1: Скопируйте шаблон Google таблицы",
+          "description1": "Откройте и скопируйте следующий шаблон Google таблицы: ",
+          "description2": "Follow the buttons in the Google Sheets UI: click File → Make a copy… then confirm the copy dialog.",
+          "sheetTemplateLinkTitle": "Шаблон Google таблицы"
+        },
+        "step2": {
+          "title": "Шаг 2: Предоставьте доступ к вашей новой таблице нашей системы",
+          "description": "Зайдите на свой Google диск, найдите вашу новую таблицу. Предоставьте доступ к редактированию таблицы агенту нашей системы:",
+          "descriptionT": "Use the Share button, enter agent’s email with edit access, and click Send."
+        },
+        "step3": {
+          "title": "Шаг 3: Скопируйте ссылку на Google таблицу или ID таблицы",
+          "description1": "Ниже предоставьте ссылку на вашу таблицу или ID таблицы.",
+          "description2": "Нажмите кнопку 'Поделиться' и 'Копировать ссылку', или скопируйте только ID из ссылки (длинный код в ссылке)."
+        },
+        "step4": {
+          "title": "Шаг 4: Получите и введите код подтверждения доступа к вашей Google таблице",
+          "description1": "1. Нажмите кнопку 'Отправить код подтверждения'.",
+          "description2": "2. Откройте вашу Google таблицу.",
+          "description3": "3. Откройте вкладку 'Source-Category'.",
+          "description4": "4. Скопируйте код из ячейки 'B2:B2'."
+        }
+      },
+      "input": {
+        "sheetId": {
+          "label": "Ссылка на Google таблицу или ID таблицы",
+          "placeholder": "Введите ссылку на Google таблицу или ID таблицы",
+          "error": "Пожалуйста, введите правильную ссылку на Google таблицу или ID таблицы."
+        },
+        "verificationCode": {
+          "label": "Код подтверждения",
+          "placeholder": "Введите код подтверждения"
+        },
+        "profileName": {
+          "label": "Название профиля таблицы",
+          "hint": "Семейный бюджет, Расходы, Отпуск, Авто Бизнес, и т.п.",
+          "placeholder": "Введите уникальное название профиля"
+        }
+      },
+      "validation": {
+        "sheetIdInvalid": "Пожалуйста, введите правильную ссылку на Google таблицу или ID таблицы.",
+        "profileNameRequired": "Пожалуйста, введите название профиля таблицы.",
+        "profileNameTaken": "Это название профиля уже занято."
+      },
+      "button": {
+        "sendCode": {
+          "default": "Отправить код подтверждения",
+          "loading": "Отправка кода…",
+          "resend": "Отправить повторно через {{secondsLeft}} с"
+        },
+        "create": {
+          "default": "Create Sheet Profile",
+          "loading": "Creating…"
+        }
+      },
+      "notifications": {
+        "codeSentSuccess": "Код подтверждения успешно отправлен.",
+        "codeSentError": "Не удалось отправить код. Пожалуйста, попробуйте ещё раз.",
+        "createSuccess": "Профиль таблицы успешно создан.",
+        "createError": "Не удалось создать профиль таблицы. Пожалуйста, попробуйте ещё раз."
+      }
+    },
+    "editSheetProfilePage": {
+      "title": "Редактирование профиля таблицы",
+      "input": {
+        "sheetId": {
+          "label": "ID Google таблицы"
+        },
+        "profileName": {
+          "label": "Название профиля таблицы",
+          "hint": "Семейный бюджет, Расходы, Отпуск, Авто Бизнес, и т.п.",
+          "placeholder": "Введите уникальное название профиля"
+        },
+        "agentType": {
+          "label": "Тип агента"
+        },
+        "verified": {
+          "label": "Верифицировано"
+        }
+      },
+      "validation": {
+        "profileNameTaken": "Это название профиля уже занято."
+      },
+      "button": {
+        "update": {
+          "default": "Обновить профиль таблицы",
+          "loading": "Обновление…"
+        }
+      },
+      "notifications": {
+        "missingSheetProfileUuid": "UUID профиля таблицы отсутствует.",
+        "profileNotFound": "Профиль таблицы не найден.",
+        "updateSuccess": "Профиль таблицы успешно обновлен.",
+        "updateError": "Не удалось обновить профиль таблицы. Пожалуйста, попробуйте ещё раз."
+      }
+    },
+    "sheetProfilesPage": {
+      "title": "Профили Google таблиц",
+      "empty": "Профили Google таблиц не найдены.",
+      "loadFailed": "Не удалось загрузить профили Google таблиц. Пожалуйста, попробуйте ещё раз.",
+      "input": {
+        "keywordSearch": {
+          "label": "Поиск",
+          "placeholder": "Поиск"
+        }
+      },
+      "button": {
+        "create": {
+          "default": "Создать профиль таблицы",
+          "tooltip": "Создать профиль таблицы"
+        }
+      },
+      "table": {
+        "columns": {
+          "name": "Название",
+          "spreadsheetId": "ID таблицы",
+          "agentType": "Тип агента",
+          "verified": "Верифицировано"
+        }
+      }
     }
   },
   "errors": {
@@ -117,7 +269,10 @@
       "USER_BLOCKED": "Пользователь заблокирован.",
       "AUTHENTICATION_FAILED": "Ошибка аутентификации.",
       "TOKEN_NOT_VALID": "Недействительный токен.",
-      "MISSING_COOKIE": "Недействительный или отсутствующий файл cookie."
+      "MISSING_COOKIE": "Недействительный или отсутствующий файл cookie.",
+      "SPREADSHEET_ID_EXISTS": "ID Google таблицы уже зарегистрирован.",
+      "SPREADSHEET_NAME_EXISTS": "Название профиля таблицы уже используется.",
+      "SPREADSHEET_ACCESS_DENIED": "Доступ к Google таблице не предоставлен."
     }
   }
 }
