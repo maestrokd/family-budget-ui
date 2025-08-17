@@ -1,0 +1,265 @@
+import React, {useState} from 'react';
+import {useQuery} from '@tanstack/react-query';
+import {useNavigate} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
+import {Input} from '@/components/ui/input';
+import {Button} from '@/components/ui/button';
+import {Alert, AlertDescription} from '@/components/ui/alert';
+import {
+    CheckIcon,
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    Loader2,
+    MenuIcon,
+    MoreHorizontal,
+    Pencil,
+    Plus,
+    ShieldCheck,
+    XIcon
+} from 'lucide-react';
+import {Tooltip, TooltipContent, TooltipTrigger} from '@/components/ui/tooltip';
+import {Badge} from '@/components/ui/badge';
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from '@/components/ui/dropdown-menu';
+import type {PageImpl, SheetProfileResponse} from '@/services/SheetApiClient';
+import SheetApiClient from '@/services/SheetApiClient';
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from '@/components/ui/table';
+import {shorten} from "@/services/utils/StringUtils.ts";
+import {Pagination, PaginationContent, PaginationItem, PaginationLink,} from "@/components/ui/pagination.tsx";
+import {cn} from "@/lib/utils.ts";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+
+export const SheetProfilesPage: React.FC = () => {
+    const {t} = useTranslation();
+    const navigate = useNavigate();
+    const [keyword, setKeyword] = useState<string>('');
+    const [page, setPage] = useState<number>(0);
+    const [size, setSize] = useState<number>(5);
+
+    const {data, isLoading, isError} = useQuery<PageImpl<SheetProfileResponse>, Error>({
+        queryKey: ['sheetProfiles', page, size, keyword],
+        queryFn: () =>
+            SheetApiClient.fetchSheetProfiles(
+                {page, size},
+                {keywordSearch: keyword || undefined}
+            ),
+    });
+
+    const items = data?.content ?? [];
+
+    const handleSearchChange = (value: string) => {
+        setKeyword(value);
+        setPage(0);
+    };
+
+    return (
+        <div className="min-h-screen bg-gray-50 p-4">
+            {/* Search & Create */}
+            <div className="mb-4 flex items-center space-x-2">
+                <Input
+                    id="keyword"
+                    className="flex-1"
+                    value={keyword}
+                    onChange={e => handleSearchChange(e.target.value)}
+                    placeholder={t(
+                        'common.list.input.keywordSearch.placeholder',
+                        'Search by name or sheet ID'
+                    )}
+                />
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button
+                            variant="default"
+                            onClick={() => navigate('create')}
+                            className="p-2"
+                        >
+                            <Plus className="w-5 h-5" aria-hidden="true"/>
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>{t('pages.sheetProfilesPage.button.create.tooltip', 'Create Sheet Profile')}</p>
+                    </TooltipContent>
+                </Tooltip>
+            </div>
+
+            {/* Content */}
+            {isLoading &&
+                <div className="flex justify-center py-4">
+                    <Loader2 className="animate-spin h-6 w-6"/>
+                </div>}
+            {!isLoading && isError &&
+                <Alert variant="destructive">
+                    <AlertDescription>
+                        {t('pages.sheetProfilesPage.loadFailed', 'Failed to load sheet profiles.')}
+                    </AlertDescription>
+                </Alert>}
+            {!isLoading && !isError && (
+                <>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead
+                                    className="min-w-1/2 text-center">{t('pages.sheetProfilesPage.table.columns.name')}</TableHead>
+                                <TableHead
+                                    className="hidden sm:table-cell max-w-30 text-center">{t('pages.sheetProfilesPage.table.columns.spreadsheetId')}</TableHead>
+                                <TableHead
+                                    className="hidden sm:table-cell max-w-30 text-center">{t('pages.sheetProfilesPage.table.columns.agentType')}</TableHead>
+                                <TableHead className="w-10">
+                                    <div className="grid place-items-center">
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <ShieldCheck className="w-4 h-4 cursor-pointer" aria-hidden="true"/>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p className="whitespace-normal break-words">{t('pages.sheetProfilesPage.table.columns.verified')}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </div>
+                                </TableHead>
+                                <TableHead className="w-10">
+                                    <div className="grid place-items-center">
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <MenuIcon className="w-4 h-4 cursor-pointer" aria-hidden="true"/>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p className="whitespace-normal break-words">{t('common.list.actions', 'Actions')}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </div>
+                                </TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {items.map(item => (
+                                <TableRow key={item.uuid}>
+                                    <TableCell className="min-w-1/2 truncate">
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <span>{shorten(item.name, 10)}</span>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p className="whitespace-normal break-words">{item.name}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TableCell>
+                                    <TableCell className="hidden sm:table-cell max-w-40 truncate">
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <span>{shorten(item.sheetId, 4)}</span>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p className="whitespace-normal break-words">{item.sheetId}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TableCell>
+                                    <TableCell className="hidden sm:table-cell max-w-40 truncate">
+                                        <div className="grid place-items-center">
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Badge variant="secondary"
+                                                           className="bg-blue-500 text-white dark:bg-blue-600 cursor-pointer">{shorten(item.sheetAgentType, 8)}</Badge>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p className="whitespace-normal break-words">{item.sheetAgentType}</p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </div>
+                                    </TableCell>
+                                    <TableCell className="w-10 truncate">
+                                        <div className="grid place-items-center">
+                                            {item.verifiedSheet ? (
+                                                <CheckIcon className="w-4 h-4 text-green-500"/>
+                                            ) : (
+                                                <XIcon className="w-4 h-4 text-red-500"/>
+                                            )}
+                                        </div>
+                                    </TableCell>
+                                    <TableCell className="w-10 text-right">
+                                        <div className="grid place-items-center">
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button variant="ghost" className="p-2">
+                                                        <MoreHorizontal className="w-5 h-5" aria-hidden="true"/>
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end">
+                                                    <DropdownMenuItem
+                                                        onClick={() => navigate(`edit/${item.uuid}`)}>
+                                                        <Pencil className="mr-2 w-4 h-4"/>
+                                                        {t('common.list.edit', 'Edit')}
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem disabled>
+                                                        <XIcon className="mr-2 w-4 h-4"/>
+                                                        {t('common.list.remove', 'Remove')}
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+
+                    <Pagination>
+                        <PaginationContent>
+                            <PaginationItem>
+                                <Select
+                                    value={String(size)}
+                                    onValueChange={(val) => {
+                                        const newSize = Number(val);
+                                        if (!Number.isNaN(newSize)) {
+                                            setSize(newSize);
+                                            setPage(0);
+                                        }
+                                    }}
+                                >
+                                    <SelectTrigger size="sm" className="w-18">
+                                        <SelectValue placeholder="Size"/>
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="1">1</SelectItem>
+                                        <SelectItem value="2">2</SelectItem>
+                                        <SelectItem value="5">5</SelectItem>
+                                        <SelectItem value="10">10</SelectItem>
+                                        <SelectItem value="20">20</SelectItem>
+                                        <SelectItem value="50">50</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationLink
+                                    aria-disabled={data?.first}
+                                    aria-label="Go to previous page"
+                                    size="default"
+                                    className={cn("gap-1 px-2.5 sm:pl-2.5", data?.first ? ["pointer-events-none opacity-50"] : [])}
+                                    onClick={() => setPage(prev => Math.max(prev - 1, 0))}>
+                                    <ChevronLeftIcon/>
+                                    <span className="hidden sm:block">{t('common.list.previous', 'Previous')}</span>
+                                </PaginationLink>
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationLink>
+                                    {(data?.number ?? 0) + 1} / {data?.totalPages}
+                                </PaginationLink>
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationLink
+                                    aria-disabled={data?.last}
+                                    aria-label="Go to next page"
+                                    size="default"
+                                    className={cn("gap-1 px-2.5 sm:pr-2.5", data?.last ? ["pointer-events-none opacity-50"] : [])}
+                                    onClick={() => setPage(prev => Math.min(prev + 1, data?.totalPages ?? 1))}>
+                                    <span className="hidden sm:block">{t('common.list.next', 'Next')}</span>
+                                    <ChevronRightIcon/>
+                                </PaginationLink>
+                            </PaginationItem>
+                        </PaginationContent>
+                    </Pagination>
+                </>
+            )}
+        </div>
+    );
+};
+
+export default SheetProfilesPage;

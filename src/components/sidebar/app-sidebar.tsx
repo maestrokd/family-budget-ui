@@ -56,6 +56,14 @@ const data = {
           title: "Settings",
           url: "#web/settings",
         },
+        {
+          title: "Sheet Profiles",
+          url: "#web/sheet-profiles",
+        },
+        {
+          title: "Sheet Profiles Tel",
+          url: "#telegram/sheet-profiles",
+        },
       ],
     },
     {
