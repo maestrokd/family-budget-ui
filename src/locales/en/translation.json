@@ -161,6 +161,7 @@
         "sheetId": {
           "label": "Spreadsheet Link or ID",
           "placeholder": "Enter Google Sheets URL or ID",
+          "hint": "If spreadsheet ID already registered, please ask a spreadsheet owner, to share a profile with you.",
           "error": "Invalid spreadsheet link or ID."
         },
         "verificationCode": {
@@ -169,7 +170,7 @@
         },
         "profileName": {
           "label": "Sheet Profile Name",
-          "hint": "Family budget, Expenses, Vacation, Car Business, etc.",
+          "hint": "Family budget, Expenses, Business, Volunteer project, Vacation, Church event, Ministry, Wedding, Renovation, Moving, Emergency fund, etc.",
           "placeholder": "Enter a unique profile name"
         }
       },
@@ -204,7 +205,7 @@
         },
         "profileName": {
           "label": "Sheet Profile Name",
-          "hint": "Family budget, Expenses, Vacation, Car Business, etc.",
+          "hint": "Family budget, Expenses, Business, Volunteer project, Vacation, Church event, Ministry, Wedding, Renovation, Moving, Emergency fund, etc.",
           "placeholder": "Enter a unique profile name"
         },
         "agentType": {
