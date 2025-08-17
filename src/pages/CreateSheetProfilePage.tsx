@@ -312,7 +312,23 @@ export default function CreateSheetProfilePage() {
 
                     <form onSubmit={handleCreate} className="space-y-4">
                         <div className="space-y-1">
-                            <Label htmlFor="sheetId">{t('pages.createSheetProfilePage.input.sheetId.label')}</Label>
+                            <div className="flex gap-1">
+                                <Label htmlFor="sheetId">{t('pages.createSheetProfilePage.input.sheetId.label')}</Label>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <InfoIcon className="w-4 h-4 cursor-pointer" aria-hidden="true"/>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-80">
+                                        <div className="grid gap-4">
+                                            <div className="space-y-2">
+                                                <p className="text-muted-foreground text-sm">
+                                                    {t('pages.createSheetProfilePage.input.sheetId.hint')}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </PopoverContent>
+                                </Popover>
+                            </div>
                             <Input
                                 id="sheetId"
                                 placeholder={t('pages.createSheetProfilePage.input.sheetId.placeholder')}
