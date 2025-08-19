@@ -94,8 +94,11 @@ const EditSheetProfilePage: React.FC = () => {
             if (!isValid) return;
             await SheetApiClient.updateProfile(profile.uuid, {name: profile.name});
             notifier.success(t('pages.editSheetProfilePage.notifications.updateSuccess'));
-        } catch {
-            notifier.error(t('pages.editSheetProfilePage.notifications.updateError'));
+        } catch (error: unknown) {
+            const errorCode = extractErrorCode(error);
+            const messageKey = errorCode ? `errors.codes.${errorCode}` : 'pages.editSheetProfilePage.notifications.updateError';
+            const message = t(messageKey, {defaultValue: t('errors.codes.UNKNOWN')});
+            notifier.error(message);
         } finally {
             setIsProfileUpdateLoading(false);
         }
@@ -127,7 +130,7 @@ const EditSheetProfilePage: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 py-8 px-4">
+        <div className="min-h-screen bg-gray-50 py-0 px-0 sm:py-8 sm:px-4">
             <Card className="w-full max-w-3xl mx-auto">
                 <CardHeader className="space-y-0">
                     <CardTitle className="text-2xl font-bold text-center">
@@ -218,13 +221,20 @@ const EditSheetProfilePage: React.FC = () => {
                     <div className="w-full flex flex-col sm:flex-row gap-2 pt-2">
                         <Button
                             variant="outline"
-                            className="w-full sm:w-1/2 order-2 sm:order-1"
+                            className="w-full sm:w-1/3 order-3 sm:order-1"
                             onClick={() => navigate('../sheet-profiles')}
                         >
                             ← {t('common.form.back', 'Back')}
                         </Button>
                         <Button
-                            className="w-full sm:w-1/2 order-1 sm:order-2"
+                            variant="outline"
+                            className="w-full sm:w-1/3 order-2 sm:order-2"
+                            onClick={() => navigate(`../sheet-profiles/manage-access/${profile.uuid}`)}
+                        >
+                            {t('pages.manageSheetProfileAccessPage.button.manageAccess', 'Manage access')}
+                        </Button>
+                        <Button
+                            className="w-full sm:w-1/3 order-1 sm:order-3"
                             onClick={handleUpdate}
                             disabled={!!error || isProfileUpdateLoading}
                         >

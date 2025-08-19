@@ -231,6 +231,45 @@
         "updateError": "Failed to update Sheet Profile. Please try again."
       }
     },
+    "manageSheetProfileAccessPage": {
+      "title": "Manage Sheet Profile Access",
+      "profile": {
+        "name": "Profile Name",
+        "sheetId": "Spreadsheet ID",
+        "agentType": "Agent Type",
+        "verified": "Verified"
+      },
+      "input": {
+        "share": {
+          "placeholder": "Enter user email(s), comma or space separated"
+        }
+      },
+      "button": {
+        "share": "Share",
+        "manageAccess": "Manage access",
+        "backToList": "Back to list",
+        "backToEdit": "Back to edit"
+      },
+      "accessList": {
+        "title": "Profile Accesses"
+      },
+      "table": {
+        "columns": {
+          "email": "User Email",
+          "role": "Role",
+          "actions": "Actions"
+        },
+        "roleLabels": {
+          "OWNER": "Owner",
+          "WRITER": "Editor"
+        }
+      },
+      "notifications": {
+        "shareSuccess": "Share Profile request sent successfully.",
+        "profileLoadError": "Failed to load profile.",
+        "accessLoadError": "Failed to load accesses."
+      }
+    },
     "sheetProfilesPage": {
       "title": "Sheet Profiles",
       "empty": "No Sheet Profiles found.",
@@ -247,12 +286,28 @@
           "tooltip": "Create Sheet Profile"
         }
       },
+      "current": "Current",
+      "action": {
+        "select": "Select as current",
+        "select.current": "Current profile"
+      },
+      "notifications": {
+        "selectSuccess": "Profile selected as current.",
+        "selectError": "Failed to select profile."
+      },
       "table": {
         "columns": {
           "name": "Name",
           "spreadsheetId": "Spreadsheet ID",
           "agentType": "Agent Type",
+          "ownership": "Ownership",
           "verified": "Verified"
+        }
+      },
+      "row": {
+        "ownership": {
+          "own": "Own",
+          "shared": "Shared"
         }
       }
     }

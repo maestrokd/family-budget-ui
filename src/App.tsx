@@ -15,6 +15,7 @@ import DefaultLayout from "@/components/layouts/DefaultLayout.tsx";
 import SheetProfilesPage from "@/pages/SheetProfilesPage.tsx";
 import CreateSheetProfilePage from "@/pages/CreateSheetProfilePage.tsx";
 import EditSheetProfilePage from "@/pages/EditSheetProfilePage.tsx";
+import ManageSheetProfileAccessPage from "@/pages/ManageSheetProfileAccessPage.tsx";
 
 const WelcomePage = React.lazy(() => import('@/pages/WelcomePage'))
 const HealthDashboard = React.lazy(() => import('@/pages/HealthDashboard'))
@@ -44,12 +45,14 @@ const App: React.FC = () => {
                         <Route path="sheet-profiles" element={<SheetProfilesPage/>}/>
                         <Route path="sheet-profiles/create" element={<CreateSheetProfilePage/>}/>
                         <Route path="sheet-profiles/edit/:uuid" element={<EditSheetProfilePage/>}/>
+                        <Route path="sheet-profiles/manage-access/:uuid" element={<ManageSheetProfileAccessPage/>}/>
                         <Route path="settings" element={<SettingsPage/>}/>
                     </Route>
                     <Route path="telegram" element={<TelegramLayout><Outlet/></TelegramLayout>}>
                         <Route path="sheet-profiles" element={<SheetProfilesPage/>}/>
                         <Route path="sheet-profiles/create" element={<CreateSheetProfilePage/>}/>
                         <Route path="sheet-profiles/edit/:uuid" element={<EditSheetProfilePage/>}/>
+                        <Route path="sheet-profiles/manage-access/:uuid" element={<ManageSheetProfileAccessPage/>}/>
                         <Route path="settings" element={<SettingsPage/>}/>
                     </Route>
                     <Route path="*" element={<Navigate to="/" replace/>}/>
