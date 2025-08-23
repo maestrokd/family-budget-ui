@@ -5,18 +5,35 @@ export interface SheetProfileInstructionDetailsResponse {
     editorAgentEmail: string;
 }
 
+export const SheetProfileAccessRole = {
+    OWNER: 'OWNER',
+    WRITER: 'WRITER'
+} as const;
+
+export type SheetProfileAccessRole = typeof SheetProfileAccessRole[keyof typeof SheetProfileAccessRole];
+
 export interface SheetProfileResponse {
     uuid: string;
     name: string;
     sheetId: string;
     verifiedSheet: boolean;
     userProfileId: number;
+    userProfileUuid: string;
+    userProfileEmail: string;
     sheetAgentType: string;
+    accessUuid: string;
+    accessUserProfileUuid: string;
+    accessUserProfileEmail: string;
+    role: SheetProfileAccessRole;
+    isCurrent: boolean;
 }
 
 export interface SheetProfileFiltersRequest {
     keywordSearch?: string;
-    names?: Set<string>;
+    accessUserProfileEmailKeyword?: string;
+    names?: string[];
+    sheetUuid?: string;
+    roles?: SheetProfileAccessRole[];
     isVerifiedSheet?: boolean;
 }
 
@@ -58,7 +75,27 @@ export interface ValidateSheetProfileRequest {
     sheetId?: string;
 }
 
+export interface ShareSheetProfileRequest {
+    sheetUuid: string;
+    accessUserEmails: string[];
+}
+
 class SheetApiClient {
+
+    static fetchSheetProfilesAccesses(
+        pageable: { page: number; size: number; sort?: string[] },
+        filters: SheetProfileFiltersRequest
+    ): Promise<PageImpl<SheetProfileResponse>> {
+        const params = new URLSearchParams();
+        params.append('page', pageable.page.toString());
+        params.append('size', pageable.size.toString());
+        if (pageable.sort) {
+            pageable.sort.forEach(s => params.append('sort', s));
+        }
+        const url = `/private/sheet/profile/accesses/filters?${params.toString()}`;
+
+        return post<PageImpl<SheetProfileResponse>>(url, filters);
+    }
 
     static fetchSheetProfiles(
         pageable: { page: number; size: number; sort?: string[] },
@@ -71,12 +108,7 @@ class SheetApiClient {
             pageable.sort.forEach(s => params.append('sort', s));
         }
         const url = `/private/sheet/profile/filters?${params.toString()}`;
-        const body = {
-            keywordSearch: filters.keywordSearch,
-            names: filters.names ? Array.from(filters.names) : undefined,
-            isVerifiedSheet: filters.isVerifiedSheet,
-        };
-        return post<PageImpl<SheetProfileResponse>>(url, body);
+        return post<PageImpl<SheetProfileResponse>>(url, filters);
     }
 
     static fetchProfile(uuid: string): Promise<SheetProfileResponse> {
@@ -92,6 +124,16 @@ class SheetApiClient {
             profileName: profileName,
         };*/
         return post<SheetProfileResponse>(url, request);
+    }
+
+    static selectProfile(accessUuid: string): Promise<SheetProfileResponse> {
+        const url = `/private/sheet/profile/${accessUuid}/select`;
+        return post<SheetProfileResponse>(url);
+    }
+
+    static shareProfiles(request: ShareSheetProfileRequest): Promise<void> {
+        const url = `/private/sheet/profile/share`;
+        return post<void>(url, request);
     }
 
     static updateProfile(uuid: string, request: PatchUpdateSheetProfileRequest): Promise<SheetProfileResponse> {

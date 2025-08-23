@@ -231,6 +231,45 @@
         "updateError": "Не удалось обновить профиль таблицы. Пожалуйста, попробуйте ещё раз."
       }
     },
+    "manageSheetProfileAccessPage": {
+      "title": "Управление доступом к профилю таблицы",
+      "profile": {
+        "name": "Название профиля",
+        "sheetId": "ID таблицы",
+        "agentType": "Тип агента",
+        "verified": "Верифицировано"
+      },
+      "input": {
+        "share": {
+          "placeholder": "Введите email(ы) пользователей, разделенные запятой или пробелом"
+        }
+      },
+      "button": {
+        "share": "Поделиться",
+        "manageAccess": "Управлять доступом",
+        "backToList": "Назад к списку",
+        "backToEdit": "Назад к редактированию"
+      },
+      "accessList": {
+        "title": "Доступы профиля"
+      },
+      "table": {
+        "columns": {
+          "email": "Email пользователя",
+          "role": "Роль",
+          "actions": "Действия"
+        },
+        "roleLabels": {
+          "OWNER": "Владелец",
+          "WRITER": "Редактор"
+        }
+      },
+      "notifications": {
+        "shareSuccess": "Запрос 'на доступ' успешно отправлен.",
+        "profileLoadError": "Не удалось загрузить профиль.",
+        "accessLoadError": "Не удалось загрузить доступы."
+      }
+    },
     "sheetProfilesPage": {
       "title": "Профили Google таблиц",
       "empty": "Профили Google таблиц не найдены.",
@@ -247,12 +286,28 @@
           "tooltip": "Создать профиль таблицы"
         }
       },
+      "current": "Текущий",
+      "action": {
+        "select": "Сделать текущим",
+        "select.current": "Текущий профиль"
+      },
+      "notifications": {
+        "selectSuccess": "Профиль выбран как текущий.",
+        "selectError": "Не удалось выбрать профиль."
+      },
       "table": {
         "columns": {
           "name": "Название",
           "spreadsheetId": "ID таблицы",
           "agentType": "Тип агента",
+          "ownership": "Принадлежность",
           "verified": "Верифицировано"
+        }
+      },
+      "row": {
+        "ownership": {
+          "own": "Свой",
+          "shared": "Общий"
         }
       }
     }

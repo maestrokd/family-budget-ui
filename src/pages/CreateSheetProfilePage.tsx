@@ -298,7 +298,7 @@ export default function CreateSheetProfilePage() {
         </Accordion>;
 
     return (
-        <div className="py-8 px-4">
+        <div className="py-0 px-0 sm:py-8 sm:px-4">
             <Card className="w-full max-w-3xl mx-auto">
                 <CardHeader><CardTitle
                     className="text-2xl font-bold text-center">{t('pages.createSheetProfilePage.title')}</CardTitle></CardHeader>

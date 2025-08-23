@@ -231,6 +231,45 @@
         "updateError": "Не вдалося оновити профіль таблиці. Будь ласка, спробуйте ще раз."
       }
     },
+    "manageSheetProfileAccessPage": {
+      "title": "Керування доступом до профілю таблиці",
+      "profile": {
+        "name": "Назва профілю",
+        "sheetId": "ID таблиці",
+        "agentType": "Тип агента",
+        "verified": "Верифіковано"
+      },
+      "input": {
+        "share": {
+          "placeholder": "Введіть email(и) користувачів, розділені комою або пробілом"
+        }
+      },
+      "button": {
+        "share": "Поділитися",
+        "manageAccess": "Керувати доступом",
+        "backToList": "Назад до списку",
+        "backToEdit": "Назад до редагування"
+      },
+      "accessList": {
+        "title": "Доступи профілю"
+      },
+      "table": {
+        "columns": {
+          "email": "Email користувача",
+          "role": "Роль",
+          "actions": "Дії"
+        },
+        "roleLabels": {
+          "OWNER": "Власник",
+          "WRITER": "Редактор"
+        }
+      },
+      "notifications": {
+        "shareSuccess": "Запит 'для доступу' успішно надіслано.",
+        "profileLoadError": "Не вдалося завантажити профіль.",
+        "accessLoadError": "Не вдалося завантажити доступи."
+      }
+    },
     "sheetProfilesPage": {
       "title": "Профілі Google таблиць",
       "empty": "Профілів Google таблиць не знайдено.",
@@ -247,12 +286,28 @@
           "tooltip": "Створити профіль таблиці"
         }
       },
+      "current": "Поточний",
+      "action": {
+        "select": "Зробити поточним",
+        "select.current": "Поточний профіль"
+      },
+      "notifications": {
+        "selectSuccess": "Профіль обрано як поточний.",
+        "selectError": "Не вдалося обрати профіль."
+      },
       "table": {
         "columns": {
           "name": "Назва",
           "spreadsheetId": "ID таблиці",
           "agentType": "Тип агента",
+          "ownership": "Належність",
           "verified": "Верифіковано"
+        }
+      },
+      "row": {
+        "ownership": {
+          "own": "Власний",
+          "shared": "Спільний"
         }
       }
     }

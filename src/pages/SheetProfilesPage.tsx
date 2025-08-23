@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useNavigate} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {Input} from '@/components/ui/input';
@@ -15,6 +15,8 @@ import {
     Pencil,
     Plus,
     ShieldCheck,
+    User,
+    Users,
     XIcon
 } from 'lucide-react';
 import {Tooltip, TooltipContent, TooltipTrigger} from '@/components/ui/tooltip';
@@ -27,21 +29,41 @@ import {shorten} from "@/services/utils/StringUtils.ts";
 import {Pagination, PaginationContent, PaginationItem, PaginationLink,} from "@/components/ui/pagination.tsx";
 import {cn} from "@/lib/utils.ts";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {notifier} from "@/services/NotificationService.ts";
+import useDebounce from '@/hooks/useDebounce';
 
 export const SheetProfilesPage: React.FC = () => {
     const {t} = useTranslation();
     const navigate = useNavigate();
     const [keyword, setKeyword] = useState<string>('');
     const [page, setPage] = useState<number>(0);
-    const [size, setSize] = useState<number>(5);
+    const [size, setSize] = useState<number>(10);
 
-    const {data, isLoading, isError} = useQuery<PageImpl<SheetProfileResponse>, Error>({
-        queryKey: ['sheetProfiles', page, size, keyword],
+    const debouncedKeyword = useDebounce(keyword, 500);
+    const effectiveKeyword = debouncedKeyword.length >= 3 ? debouncedKeyword : '';
+
+    const queryClient = useQueryClient();
+    const selectMutation = useMutation({
+        mutationFn: (accessUuid: string) => SheetApiClient.selectProfile(accessUuid),
+        onSuccess: () => {
+            notifier.success(t('pages.sheetProfilesPage.notifications.selectSuccess', 'Profile selected as current'));
+            queryClient.invalidateQueries({queryKey: ['sheetProfiles']});
+        },
+        onError: () => {
+            notifier.error(t('pages.sheetProfilesPage.notifications.selectError', 'Failed to select profile'));
+        },
+    });
+
+    const {data, isLoading, isError, isFetching} = useQuery<PageImpl<SheetProfileResponse>, Error>({
+        queryKey: ['sheetProfiles', page, size, effectiveKeyword],
         queryFn: () =>
             SheetApiClient.fetchSheetProfiles(
                 {page, size},
-                {keywordSearch: keyword || undefined}
+                {keywordSearch: effectiveKeyword || undefined}
             ),
+        placeholderData: (prev) => prev,
+        staleTime: 30_000,
+        enabled: debouncedKeyword.length === 0 || debouncedKeyword.length >= 3,
     });
 
     const items = data?.content ?? [];
@@ -65,6 +87,11 @@ export const SheetProfilesPage: React.FC = () => {
                         'Search by name or sheet ID'
                     )}
                 />
+                {!isLoading && isFetching && (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Loader2 className="animate-spin h-4 w-4"/>
+                    </div>
+                )}
                 <Tooltip>
                     <TooltipTrigger asChild>
                         <Button
@@ -98,11 +125,23 @@ export const SheetProfilesPage: React.FC = () => {
                         <TableHeader>
                             <TableRow>
                                 <TableHead
-                                    className="min-w-1/2 text-center">{t('pages.sheetProfilesPage.table.columns.name')}</TableHead>
+                                    className="min-w-8/12 sm:min-w-1/2 text-center">{t('pages.sheetProfilesPage.table.columns.name')}</TableHead>
                                 <TableHead
                                     className="hidden sm:table-cell max-w-30 text-center">{t('pages.sheetProfilesPage.table.columns.spreadsheetId')}</TableHead>
                                 <TableHead
                                     className="hidden sm:table-cell max-w-30 text-center">{t('pages.sheetProfilesPage.table.columns.agentType')}</TableHead>
+                                <TableHead className="w-10">
+                                    <div className="grid place-items-center">
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Users className="w-4 h-4 cursor-pointer" aria-hidden="true"/>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p className="whitespace-normal break-words">{t('pages.sheetProfilesPage.table.columns.ownership')}</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </div>
+                                </TableHead>
                                 <TableHead className="w-10">
                                     <div className="grid place-items-center">
                                         <Tooltip>
@@ -132,10 +171,18 @@ export const SheetProfilesPage: React.FC = () => {
                         <TableBody>
                             {items.map(item => (
                                 <TableRow key={item.uuid}>
-                                    <TableCell className="min-w-1/2 truncate">
+                                    <TableCell className="min-w-8/12 sm:min-w-1/2 truncate">
                                         <Tooltip>
                                             <TooltipTrigger asChild>
-                                                <span>{shorten(item.name, 10)}</span>
+                                                <span className="inline-flex items-center gap-2">
+                                                    {shorten(item.name, 10)}
+                                                    {item.isCurrent && (
+                                                        <Badge variant="secondary"
+                                                               className="bg-emerald-500 text-white dark:bg-emerald-600">
+                                                            {t('pages.sheetProfilesPage.current')}
+                                                        </Badge>
+                                                    )}
+                                                </span>
                                             </TooltipTrigger>
                                             <TooltipContent>
                                                 <p className="whitespace-normal break-words">{item.name}</p>
@@ -167,6 +214,24 @@ export const SheetProfilesPage: React.FC = () => {
                                     </TableCell>
                                     <TableCell className="w-10 truncate">
                                         <div className="grid place-items-center">
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    {item.role === 'OWNER' ? (
+                                                        <User className="w-4 h-4 text-emerald-600"
+                                                              aria-label={t('pages.sheetProfilesPage.row.ownership.own', 'Own') as string}/>
+                                                    ) : (
+                                                        <Users className="w-4 h-4 text-blue-600"
+                                                               aria-label={t('pages.sheetProfilesPage.row.ownership.shared', 'Shared') as string}/>
+                                                    )}
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p className="whitespace-normal break-words">{item.role === 'OWNER' ? t('pages.sheetProfilesPage.row.ownership.own', 'Own') : t('pages.sheetProfilesPage.row.ownership.shared', 'Shared')}</p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </div>
+                                    </TableCell>
+                                    <TableCell className="w-10 truncate">
+                                        <div className="grid place-items-center">
                                             {item.verifiedSheet ? (
                                                 <CheckIcon className="w-4 h-4 text-green-500"/>
                                             ) : (
@@ -183,15 +248,46 @@ export const SheetProfilesPage: React.FC = () => {
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
-                                                    <DropdownMenuItem
-                                                        onClick={() => navigate(`edit/${item.uuid}`)}>
-                                                        <Pencil className="mr-2 w-4 h-4"/>
-                                                        {t('common.list.edit', 'Edit')}
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem disabled>
-                                                        <XIcon className="mr-2 w-4 h-4"/>
-                                                        {t('common.list.remove', 'Remove')}
-                                                    </DropdownMenuItem>
+                                                    {(() => {
+                                                        const actionsDisabled = item.role !== 'OWNER';
+                                                        return (
+                                                            <>
+                                                                <DropdownMenuItem
+                                                                    disabled={item.isCurrent || selectMutation.isPending}
+                                                                    onClick={async () => {
+                                                                        if (!item.isCurrent) {
+                                                                            await selectMutation.mutateAsync(item.accessUuid);
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    <CheckIcon className="mr-2 w-4 h-4"/>
+                                                                    {item.isCurrent
+                                                                        ? t('pages.sheetProfilesPage.action.select.current', 'Current profile')
+                                                                        : t('pages.sheetProfilesPage.action.select', 'Select as current')}
+                                                                </DropdownMenuItem>
+                                                                <DropdownMenuItem
+                                                                    disabled={actionsDisabled}
+                                                                    onClick={() => {
+                                                                        if (!actionsDisabled) navigate(`edit/${item.uuid}`);
+                                                                    }}>
+                                                                    <Pencil className="mr-2 w-4 h-4"/>
+                                                                    {t('common.list.edit', 'Edit')}
+                                                                </DropdownMenuItem>
+                                                                <DropdownMenuItem
+                                                                    disabled={actionsDisabled}
+                                                                    onClick={() => {
+                                                                        if (!actionsDisabled) navigate(`manage-access/${item.uuid}`);
+                                                                    }}>
+                                                                    <Users className="mr-2 w-4 h-4"/>
+                                                                    {t('pages.manageSheetProfileAccessPage.button.manageAccess', 'Manage access')}
+                                                                </DropdownMenuItem>
+                                                                <DropdownMenuItem disabled>
+                                                                    <XIcon className="mr-2 w-4 h-4"/>
+                                                                    {t('common.list.remove', 'Remove')}
+                                                                </DropdownMenuItem>
+                                                            </>
+                                                        )
+                                                    })()}
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
                                         </div>
