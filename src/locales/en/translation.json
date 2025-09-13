@@ -310,6 +310,53 @@
           "shared": "Shared"
         }
       }
+    },
+    "subscriptionPage": {
+      "title": "Subscription",
+      "plan": {
+        "names": {
+          "FREE_TIER": "Free",
+          "BETA_TEST_TIER": "Beta Test",
+          "TIER_1": "Plus"
+        }
+      },
+      "info": {
+        "loading": "Loading subscription…",
+        "currentPlan": "Current plan",
+        "activeUntilLocal": "Active until",
+        "activeUntilUTC": "Active until (UTC)",
+        "inactiveHint": "You don’t have an active Beta Access. Use a promo code to activate.",
+        "none": "None",
+        "noDate": "—"
+      },
+      "inputs": {
+        "promoCode": {
+          "label": "Promo code",
+          "placeholder": "Enter Promo Code from email"
+        }
+      },
+      "buttons": {
+        "generate": {
+          "default": "Request Promo Code",
+          "loading": "Requesting…"
+        },
+        "redeem": {
+          "default": "Redeem",
+          "loading": "Redeeming…"
+        }
+      },
+      "notifications": {
+        "generate": {
+          "success": "Promo code requested.",
+          "infoEmail": "Check your email for the code.",
+          "error": "Could not request a code."
+        },
+        "redeem": {
+          "success": "Promo applied. Your access is active until {{until}}.",
+          "activated": "Beta Access activated.",
+          "error": "Promo code invalid or expired."
+        }
+      }
     }
   },
   "errors": {
@@ -328,7 +375,9 @@
       "MISSING_COOKIE": "Invalid or absent cookie.",
       "SPREADSHEET_ID_EXISTS": "Spreadsheet ID already registered.",
       "SPREADSHEET_NAME_EXISTS": "Sheet Profile name already exists.",
-      "SPREADSHEET_ACCESS_DENIED": "Access to the spreadsheet was not provided."
+      "SPREADSHEET_ACCESS_DENIED": "Access to the spreadsheet was not provided.",
+      "INVALID_PROMO_CODE": "Invalid or expired promo code.",
+      "NOT_ACTIVE_PROLONGATION_WINDOW": "Not active prolongation window."
     }
   }
 }

@@ -310,6 +310,53 @@
           "shared": "Спільний"
         }
       }
+    },
+    "subscriptionPage": {
+      "title": "Підписка",
+      "plan": {
+        "names": {
+          "FREE_TIER": "Free",
+          "BETA_TEST_TIER": "Beta Test",
+          "TIER_1": "Plus"
+        }
+      },
+      "info": {
+        "loading": "Завантаження деталей підписки...",
+        "currentPlan": "Поточний план",
+        "activeUntilLocal": "Активний до",
+        "activeUntilUTC": "Активний до (UTC)",
+        "inactiveHint": "Немає активної підписки. Застосуйте промокод для активації.",
+        "none": "None",
+        "noDate": "—"
+      },
+      "inputs": {
+        "promoCode": {
+          "label": "Промокод",
+          "placeholder": "Введіть промокод з email"
+        }
+      },
+      "buttons": {
+        "generate": {
+          "default": "Знайти Promo Code",
+          "loading": "Пошук…"
+        },
+        "redeem": {
+          "default": "Активувати",
+          "loading": "Активація…"
+        }
+      },
+      "notifications": {
+        "generate": {
+          "success": "Промокод надіслано.",
+          "infoEmail": "Перевірьте email з промокодом.",
+          "error": "Виникла помилка з надсиланням промокоду."
+        },
+        "redeem": {
+          "success": "Промокод активовано. Ваш доступ активний до {{until}}.",
+          "activated": "Доступ активовано.",
+          "error": "Невірний, використаний або застарілий Promo Code."
+        }
+      }
     }
   },
   "errors": {
@@ -328,7 +375,9 @@
       "MISSING_COOKIE": "Недійсний або відсутній cookie.",
       "SPREADSHEET_ID_EXISTS": "ID Google таблиці вже зареєстровано.",
       "SPREADSHEET_NAME_EXISTS": "Назва профілю таблиці вже використовується.",
-      "SPREADSHEET_ACCESS_DENIED": "Доступ до Google таблиці не надано."
+      "SPREADSHEET_ACCESS_DENIED": "Доступ до Google таблиці не надано.",
+      "INVALID_PROMO_CODE": "Невірний, використаний або застарілий Promo Code.",
+      "NOT_ACTIVE_PROLONGATION_WINDOW": "Не активний період продовження підписки."
     }
   }
 }
