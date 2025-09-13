@@ -310,6 +310,53 @@
           "shared": "Общий"
         }
       }
+    },
+    "subscriptionPage": {
+      "title": "Подписка",
+      "plan": {
+        "names": {
+          "FREE_TIER": "Free",
+          "BETA_TEST_TIER": "Beta Test",
+          "TIER_1": "Plus"
+        }
+      },
+      "info": {
+        "loading": "Загрузка деталей…",
+        "currentPlan": "Текущий план",
+        "activeUntilLocal": "Активный до",
+        "activeUntilUTC": "Активный до (UTC)",
+        "inactiveHint": "Нет активной подписки. Используйте промокод для активации.",
+        "none": "None",
+        "noDate": "—"
+      },
+      "inputs": {
+        "promoCode": {
+          "label": "Промокод",
+          "placeholder": "Введите промокод из email"
+        }
+      },
+      "buttons": {
+        "generate": {
+          "default": "Запросить промокод",
+          "loading": "Отправка…"
+        },
+        "redeem": {
+          "default": "Активировать",
+          "loading": "Активация…"
+        }
+      },
+      "notifications": {
+        "generate": {
+          "success": "Промокод отправлен.",
+          "infoEmail": "Проверьте email с промокодом.",
+          "error": "Произошла ошибка при отправке промокода."
+        },
+        "redeem": {
+          "success": "Промокод активирован. Ваш доступ активен до {{until}}.",
+          "activated": "Доступ активирован.",
+          "error": "Неверный, использованный или устаревший промокод."
+        }
+      }
     }
   },
   "errors": {
@@ -328,7 +375,9 @@
       "MISSING_COOKIE": "Недействительный или отсутствующий файл cookie.",
       "SPREADSHEET_ID_EXISTS": "ID Google таблицы уже зарегистрирован.",
       "SPREADSHEET_NAME_EXISTS": "Название профиля таблицы уже используется.",
-      "SPREADSHEET_ACCESS_DENIED": "Доступ к Google таблице не предоставлен."
+      "SPREADSHEET_ACCESS_DENIED": "Доступ к Google таблице не предоставлен.",
+      "INVALID_PROMO_CODE": "Неверный, использованный или устаревший промокод.",
+      "NOT_ACTIVE_PROLONGATION_WINDOW": "Не активный период продления подписки."
     }
   }
 }
