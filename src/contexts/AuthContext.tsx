@@ -4,9 +4,22 @@ import {type LoginResponse} from "@/services/AuthService.ts";
 import WebApp from "@twa-dev/sdk";
 import {jwtDecode} from 'jwt-decode';
 
+export const Authority = {
+    PAYMENT_PHOTO: 'PAYMENT_PHOTO',
+    WEB_APP: 'WEB_APP'
+} as const;
+
+export type Authority = typeof Authority[keyof typeof Authority];
+
+const toAuthorities = (arr: string[] | undefined | null): Authority[] => {
+    if (!arr) return [];
+    const allowed = new Set(Object.values(Authority));
+    return arr.filter((a): a is Authority => allowed.has(a as Authority));
+};
+
 interface Principal {
     id: string;
-    authorities: string[];
+    authorities: Authority[];
     username: string;
 }
 
@@ -27,6 +40,7 @@ interface AuthContextType {
     doResetPassword: (email: string, password: string, confirmPassword: string, confirmationCode: string) => Promise<void>;
     login: (email: string, password: string) => Promise<void>;
     loginWithTelegram: () => Promise<string>;
+    doRefresh: () => Promise<string>;
     logout: () => void;
 }
 
@@ -73,7 +87,7 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
         setToken(accessToken);
         localStorage.setItem('token', accessToken);
         const {sub, authorities} = jwtDecode<{ sub: string; authorities: string[] }>(accessToken);
-        setPrincipal({id: sub, username: '', authorities: authorities});
+        setPrincipal({id: sub, username: '', authorities: toAuthorities(authorities)});
     };
 
     const doResetPassword = async (email: string, password: string, confirmPassword: string, confirmationCode: string): Promise<void> => {
@@ -85,7 +99,7 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
         setToken(accessToken);
         localStorage.setItem('token', accessToken);
         const {sub, authorities} = jwtDecode<{ sub: string; authorities: string[] }>(accessToken);
-        setPrincipal({id: sub, username: '', authorities: authorities});
+        setPrincipal({id: sub, username: '', authorities: toAuthorities(authorities)});
     };
 
     const loginWithTelegram = async (initDataParam?: string | null): Promise<string> => {
@@ -140,7 +154,7 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
             }
             if (token) {
                 const {sub, authorities} = jwtDecode<{ sub: string; authorities: string[] }>(token);
-                setPrincipal({id: sub, username: '', authorities: authorities});
+                setPrincipal({id: sub, username: '', authorities: toAuthorities(authorities)});
             }
             setInitDone(true);
         };
@@ -164,6 +178,7 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
                 doResetPassword,
                 login,
                 loginWithTelegram,
+                doRefresh: refreshFn,
                 logout,
             }}
         >
