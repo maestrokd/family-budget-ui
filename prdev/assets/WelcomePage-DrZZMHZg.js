@@ -1,1 +1,0 @@
-import{u as t,j as e}from"./index-B0dXcoef.js";const l=()=>{const{t:s}=t();return e.jsx("div",{className:"flex items-center justify-center h-full p-6",children:e.jsx("h2",{className:"text-2xl font-semibold text-gray-800",children:s("dashboard.welcome")})})};export{l as default};
