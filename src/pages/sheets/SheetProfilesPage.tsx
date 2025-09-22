@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useNavigate} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
-import {Input} from '@/components/ui/input';
-import {Button} from '@/components/ui/button';
-import {Alert, AlertDescription} from '@/components/ui/alert';
+import {Input} from '@/components/ui/input.tsx';
+import {Button} from '@/components/ui/button.tsx';
+import {Alert, AlertDescription} from '@/components/ui/alert.tsx';
 import {
     CheckIcon,
     ChevronLeftIcon,
@@ -19,18 +19,18 @@ import {
     Users,
     XIcon
 } from 'lucide-react';
-import {Tooltip, TooltipContent, TooltipTrigger} from '@/components/ui/tooltip';
-import {Badge} from '@/components/ui/badge';
-import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from '@/components/ui/dropdown-menu';
-import type {PageImpl, SheetProfileResponse} from '@/services/SheetApiClient';
-import SheetApiClient from '@/services/SheetApiClient';
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from '@/components/ui/table';
+import {Tooltip, TooltipContent, TooltipTrigger} from '@/components/ui/tooltip.tsx';
+import {Badge} from '@/components/ui/badge.tsx';
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from '@/components/ui/dropdown-menu.tsx';
+import type {PageImpl, SheetProfileResponse} from '@/services/SheetApiClient.ts';
+import SheetApiClient from '@/services/SheetApiClient.ts';
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from '@/components/ui/table.tsx';
 import {shorten} from "@/services/utils/StringUtils.ts";
 import {Pagination, PaginationContent, PaginationItem, PaginationLink,} from "@/components/ui/pagination.tsx";
 import {cn} from "@/lib/utils.ts";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {notifier} from "@/services/NotificationService.ts";
-import useDebounce from '@/hooks/useDebounce';
+import useDebounce from '@/hooks/useDebounce.ts';
 
 export const SheetProfilesPage: React.FC = () => {
     const {t} = useTranslation();
@@ -74,7 +74,7 @@ export const SheetProfilesPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 p-4">
+        <div className="min-h-screen bg-background p-4">
             {/* Search & Create */}
             <div className="mb-4 flex items-center space-x-2">
                 <Input
@@ -178,7 +178,7 @@ export const SheetProfilesPage: React.FC = () => {
                                                     {shorten(item.name, 10)}
                                                     {item.isCurrent && (
                                                         <Badge variant="secondary"
-                                                               className="bg-emerald-500 text-white dark:bg-emerald-600">
+                                                               className="bg-emerald-500 text-primary-foreground dark:text-primary dark:bg-emerald-600">
                                                             {t('pages.sheetProfilesPage.current')}
                                                         </Badge>
                                                     )}
@@ -204,7 +204,7 @@ export const SheetProfilesPage: React.FC = () => {
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <Badge variant="secondary"
-                                                           className="bg-blue-500 text-white dark:bg-blue-600 cursor-pointer">{shorten(item.sheetAgentType, 8)}</Badge>
+                                                           className="bg-blue-500 text-primary-foreground dark:text-primary dark:bg-blue-600 cursor-pointer">{shorten(item.sheetAgentType, 8)}</Badge>
                                                 </TooltipTrigger>
                                                 <TooltipContent>
                                                     <p className="whitespace-normal break-words">{item.sheetAgentType}</p>
@@ -217,10 +217,10 @@ export const SheetProfilesPage: React.FC = () => {
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     {item.role === 'OWNER' ? (
-                                                        <User className="w-4 h-4 text-emerald-600"
+                                                        <User className="w-4 h-4 text-emerald-600 dark:text-emerald-500"
                                                               aria-label={t('pages.sheetProfilesPage.row.ownership.own', 'Own') as string}/>
                                                     ) : (
-                                                        <Users className="w-4 h-4 text-blue-600"
+                                                        <Users className="w-4 h-4 text-blue-600 dark:text-blue-500"
                                                                aria-label={t('pages.sheetProfilesPage.row.ownership.shared', 'Shared') as string}/>
                                                     )}
                                                 </TooltipTrigger>
@@ -233,9 +233,9 @@ export const SheetProfilesPage: React.FC = () => {
                                     <TableCell className="w-10 truncate">
                                         <div className="grid place-items-center">
                                             {item.verifiedSheet ? (
-                                                <CheckIcon className="w-4 h-4 text-green-500"/>
+                                                <CheckIcon className="w-4 h-4 text-green-600 dark:text-green-500"/>
                                             ) : (
-                                                <XIcon className="w-4 h-4 text-red-500"/>
+                                                <XIcon className="w-4 h-4 text-red-600 dark:text-red-500"/>
                                             )}
                                         </div>
                                     </TableCell>

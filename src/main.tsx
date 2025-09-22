@@ -7,6 +7,7 @@ import {HashRouter} from 'react-router-dom'
 import {QueryProvider} from './providers/QueryProvider'
 import WebApp from '@twa-dev/sdk'
 import {AuthProvider} from "@/contexts/AuthContext.tsx";
+import {ThemeProvider} from "@/components/theme/theme-provider.tsx";
 
 WebApp.ready();
 
@@ -15,7 +16,9 @@ createRoot(document.getElementById('root')!).render(
         <QueryProvider>
             <HashRouter>
                 <AuthProvider>
-                    <App/>
+                    <ThemeProvider defaultTheme="system" storageKey="fb-ui-theme">
+                        <App/>
+                    </ThemeProvider>
                 </AuthProvider>
             </HashRouter>
         </QueryProvider>

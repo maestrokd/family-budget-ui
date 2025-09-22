@@ -1,14 +1,14 @@
 import {type FormEvent, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '@/components/ui/accordion';
-import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
-import {Input} from '@/components/ui/input';
-import {Label} from '@/components/ui/label';
-import {Button} from '@/components/ui/button';
-import {Alert, AlertDescription} from '@/components/ui/alert';
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '@/components/ui/accordion.tsx';
+import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card.tsx';
+import {Input} from '@/components/ui/input.tsx';
+import {Label} from '@/components/ui/label.tsx';
+import {Button} from '@/components/ui/button.tsx';
+import {Alert, AlertDescription} from '@/components/ui/alert.tsx';
 import {InfoIcon, Loader2} from 'lucide-react';
-import {notifier} from '@/services/NotificationService';
-import SheetApiClient, {type SheetProfileInstructionDetailsResponse} from '@/services/SheetApiClient';
+import {notifier} from '@/services/NotificationService.ts';
+import SheetApiClient, {type SheetProfileInstructionDetailsResponse} from '@/services/SheetApiClient.ts';
 import {extractErrorCode} from "@/services/ApiService.ts";
 import {ImagePreviewList} from "@/components/image/ImagePreviewList.tsx";
 import {Link, useNavigate} from "react-router-dom";
@@ -190,7 +190,7 @@ export default function CreateSheetProfilePage() {
                                 <span>{t(`pages.createSheetProfilePage.instruction.step1.sheetTemplateLinkTitle`)}</span>
                             </Link>
                         )
-                        : (<Loader2 className="animate-spin h-6 w-6"/>)
+                        : (<Loader2 className="animate-spin h-6 w-6 text-muted-foreground"/>)
                     }
 
                     <Accordion type="single" collapsible defaultValue="" className="mx-6">
@@ -222,7 +222,7 @@ export default function CreateSheetProfilePage() {
                     <p>{t(`pages.createSheetProfilePage.instruction.step2.description`)}</p>
                     {instructionDetails?.sheetTemplateLink
                         ? (<span className="font-semibold">"{instructionDetails?.editorAgentEmail}"</span>)
-                        : (<Loader2 className="animate-spin h-6 w-6"/>)
+                        : (<Loader2 className="animate-spin h-6 w-6 text-muted-foreground"/>)
                     }
 
                     <Accordion type="single" collapsible defaultValue="" className="mx-6">
@@ -298,12 +298,12 @@ export default function CreateSheetProfilePage() {
         </Accordion>;
 
     return (
-        <div className="py-0 px-0 sm:py-8 sm:px-4">
+        <div className="bg-background py-0 px-0 sm:py-8 sm:px-4">
             <Card className="w-full max-w-3xl mx-auto">
                 <CardHeader><CardTitle
                     className="text-2xl font-bold text-center">{t('pages.createSheetProfilePage.title')}</CardTitle></CardHeader>
                 <CardContent className="space-y-6">
-                    {instructionDetailsLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin"/>}
+                    {instructionDetailsLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin text-muted-foreground"/>}
                     {!instructionDetailsLoading && !(instructionDetails?.sheetTemplateLink) &&
                         <Alert
                             variant="destructive"><AlertDescription>{t('errors.codes.UNKNOWN')}</AlertDescription></Alert>
@@ -316,7 +316,7 @@ export default function CreateSheetProfilePage() {
                                 <Label htmlFor="sheetId">{t('pages.createSheetProfilePage.input.sheetId.label')}</Label>
                                 <Popover>
                                     <PopoverTrigger asChild>
-                                        <InfoIcon className="w-4 h-4 cursor-pointer" aria-hidden="true"/>
+                                        <InfoIcon className="w-4 h-4 cursor-pointer text-muted-foreground" aria-hidden="true"/>
                                     </PopoverTrigger>
                                     <PopoverContent className="w-80">
                                         <div className="grid gap-4">
@@ -376,7 +376,7 @@ export default function CreateSheetProfilePage() {
                                     htmlFor="profileName">{t('pages.createSheetProfilePage.input.profileName.label')}</Label>
                                 <Popover>
                                     <PopoverTrigger asChild>
-                                        <InfoIcon className="w-4 h-4 cursor-pointer" aria-hidden="true"/>
+                                        <InfoIcon className="w-4 h-4 cursor-pointer text-muted-foreground" aria-hidden="true"/>
                                     </PopoverTrigger>
                                     <PopoverContent className="w-80">
                                         <div className="grid gap-4">

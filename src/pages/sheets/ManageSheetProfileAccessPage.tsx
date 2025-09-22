@@ -2,14 +2,15 @@ import React, {useMemo, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {Alert, AlertDescription} from '@/components/ui/alert';
-import {Badge} from '@/components/ui/badge';
-import {Button} from '@/components/ui/button';
-import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
-import {Input} from '@/components/ui/input';
-import {Separator} from '@/components/ui/separator';
+import {Alert, AlertDescription} from '@/components/ui/alert.tsx';
+import {Badge} from '@/components/ui/badge.tsx';
+import {Button} from '@/components/ui/button.tsx';
+import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card.tsx';
+import {Input} from '@/components/ui/input.tsx';
+import {Separator} from '@/components/ui/separator.tsx';
 import {
     ChevronLeft,
+    ChevronRight,
     Loader2,
     MailPlus,
     MenuIcon,
@@ -20,23 +21,23 @@ import {
     Users,
     XIcon
 } from 'lucide-react';
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table';
-import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from '@/components/ui/dropdown-menu';
-import {Pagination, PaginationContent, PaginationItem, PaginationLink} from '@/components/ui/pagination';
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
-import {cn} from '@/lib/utils';
-import {Tooltip, TooltipContent, TooltipTrigger} from '@/components/ui/tooltip';
-import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover';
-import type {PageImpl, SheetProfileAccessRole, SheetProfileResponse} from '@/services/SheetApiClient';
-import SheetApiClient from '@/services/SheetApiClient';
-import {notifier} from '@/services/NotificationService';
-import {extractErrorCode} from '@/services/ApiService';
-import useDebounce from '@/hooks/useDebounce';
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table.tsx';
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from '@/components/ui/dropdown-menu.tsx';
+import {Pagination, PaginationContent, PaginationItem, PaginationLink} from '@/components/ui/pagination.tsx';
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select.tsx';
+import {cn} from '@/lib/utils.ts';
+import {Tooltip, TooltipContent, TooltipTrigger} from '@/components/ui/tooltip.tsx';
+import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover.tsx';
+import type {PageImpl, SheetProfileAccessRole, SheetProfileResponse} from '@/services/SheetApiClient.ts';
+import SheetApiClient from '@/services/SheetApiClient.ts';
+import {notifier} from '@/services/NotificationService.ts';
+import {extractErrorCode} from '@/services/ApiService.ts';
+import useDebounce from '@/hooks/useDebounce.ts';
 
 const RoleBadgeLarge: React.FC<{ role: SheetProfileAccessRole; label: string }> = ({role, label}) => (
     <Badge
         variant="secondary"
-        className={cn("flex items-center gap-1", role === 'OWNER' ? "bg-emerald-500 text-white dark:bg-emerald-600" : "bg-blue-500 text-white dark:bg-blue-600")}
+        className={cn("flex items-center gap-1", role === 'OWNER' ? "bg-emerald-500 text-primary-foreground dark:text-primary dark:bg-emerald-600" : "bg-blue-500 text-primary-foreground dark:text-primary dark:bg-blue-600")}
     >
         {role === 'OWNER' ? <User className="w-3 h-3"/> : <Users className="w-3 h-3"/>}
         {label}
@@ -48,7 +49,7 @@ const RoleBadgeSmallWithPopover: React.FC<{ role: SheetProfileAccessRole; label:
         <PopoverTrigger asChild>
             <Badge
                 variant="secondary"
-                className={cn("cursor-pointer flex items-center", role === 'OWNER' ? "bg-emerald-500 text-white dark:bg-emerald-600" : "bg-blue-500 text-white dark:bg-blue-600")}
+                className={cn("cursor-pointer flex items-center", role === 'OWNER' ? "bg-emerald-500 text-primary-foreground dark:text-primary dark:bg-emerald-600" : "bg-blue-500 text-primary-foreground dark:text-primary dark:bg-blue-600")}
                 aria-label={label}
             >
                 {role === 'OWNER' ? <User className="w-3 h-3"/> : <Users className="w-3 h-3"/>}
@@ -130,7 +131,7 @@ const ManageSheetProfileAccessPage: React.FC = () => {
 
     if (isProfileLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="min-h-screen flex items-center justify-center bg-background">
                 <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" aria-label="Loading"/>
             </div>
         );
@@ -138,7 +139,7 @@ const ManageSheetProfileAccessPage: React.FC = () => {
 
     if (isProfileError || !profile) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+            <div className="min-h-screen flex items-center justify-center bg-background p-4">
                 <div className="w-full max-w-md space-y-4">
                     <Alert variant="destructive">
                         <AlertDescription>
@@ -154,7 +155,7 @@ const ManageSheetProfileAccessPage: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 py-0 px-0 sm:py-8 sm:px-4">
+        <div className="min-h-screen bg-background py-0 px-0 sm:py-8 sm:px-4">
             <Card className="w-full max-w-4xl mx-auto">
                 <CardHeader>
                     <CardTitle className="text-2xl font-bold text-center">
@@ -219,12 +220,12 @@ const ManageSheetProfileAccessPage: React.FC = () => {
                                     placeholder={t('common.list.input.keywordSearch.placeholder', 'Search...') as string}
                                 />
                                 {!isAccessLoading && isAccessFetching && (
-                                    <Loader2 className="animate-spin h-4 w-4"/>
+                                    <Loader2 className="animate-spin h-4 w-4 text-muted-foreground"/>
                                 )}
                             </div>
                         </div>
                         {isAccessLoading && (
-                            <div className="flex justify-center py-4"><Loader2 className="animate-spin h-6 w-6"/></div>
+                            <div className="flex justify-center py-4"><Loader2 className="animate-spin h-6 w-6 text-muted-foreground"/></div>
                         )}
                         {isAccessError && (
                             <Alert
@@ -346,9 +347,8 @@ const ManageSheetProfileAccessPage: React.FC = () => {
                                                 size="default"
                                                 className={cn("gap-1 px-2.5 sm:pl-2.5", accessPage?.first ? ["pointer-events-none opacity-50"] : [])}
                                                 onClick={() => setPage(prev => Math.max(prev - 1, 0))}>
-                                                ←
-                                                <span
-                                                    className="hidden sm:block">{t('common.list.previous', 'Previous')}</span>
+                                                <ChevronLeft/>
+                                                <span className="hidden sm:block">{t('common.list.previous', 'Previous')}</span>
                                             </PaginationLink>
                                         </PaginationItem>
                                         <PaginationItem>
@@ -364,7 +364,7 @@ const ManageSheetProfileAccessPage: React.FC = () => {
                                                 className={cn("gap-1 px-2.5 sm:pr-2.5", accessPage?.last ? ["pointer-events-none opacity-50"] : [])}
                                                 onClick={() => setPage(prev => Math.min(prev + 1, accessPage?.totalPages ?? 1))}>
                                                 <span className="hidden sm:block">{t('common.list.next', 'Next')}</span>
-                                                →
+                                                <ChevronRight/>
                                             </PaginationLink>
                                         </PaginationItem>
                                     </PaginationContent>

@@ -46,9 +46,9 @@ export const HealthCheckTelegramAuthCard: React.FC = () => {
             <div className="flex items-center">
               <span className="font-medium mr-2">Telegram Client:</span>
               {isTelegramClient ? (
-                  <span className="text-green-600 font-semibold">Yes</span>
+                  <span className="text-green-600 dark:text-green-500 font-semibold">Yes</span>
               ) : (
-                  <span className="text-red-600 font-semibold">No</span>
+                  <span className="text-red-600 dark:text-red-500 font-semibold">No</span>
               )}
             </div>
           </div>

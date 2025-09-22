@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useNavigate, useParams} from 'react-router-dom';
-import {Card, CardContent, CardHeader, CardTitle,} from '@/components/ui/card';
-import {Label} from '@/components/ui/label';
-import {Input} from '@/components/ui/input';
-import {Button} from '@/components/ui/button';
-import {Badge} from '@/components/ui/badge';
-import {Alert, AlertDescription} from '@/components/ui/alert';
+import {Card, CardContent, CardHeader, CardTitle,} from '@/components/ui/card.tsx';
+import {Label} from '@/components/ui/label.tsx';
+import {Input} from '@/components/ui/input.tsx';
+import {Button} from '@/components/ui/button.tsx';
+import {Badge} from '@/components/ui/badge.tsx';
+import {Alert, AlertDescription} from '@/components/ui/alert.tsx';
 import {CheckIcon, InfoIcon, Loader2, XIcon} from 'lucide-react';
-import type {SheetProfileResponse} from '@/services/SheetApiClient';
-import SheetApiClient from '@/services/SheetApiClient';
-import {Separator} from '@/components/ui/separator';
+import type {SheetProfileResponse} from '@/services/SheetApiClient.ts';
+import SheetApiClient from '@/services/SheetApiClient.ts';
+import {Separator} from '@/components/ui/separator.tsx';
 import {extractErrorCode} from "@/services/ApiService.ts";
 import {notifier} from "@/services/NotificationService.ts";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover.tsx";
@@ -106,7 +106,7 @@ const EditSheetProfilePage: React.FC = () => {
 
     if (isProfileLoading || !profile) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="min-h-screen flex items-center justify-center bg-background">
                 <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" aria-label="Loading"/>
             </div>
         );
@@ -114,7 +114,7 @@ const EditSheetProfilePage: React.FC = () => {
 
     if (error) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+            <div className="min-h-screen flex items-center justify-center bg-background p-4">
                 <div className="w-full max-w-md space-y-4">
                     <Alert variant="destructive">
                         <AlertDescription>{error}</AlertDescription>
@@ -130,7 +130,7 @@ const EditSheetProfilePage: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 py-0 px-0 sm:py-8 sm:px-4">
+        <div className="min-h-screen bg-background py-0 px-0 sm:py-8 sm:px-4">
             <Card className="w-full max-w-3xl mx-auto">
                 <CardHeader className="space-y-0">
                     <CardTitle className="text-2xl font-bold text-center">
@@ -170,7 +170,7 @@ const EditSheetProfilePage: React.FC = () => {
                                 htmlFor="profileName">{t('pages.editSheetProfilePage.input.profileName.label')}</Label>
                             <Popover>
                                 <PopoverTrigger asChild>
-                                    <InfoIcon className="w-4 h-4 cursor-pointer" aria-hidden="true"/>
+                                    <InfoIcon className="w-4 h-4 cursor-pointer text-muted-foreground" aria-hidden="true"/>
                                 </PopoverTrigger>
                                 <PopoverContent className="w-80">
                                     <div className="grid gap-4">
@@ -209,9 +209,9 @@ const EditSheetProfilePage: React.FC = () => {
                         </Label>
                         <div id="verified" className="flex items-center gap-2">
                             {profile.verifiedSheet ? (
-                                <CheckIcon className="w-4 h-4 text-green-500" aria-label="Verified"/>
+                                <CheckIcon className="w-4 h-4 text-green-600 dark:text-green-500" aria-label="Verified"/>
                             ) : (
-                                <XIcon className="w-4 h-4 text-red-500" aria-label="Not verified"/>
+                                <XIcon className="w-4 h-4 text-red-600 dark:text-red-500" aria-label="Not verified"/>
                             )}
                         </div>
                     </div>
