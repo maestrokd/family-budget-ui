@@ -26,7 +26,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = (
         return (
             <div className={`relative inline-block ${className}`}>
                 <div className="p-1 rounded focus:outline-none">
-                    <Globe className="w-5 h-5 text-gray-600" aria-hidden="true"/>
+                    <Globe className="w-5 h-5" aria-hidden="true"/>
                 </div>
 
                 <div className="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
@@ -38,7 +38,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = (
 
     return (
         <div className={`flex items-center gap-2 ${className}`}>
-            <Globe className="w-5 h-5 text-gray-600" aria-hidden="true"/>
+            <Globe className="w-5 h-5" aria-hidden="true"/>
             <LanguageSelectorBase/>
         </div>
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 import {useTranslation} from "react-i18next";
 import {FormMode} from "@/hooks/use-registration-form.ts";
-import GenericRegistrationForm from "@/pages/GenericRegistrationForm.tsx";
+import GenericRegistrationForm from "@/pages/login/GenericRegistrationForm.tsx";
 
 const RegistrationPage: React.FC = () => {
     const {t} = useTranslation();

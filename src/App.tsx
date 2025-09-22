@@ -7,15 +7,15 @@ import TelegramLayout from './components/layouts/TelegramLayout';
 import TelegramHealthDashboard1 from "@/pages/TelegramHealthDashboard1.tsx";
 import TelegramHealthDashboard2 from "@/pages/TelegramHealthDashboard2.tsx";
 import PrivateRoute from "@/components/PrivateRoute.tsx";
-import {LoginPage} from '@/pages/LoginPage';
+import {LoginPage} from '@/pages/login/LoginPage.tsx';
 import {registerNavigate} from "@/services/ApiService.ts";
-import RegistrationPage from "@/pages/RegistrationPage.tsx";
-import ResetPasswordPage from "@/pages/ResetPasswordPage.tsx";
+import RegistrationPage from "@/pages/login/RegistrationPage.tsx";
+import ResetPasswordPage from "@/pages/login/ResetPasswordPage.tsx";
 import DefaultLayout from "@/components/layouts/DefaultLayout.tsx";
-import SheetProfilesPage from "@/pages/SheetProfilesPage.tsx";
-import CreateSheetProfilePage from "@/pages/CreateSheetProfilePage.tsx";
-import EditSheetProfilePage from "@/pages/EditSheetProfilePage.tsx";
-import ManageSheetProfileAccessPage from "@/pages/ManageSheetProfileAccessPage.tsx";
+import SheetProfilesPage from "@/pages/sheets/SheetProfilesPage.tsx";
+import CreateSheetProfilePage from "@/pages/sheets/CreateSheetProfilePage.tsx";
+import EditSheetProfilePage from "@/pages/sheets/EditSheetProfilePage.tsx";
+import ManageSheetProfileAccessPage from "@/pages/sheets/ManageSheetProfileAccessPage.tsx";
 import SubscriptionPage from "@/pages/subscriptions/SubscriptionPage.tsx";
 
 const WelcomePage = React.lazy(() => import('@/pages/WelcomePage'))

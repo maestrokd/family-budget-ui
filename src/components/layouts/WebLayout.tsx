@@ -5,6 +5,7 @@ import {Separator} from "@/components/ui/separator.tsx";
 import {BreadcrumbComponent} from "@/components/BreadcrumbComponent.tsx";
 import {Toaster} from "@/components/ui/sonner.tsx";
 import LanguageSelector, {LanguageSelectorMode} from "@/components/LanguageSelector.tsx";
+import {ModeToggle} from "@/components/theme/mode-toggle.tsx";
 
 interface LayoutProps {
     children: ReactNode;
@@ -29,6 +30,7 @@ const WebLayout: React.FC<LayoutProps> = ({children}) => {
                     {/* Right: Language marker + dropdown */}
                     <div className="flex items-center gap-2">
                         <LanguageSelector mode={LanguageSelectorMode.FULL}/>
+                        <ModeToggle/>
                     </div>
                 </header>
                 <main>{children}</main>

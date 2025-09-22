@@ -22,7 +22,7 @@ export const HealthCheck: React.FC = () => {
 
         <CardContent className="space-y-6 p-6">
           {/* FE Environment */}
-          <div className="flex items-center text-sm text-gray-700">
+          <div className="flex items-center text-sm text-muted-foreground">
           <span
               className="inline-block w-4 h-4 bg-indigo-500 rounded-full"
               aria-hidden="true"
@@ -47,7 +47,7 @@ export const HealthCheck: React.FC = () => {
                     initial={{opacity: 0, y: -8}}
                     animate={{opacity: 1, y: 0}}
                     exit={{opacity: 0, y: -8}}
-                    className="text-sm text-red-600"
+                    className="text-sm text-red-600 dark:text-red-500"
                     role="alert"
                     aria-live="assertive"
                 >

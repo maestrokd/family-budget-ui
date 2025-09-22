@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {useTranslation} from "react-i18next";
-import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
-import {Button} from '@/components/ui/button';
-import {Input} from '@/components/ui/input';
-import {Label} from '@/components/ui/label';
+import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card.tsx';
+import {Button} from '@/components/ui/button.tsx';
+import {Input} from '@/components/ui/input.tsx';
+import {Label} from '@/components/ui/label.tsx';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
-import {Alert, AlertDescription} from '@/components/ui/alert';
+import {Alert, AlertDescription} from '@/components/ui/alert.tsx';
 import {AlertCircleIcon, Loader2} from 'lucide-react';
 import {useAuth} from "@/contexts/AuthContext.tsx";
 import WebApp from "@twa-dev/sdk";
@@ -50,7 +50,7 @@ export const LoginPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen flex items-center justify-center bg-background p-4 sm:p-8">
             <Card className="relative w-full max-w-md">
                 <div className="absolute top-4 right-6">
                     <LanguageSelector mode={LanguageSelectorMode.ICON} />

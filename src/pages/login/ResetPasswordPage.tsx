@@ -1,6 +1,6 @@
 import React from 'react';
 import {useTranslation} from "react-i18next";
-import GenericRegistrationForm from "@/pages/GenericRegistrationForm.tsx";
+import GenericRegistrationForm from "@/pages/login/GenericRegistrationForm.tsx";
 import {FormMode} from "@/hooks/use-registration-form.ts";
 
 const ResetPasswordPage: React.FC = () => {
