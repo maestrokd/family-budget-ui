@@ -105,7 +105,16 @@ export function CameraCapture({facingMode = "environment", label = "Base64"}: Pr
                 }
 
                 streamRef.current = s;
-                const v = videoRef.current!;
+                let v = videoRef.current;
+                if (!v) {
+                    await new Promise((r) => setTimeout(r, 0));
+                    v = videoRef.current;
+                }
+                if (!v) {
+                    setCameraError("Video element not mounted");
+                    s.getTracks().forEach((t) => t.stop());
+                    return;
+                }
                 v.srcObject = s;
                 v.muted = true;
                 v.playsInline = true;
@@ -152,9 +161,15 @@ export function CameraCapture({facingMode = "environment", label = "Base64"}: Pr
         setCameraOpen(true);
 
         try {
-            // 1) Prime permission so labels populate (best-effort)
+            // 1) Prime permission so labels populate (best-effort) without attaching to video
             try {
-                await startForDevice(null);
+                if (navigator.mediaDevices?.getUserMedia) {
+                    const tmp = await navigator.mediaDevices.getUserMedia({
+                        video: {facingMode: {ideal: facingMode}},
+                        audio: false
+                    });
+                    tmp.getTracks().forEach((t) => t.stop());
+                }
             } catch {
                 /* ignore */
             }
@@ -163,17 +178,12 @@ export function CameraCapture({facingMode = "environment", label = "Base64"}: Pr
             const vids = await enumerateCameras();
             setDevices(vids);
 
-            // 3) If no selection yet, pick a preferred one and start it
+            // 3) If no selection yet, pick a preferred one; stream start handled by effect after mount
             const next = selectedId ?? pickPreferredDeviceId(vids);
             if (next && next !== selectedId) {
                 setSelectedId(next);
-                await startForDevice(next);
-            } else if (!selectedId) {
-                // Keep whatever stream we already started (from prime), if any
-            } else {
-                // If selection exists, ensure we are on it
-                await startForDevice(selectedId);
             }
+            // If selection already exists, the effect will (re)start the stream after the dialog and video mount
         } catch {
             // error handled inside startForDevice
         }

@@ -88,7 +88,15 @@ export function CameraCapture({facingMode = "environment", label = "Base64"}: Pr
                 stopStream();
                 streamRef.current = s;
 
-                const video = videoRef.current!;
+                let video = videoRef.current;
+                if (!video) {
+                    await new Promise((r) => setTimeout(r, 0));
+                    video = videoRef.current;
+                }
+                if (!video) {
+                    setCameraError("Video element not mounted");
+                    return;
+                }
                 video.srcObject = s;
                 video.muted = true;
                 video.playsInline = true;
@@ -135,7 +143,10 @@ export function CameraCapture({facingMode = "environment", label = "Base64"}: Pr
             // 1) Prime permission by requesting a temporary stream to unlock labels (do not attach to video)
             try {
                 if (navigator.mediaDevices?.getUserMedia) {
-                    const tmp = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: facingMode } }, audio: false });
+                    const tmp = await navigator.mediaDevices.getUserMedia({
+                        video: {facingMode: {ideal: facingMode}},
+                        audio: false
+                    });
                     tmp.getTracks().forEach((t) => t.stop());
                 }
             } catch {
@@ -290,6 +301,14 @@ export function CameraCapture({facingMode = "environment", label = "Base64"}: Pr
                         <DialogTitle>{streamRef.current ? "Camera" : dataUrl ? "Captured photo" : "Camera"}</DialogTitle>
                     </DialogHeader>
 
+                    {/* Always mount the video element so ref is available; hide when not streaming */}
+                    <video
+                        ref={videoRef}
+                        playsInline
+                        autoPlay
+                        muted
+                        className={`w-full max-h-[64vh] object-contain rounded-md bg-black ${streamRef.current ? "" : "hidden"}`}
+                    />
                     {/* If streaming, show controls; else if we have a photo, show it large */}
                     {streamRef.current ? (
                         <div className="p-4 space-y-3">
@@ -313,13 +332,6 @@ export function CameraCapture({facingMode = "environment", label = "Base64"}: Pr
                                 </Select>
                             </div>
 
-                            <video
-                                ref={videoRef}
-                                playsInline
-                                autoPlay
-                                muted
-                                className="w-full max-h-[64vh] object-contain rounded-md bg-black"
-                            />
 
                             <div className="flex justify-between items-center">
                                 <p className="text-xs text-muted-foreground">
