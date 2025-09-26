@@ -64,6 +64,14 @@ const data = {
           title: "Sheet Profiles Tel",
           url: "#telegram/sheet-profiles",
         },
+        {
+          title: "Camera1",
+          url: "#camera1",
+        },
+        {
+          title: "Camera2",
+          url: "#camera2",
+        },
       ],
     },
     {
