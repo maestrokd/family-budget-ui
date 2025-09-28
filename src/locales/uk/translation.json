@@ -42,6 +42,20 @@
     }
   },
   "pages": {
+    "settings": {
+      "title": "Налаштування",
+      "language": {
+        "label": "Мова Telegram-бота"
+      },
+      "themeMode": {
+        "label": "Тема"
+      },
+      "notifications": {
+        "updateFail": "Не вдалося оновити налаштування.",
+        "fetchFail": "Не вдалося завантажити налаштування.",
+        "saveSuccess": "Налаштування збережено."
+      }
+    },
     "loginPage": {
       "titlePrompt": "Вхід до акаунту",
       "email": {
