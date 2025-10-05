@@ -44,8 +44,11 @@
   "pages": {
     "settings": {
       "title": "Настройки",
-      "language": {
+      "telegramLanguage": {
         "label": "Язык Telegram-бота"
+      },
+      "webLanguage": {
+        "label": "Язык веб-сайта"
       },
       "themeMode": {
         "label": "Тема"
