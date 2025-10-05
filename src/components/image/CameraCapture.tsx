@@ -4,6 +4,11 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Dialog, DialogContent, DialogHeader, DialogTitle,} from "@/components/ui/dialog";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select";
+import {
+    consumeCachedCameraStream,
+    resetCameraPermission,
+    setCameraPermissionGranted,
+} from "@/lib/camera-permission";
 
 type Props = {
     /** Prefer back ("environment") or front ("user") when auto-choosing. */
@@ -84,7 +89,12 @@ export function CameraCapture({facingMode = "environment", label = "Base64"}: Pr
                         ? {video: {deviceId: {exact: deviceId}}, audio: false}
                         : {video: {facingMode: {ideal: facingMode}}, audio: false};
 
-                const s = await navigator.mediaDevices.getUserMedia(constraints);
+                let s = consumeCachedCameraStream();
+                if (!s) {
+                    s = await navigator.mediaDevices.getUserMedia(constraints);
+                }
+                if (!s) throw new Error("Failed to acquire camera stream");
+                setCameraPermissionGranted(s);
                 stopStream();
                 streamRef.current = s;
 
@@ -126,6 +136,9 @@ export function CameraCapture({facingMode = "environment", label = "Base64"}: Pr
                 }
             } catch (e) {
                 stopStream();
+                if (e instanceof DOMException && e.name === "NotAllowedError") {
+                    resetCameraPermission();
+                }
                 setCameraError(e instanceof Error ? e.message : "Failed to open camera");
                 throw e;
             } finally {

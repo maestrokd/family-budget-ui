@@ -3,6 +3,11 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {
+    consumeCachedCameraStream,
+    resetCameraPermission,
+    setCameraPermissionGranted,
+} from "@/lib/camera-permission";
 
 type Props = {
     /** Preferred orientation when auto-choosing */
@@ -96,7 +101,11 @@ export function CameraCapture({facingMode = "environment", label = "Base64"}: Pr
                     ? {video: {deviceId: {exact: deviceId}}, audio: false}
                     : {video: {facingMode: {ideal: facingMode}}, audio: false};
 
-                const s = await navigator.mediaDevices.getUserMedia(constraints);
+                let s = consumeCachedCameraStream();
+                if (!s) {
+                    s = await navigator.mediaDevices.getUserMedia(constraints);
+                }
+                if (!s) throw new Error("Failed to acquire camera stream");
 
                 // If another start began, discard this stream
                 if (token !== startTokenRef.current) {
@@ -104,6 +113,7 @@ export function CameraCapture({facingMode = "environment", label = "Base64"}: Pr
                     return;
                 }
 
+                setCameraPermissionGranted(s);
                 streamRef.current = s;
                 let v = videoRef.current;
                 if (!v) {
@@ -147,6 +157,9 @@ export function CameraCapture({facingMode = "environment", label = "Base64"}: Pr
             } catch (e) {
                 if (token === startTokenRef.current) {
                     stopStream();
+                    if (e instanceof DOMException && e.name === "NotAllowedError") {
+                        resetCameraPermission();
+                    }
                     setCameraError(e instanceof Error ? e.message : "Failed to open camera");
                 }
             } finally {
