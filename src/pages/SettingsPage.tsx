@@ -10,6 +10,7 @@ import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVal
 import {notifier} from "@/services/NotificationService.ts";
 import {Separator} from "@/components/ui/separator.tsx";
 import {extractErrorCode} from "@/services/ApiService.ts";
+import LanguageSelector from "@/components/LanguageSelector.tsx";
 
 const LOCALES: readonly { value: Locale5; label: string }[] = [
     {value: 'en-US', label: 'English (en-US)'},
@@ -80,16 +81,28 @@ const SettingsPage: React.FC = () => {
                 </CardHeader>
                 <CardContent className="space-y-6">
                     <div className="space-y-1">
-                        <Label
-                            htmlFor="settings-theme-mode">{t('pages.settings.themeMode.label')}:</Label>
-                        <div id="settings-theme-mode" className="w-50">
-                            <ModeToggle showText triggerClassName="w-full" dropdownClassName="w-50" />
+                        <div className="flex flex-col sm:flex-row sm:items-end sm:gap-4">
+                            <div className="flex-1">
+                                <Label
+                                    htmlFor="settings-theme-mode">{t('pages.settings.themeMode.label')}:</Label>
+                                <div id="settings-theme-mode" className="w-50">
+                                    <ModeToggle showText triggerClassName="w-full" dropdownClassName="w-50" />
+                                </div>
+                            </div>
+                            <div className="flex-1 mt-4 sm:mt-0">
+                                <Label htmlFor="settings-locale-toggle">
+                                    {t('pages.settings.localeToggle.label', { defaultValue: t('pages.settings.webLanguage.label') })}:
+                                </Label>
+                                <div id="settings-locale-toggle" className="w-50">
+                                    <LanguageSelector className="w-full" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <Separator/>
                     <div className="space-y-1">
                         <Label
-                            htmlFor="settings-language">{t('pages.settings.language.label')}:</Label>
+                            htmlFor="settings-language">{t('pages.settings.telegramLanguage.label')}:</Label>
                         <div id="settings-language" className="w-50">
                             <Select value={locale} onValueChange={(v) => setLocale(v as Locale5)}>
                                 <SelectTrigger className="w-full" disabled={loading}>
