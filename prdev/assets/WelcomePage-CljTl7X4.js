@@ -1,1 +1,0 @@
-import{u as t,j as e}from"./index-De4x_G9A.js";const l=()=>{const{t:s}=t();return e.jsx("div",{className:"flex items-center justify-center h-full p-6",children:e.jsx("h2",{className:"text-2xl font-semibold",children:s("dashboard.welcome")})})};export{l as default};
