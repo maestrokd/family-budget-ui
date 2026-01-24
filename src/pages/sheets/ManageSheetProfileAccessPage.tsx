@@ -34,6 +34,8 @@ import {notifier} from '@/services/NotificationService.ts';
 import {extractErrorCode} from '@/services/ApiService.ts';
 import useDebounce from '@/hooks/useDebounce.ts';
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const RoleBadgeLarge: React.FC<{ role: SheetProfileAccessRole; label: string }> = ({role, label}) => (
     <Badge
         variant="secondary"
@@ -127,7 +129,11 @@ const ManageSheetProfileAccessPage: React.FC = () => {
             .filter(e => e.length > 0);
     }, [emails]);
 
-    const shareDisabled = parsedEmails.length === 0 || shareMutation.isPending || !uuid;
+    const invalidEmails = useMemo(() => {
+        return parsedEmails.filter(email => !emailRegex.test(email));
+    }, [parsedEmails, emailRegex]);
+
+    const shareDisabled = parsedEmails.length === 0 || invalidEmails.length > 0 || shareMutation.isPending || !uuid;
 
     if (isProfileLoading) {
         return (
@@ -178,21 +184,34 @@ const ManageSheetProfileAccessPage: React.FC = () => {
                     </div>
 
                     {/* Share section */}
-                    <div className="flex flex-col sm:flex-row gap-2">
-                        <Input
-                            placeholder={t('pages.manageSheetProfileAccessPage.input.share.placeholder', 'Enter user email(s), comma or space separated') as string}
-                            value={emails}
-                            onChange={e => setEmails(e.target.value)}
-                            disabled={shareMutation.isPending}
-                        />
-                        <Button
-                            onClick={() => shareMutation.mutate({sheetUuid: uuid!, accessUserEmails: parsedEmails})}
-                            disabled={shareDisabled}
-                        >
-                            {shareMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin"/>}
-                            <MailPlus className="mr-2 h-4 w-4"/>
-                            {t('pages.manageSheetProfileAccessPage.button.share', 'Share')}
-                        </Button>
+                    <div className="flex flex-col gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
+                            <Input
+                                placeholder={t('pages.manageSheetProfileAccessPage.input.share.placeholder', 'Enter user email(s), comma or space separated') as string}
+                                value={emails}
+                                onChange={e => setEmails(e.target.value)}
+                                disabled={shareMutation.isPending}
+                                aria-invalid={invalidEmails.length > 0}
+                            />
+                            <Button
+                                onClick={() => shareMutation.mutate({sheetUuid: uuid!, accessUserEmails: parsedEmails})}
+                                disabled={shareDisabled}
+                            >
+                                {shareMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin"/>}
+                                <MailPlus className="mr-2 h-4 w-4"/>
+                                {t('pages.manageSheetProfileAccessPage.button.share', 'Share')}
+                            </Button>
+                        </div>
+                        {invalidEmails.length > 0 && (
+                            <Alert variant="destructive">
+                                <AlertDescription>
+                                    {t('pages.manageSheetProfileAccessPage.input.share.invalidEmails', {
+                                        defaultValue: 'Invalid email address(es): {{emails}}',
+                                        emails: invalidEmails.join(', ')
+                                    })}
+                                </AlertDescription>
+                            </Alert>
+                        )}
                     </div>
 
                     <Separator/>
