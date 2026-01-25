@@ -258,7 +258,8 @@
       },
       "input": {
         "share": {
-          "placeholder": "Enter user email(s), comma or space separated"
+          "placeholder": "Enter user email(s), comma or space separated",
+          "invalidEmails": "Invalid email address(es): {{emails}}"
         }
       },
       "button": {
