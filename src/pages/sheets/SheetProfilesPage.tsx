@@ -20,6 +20,7 @@ import {
     XIcon
 } from 'lucide-react';
 import {Tooltip, TooltipContent, TooltipTrigger} from '@/components/ui/tooltip.tsx';
+import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover.tsx';
 import {Badge} from '@/components/ui/badge.tsx';
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from '@/components/ui/dropdown-menu.tsx';
 import type {PageImpl, SheetProfileResponse} from '@/services/SheetApiClient.ts';
@@ -172,22 +173,22 @@ export const SheetProfilesPage: React.FC = () => {
                             {items.map(item => (
                                 <TableRow key={item.uuid}>
                                     <TableCell className="min-w-8/12 sm:min-w-1/2 truncate">
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <span className="inline-flex items-center gap-2">
-                                                    {shorten(item.name, 10)}
-                                                    {item.isCurrent && (
-                                                        <Badge variant="secondary"
-                                                               className="bg-emerald-500 text-primary-foreground dark:text-primary dark:bg-emerald-600">
-                                                            {t('pages.sheetProfilesPage.current')}
-                                                        </Badge>
-                                                    )}
-                                                </span>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                <p className="whitespace-normal break-words">{item.name}</p>
-                                            </TooltipContent>
-                                        </Tooltip>
+                                        <Popover>
+                                            <PopoverTrigger
+                                                className="inline-flex items-center gap-2 text-left bg-transparent p-0 border-0 cursor-pointer touch-manipulation"
+                                            >
+                                                {shorten(item.name, 10)}
+                                                {item.isCurrent && (
+                                                    <Badge variant="secondary"
+                                                           className="bg-emerald-500 text-primary-foreground dark:text-primary dark:bg-emerald-600">
+                                                        {t('pages.sheetProfilesPage.current')}
+                                                    </Badge>
+                                                )}
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-auto text-sm text-muted-foreground break-words">
+                                                {item.name}
+                                            </PopoverContent>
+                                        </Popover>
                                     </TableCell>
                                     <TableCell className="hidden sm:table-cell max-w-40 truncate">
                                         <Tooltip>
