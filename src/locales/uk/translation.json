@@ -1,0 +1,401 @@
+{
+  "welcome": "Ласкаво просимо до MyApp",
+  "dashboard": {
+    "title": "Панель керування сервісом",
+    "welcome": "Ласкаво просимо до панелі керування сервісом!",
+    "current_language": "Обрана мова: {{lng}}"
+  },
+  "lang": {
+    "code": {
+      "en": "En",
+      "uk": "Ук",
+      "ru": "Ру"
+    }
+  },
+  "login": {
+    "button": "Увійти",
+    "placeholder": "Введіть ім’я користувача"
+  },
+  "common": {
+    "form": {
+      "back": "Назад",
+      "save": "Зберегти",
+      "update": "Оновити"
+    },
+    "list": {
+      "loading": "Завантаження...",
+      "previous": "Попередня",
+      "next": "Наступна",
+      "page": "Сторінка",
+      "actions": "Дії",
+      "edit": "Редагувати",
+      "remove": "Видалити",
+      "create": "Створити",
+      "cancel": "Скасувати",
+      "search": "Пошук",
+      "input": {
+        "keywordSearch": {
+          "label": "Пошук",
+          "placeholder": "Пошук..."
+        }
+      }
+    }
+  },
+  "pages": {
+    "settings": {
+      "title": "Налаштування",
+      "telegramLanguage": {
+        "label": "Мова Telegram-бота"
+      },
+      "webLanguage": {
+        "label": "Мова веб-сайту"
+      },
+      "themeMode": {
+        "label": "Тема"
+      },
+      "notifications": {
+        "updateFail": "Не вдалося оновити налаштування.",
+        "fetchFail": "Не вдалося завантажити налаштування.",
+        "saveSuccess": "Налаштування збережено."
+      }
+    },
+    "loginPage": {
+      "titlePrompt": "Вхід до акаунту",
+      "email": {
+        "label": "Email",
+        "placeholder": "Введіть вашу електронну пошту"
+      },
+      "password": {
+        "label": "Пароль",
+        "placeholder": "Введіть ваш пароль",
+        "forgotPasswordLinkText": "Забули пароль?"
+      },
+      "submitButton": "Увійти",
+      "submitButtonLoading": "Вхід до облікового запису в процесі...",
+      "registrationPrompt": "Не маєте облікового запису?",
+      "registrationLinkText": "Зареєструватися",
+      "notifications": {
+        "submitError": "Ми не можемо знайти цей емейл або пароль. Спробуйте ще раз."
+      }
+    },
+    "registrationPage": {
+      "titlePrompt": "Реєстрація",
+      "email": {
+        "label": "Email",
+        "placeholder": "Введіть вашу електронну пошту"
+      },
+      "confirmationCode": {
+        "label": "Код підтвердження",
+        "placeholder": "Введіть код підтвердження",
+        "sendCodeButton": "Надіслати код підтвердження",
+        "sendCodeButtonRe": "Повторно через {{secondsLeft}} с",
+        "sendCodeButtonLoading": "Надсилаємо код..."
+      },
+      "password": {
+        "label": "Пароль",
+        "placeholder": "Введіть ваш пароль"
+      },
+      "confirmPassword": {
+        "label": "Підтвердьте пароль",
+        "placeholder": "Підтвердіть ваш пароль"
+      },
+      "submitButton": "Зареєструватися",
+      "submitButtonLoading": "Створення облікового запису...",
+      "loginPrompt": "Вже є обліковий запис?",
+      "loginLinkText": "Увійти",
+      "validation": {
+        "invalidEmail": "Невірна електронна адреса",
+        "passwordsMismatch": "Паролі не співпадають"
+      },
+      "notifications": {
+        "submitSuccess": "Новий обліковий запис успішно створено.",
+        "submitError": "Не вдалося зареєструватися. Будь ласка, спробуйте ще раз.",
+        "codeSentSuccess": "Код надіслано на вашу електронну пошту.",
+        "codeSentError": "Не вдалося надіслати код."
+      }
+    },
+    "resetPasswordPage": {
+      "titlePrompt": "Відновіть пароль",
+      "email": {
+        "label": "Електронна пошта",
+        "placeholder": "Введіть вашу електронну пошту"
+      },
+      "confirmationCode": {
+        "label": "Код оновлення",
+        "placeholder": "Введіть код оновлення",
+        "sendCodeButton": "Надіслати код оновлення паролю",
+        "sendCodeButtonLoading": "Надсилаємо код..."
+      },
+      "password": {
+        "label": "Пароль",
+        "placeholder": "Введіть ваш пароль"
+      },
+      "confirmPassword": {
+        "label": "Підтвердьте пароль",
+        "placeholder": "Підтвердіть ваш пароль"
+      },
+      "submitButton": "Оновити пароль",
+      "submitButtonLoading": "Оновлення...",
+      "loginPrompt": "Згадали пароль?",
+      "loginLinkText": "Увійти",
+      "notifications": {
+        "submitSuccess": "Пароль успішно оновлено.",
+        "submitError": "Не вдалося оновити пароль. Будь ласка, спробуйте ще раз.",
+        "codeSentSuccess": "Код надіслано на вашу електронну пошту.",
+        "codeSentError": "Не вдалося надіслати код."
+      }
+    },
+    "createSheetProfilePage": {
+      "title": "Створення нового профілю таблиці",
+      "instruction": {
+        "photoInstructionMobile": "Фото інструкція (Mobile)",
+        "photoInstructionWeb": "Фото інструкція (Web)",
+        "step1": {
+          "title": "Крок 1: Скопіюйте шаблон Google таблиці",
+          "description1": "Відкрийте та скопіюйте наступний шаблон Google таблиці: ",
+          "description2": "Follow the buttons in the Google Sheets UI: click File → Make a copy… then confirm the copy dialog.",
+          "sheetTemplateLinkTitle": "Шаблон Google таблиці"
+        },
+        "step2": {
+          "title": "Крок 2: Надайте доступ до вашої нової таблиці нашій системі",
+          "description": "Зайдіть на свій Google диск, знайдіть вашу нову таблицю. Надайте доступ на редагування таблиці агенту нашої системи:",
+          "descriptionT": "Use the Share button, enter agent’s email with edit access, and click Send."
+        },
+        "step3": {
+          "title": "Крок 3: Скопіюйте посилання на Google таблицю або ID таблиці",
+          "description1": "Нижче надайте посилання на вашу таблицю або ID таблиці.",
+          "description2": "Натисніть кнопку 'Поділитися' і 'Копіювати посилання', або скопіюйте лише ID з посилання (довгий код у посиланні)."
+        },
+        "step4": {
+          "title": "Крок 4: Отримайте та введіть код підтвердження доступу до вашої Google таблиці",
+          "description1": "1. Натисніть кнопку 'Надіслати код підтвердження'.",
+          "description2": "2. Відкрийте вашу Google таблицю.",
+          "description3": "3. Відкрийте вкладку 'Source-Category'.",
+          "description4": "4. Скопіюйте код з клітинки 'B2:B2'."
+        }
+      },
+      "input": {
+        "sheetId": {
+          "label": "Посилання на Google таблицю або ID таблиці",
+          "placeholder": "Введіть посилання на Google таблицю або ID таблиці",
+          "hint": "Якщо ID таблиці вже зареєстровано, попросіть власника поділитися з вами профілем.",
+          "error": "Будь ласка, введіть правильне посилання на Google таблицю або ID таблиці."
+        },
+        "verificationCode": {
+          "label": "Код підтвердження",
+          "placeholder": "Введіть код підтвердження, надісланий у вашу Google таблицю"
+        },
+        "profileName": {
+          "label": "Назва профілю таблиці",
+          "hint": "Сімейний бюджет, Витрати, Бізнес, Волонтерський проєкт, Відпустка, Церковний захід, Служіння, Весілля, Ремонт, Переїзд, Екстрений фонд тощо.",
+          "placeholder": "Введіть унікальну назву профілю"
+        }
+      },
+      "validation": {
+        "sheetIdInvalid": "Будь ласка, введіть правильне посилання на Google таблицю або ID таблиці.",
+        "profileNameRequired": "Будь ласка, введіть назву профілю таблиці.",
+        "profileNameTaken": "Назва профілю таблиці вже використовується."
+      },
+      "button": {
+        "sendCode": {
+          "default": "Надіслати код підтвердження",
+          "loading": "Надсилання коду…",
+          "resend": "Надіслати повторно через {{secondsLeft}} с"
+        },
+        "create": {
+          "default": "Створити профіль таблиці",
+          "loading": "Створення…"
+        }
+      },
+      "notifications": {
+        "codeSentSuccess": "Код підтвердження надіслано успішно.",
+        "codeSentError": "Не вдалося надіслати код. Будь ласка, спробуйте ще раз.",
+        "createSuccess": "Профіль таблиці створено успішно.",
+        "createError": "Не вдалося створити профіль таблиці. Будь ласка, спробуйте ще раз."
+      }
+    },
+    "editSheetProfilePage": {
+      "title": "Редагування профілю таблиці",
+      "input": {
+        "sheetId": {
+          "label": "ID Google таблиці"
+        },
+        "profileName": {
+          "label": "Назва профілю таблиці",
+          "hint": "Сімейний бюджет, Витрати, Бізнес, Волонтерський проєкт, Відпустка, Церковний захід, Служіння, Весілля, Ремонт, Переїзд, Екстрений фонд тощо.",
+          "placeholder": "Введіть унікальну назву профілю"
+        },
+        "agentType": {
+          "label": "Тип агента"
+        },
+        "verified": {
+          "label": "Верифіковано"
+        }
+      },
+      "validation": {
+        "profileNameTaken": "Назва профілю таблиці вже використовується."
+      },
+      "button": {
+        "update": {
+          "default": "Оновити профіль таблиці",
+          "loading": "Оновлення…"
+        }
+      },
+      "notifications": {
+        "missingSheetProfileUuid": "UUID Профілю таблиці відсутній.",
+        "profileNotFound": "Профіль таблиці не знайдено.",
+        "updateSuccess": "Профіль таблиці оновлено успішно.",
+        "updateError": "Не вдалося оновити профіль таблиці. Будь ласка, спробуйте ще раз."
+      }
+    },
+    "manageSheetProfileAccessPage": {
+      "title": "Керування доступом до профілю таблиці",
+      "profile": {
+        "name": "Назва профілю",
+        "sheetId": "ID таблиці",
+        "agentType": "Тип агента",
+        "verified": "Верифіковано"
+      },
+      "input": {
+        "share": {
+          "placeholder": "Введіть email(и) користувачів, розділені комою або пробілом",
+          "invalidEmails": "Некоректний емейл(и): {{emails}}"
+        }
+      },
+      "button": {
+        "share": "Поділитися",
+        "manageAccess": "Керувати доступом",
+        "backToList": "Назад до списку",
+        "backToEdit": "Назад до редагування"
+      },
+      "accessList": {
+        "title": "Доступи профілю"
+      },
+      "table": {
+        "columns": {
+          "email": "Email користувача",
+          "role": "Роль",
+          "actions": "Дії"
+        },
+        "roleLabels": {
+          "OWNER": "Власник",
+          "WRITER": "Редактор"
+        }
+      },
+      "notifications": {
+        "shareSuccess": "Запит 'для доступу' успішно надіслано.",
+        "profileLoadError": "Не вдалося завантажити профіль.",
+        "accessLoadError": "Не вдалося завантажити доступи."
+      }
+    },
+    "sheetProfilesPage": {
+      "title": "Профілі Google таблиць",
+      "empty": "Профілів Google таблиць не знайдено.",
+      "loadFailed": "Не вдалося завантажити профілі Google таблиць. Будь ласка, спробуйте ще раз.",
+      "input": {
+        "keywordSearch": {
+          "label": "Пошук",
+          "placeholder": "Пошук"
+        }
+      },
+      "button": {
+        "create": {
+          "default": "Створити профіль таблиці",
+          "tooltip": "Створити профіль таблиці"
+        }
+      },
+      "current": "Поточний",
+      "action": {
+        "select": "Зробити поточним",
+        "select.current": "Поточний профіль"
+      },
+      "notifications": {
+        "selectSuccess": "Профіль обрано як поточний.",
+        "selectError": "Не вдалося обрати профіль."
+      },
+      "table": {
+        "columns": {
+          "name": "Назва",
+          "spreadsheetId": "ID таблиці",
+          "agentType": "Тип агента",
+          "ownership": "Належність",
+          "verified": "Верифіковано"
+        }
+      },
+      "row": {
+        "ownership": {
+          "own": "Власний",
+          "shared": "Спільний"
+        }
+      }
+    },
+    "subscriptionPage": {
+      "title": "Підписка",
+      "plan": {
+        "names": {
+          "FREE_TIER": "Free",
+          "BETA_TEST_TIER": "Beta Test",
+          "TIER_1": "Plus"
+        }
+      },
+      "info": {
+        "loading": "Завантаження деталей підписки...",
+        "currentPlan": "Поточний план",
+        "activeUntilLocal": "Активний до",
+        "activeUntilUTC": "Активний до (UTC)",
+        "inactiveHint": "Немає активної підписки. Застосуйте промокод для активації.",
+        "none": "None",
+        "noDate": "—"
+      },
+      "inputs": {
+        "promoCode": {
+          "label": "Промокод",
+          "placeholder": "Введіть промокод з email"
+        }
+      },
+      "buttons": {
+        "generate": {
+          "default": "Знайти промокод",
+          "loading": "Пошук…"
+        },
+        "redeem": {
+          "default": "Активувати",
+          "loading": "Активація…"
+        }
+      },
+      "notifications": {
+        "generate": {
+          "success": "Промокод надіслано.",
+          "infoEmail": "Перевірте email з промокодом.",
+          "error": "Виникла помилка з надсиланням промокоду."
+        },
+        "redeem": {
+          "success": "Промокод активовано. Ваш доступ активний до {{until}}.",
+          "activated": "Доступ активовано.",
+          "error": "Невірний, використаний або застарілий промокод."
+        }
+      }
+    }
+  },
+  "errors": {
+    "codes": {
+      "TECHNICAL_ERROR": "Сталася технічна помилка. Будь ласка, спробуйте ще раз.",
+      "UNKNOWN": "На жаль, щось пішло не так. Будь ласка, спробуйте ще раз.",
+      "INTERNAL_SERVER_ERROR": "На жаль, щось пішло не так. Будь ласка, спробуйте ще раз.",
+      "INVALID_CREDENTIALS": "Ми не можемо знайти цей емейл або пароль. Спробуйте ще раз.",
+      "INVALID_VERIFICATION_CODE": "Невірний код перевірки. Будь ласка, спробуйте ще раз.",
+      "PROFILE_NOT_FOUND": "Ми не можемо знайти цей аккаунт.",
+      "EMAIL_ALREADY_EXISTS": "Email вже існує.",
+      "RATE_LIMIT_EXCEEDED": "Забагато спроб. Спробуйте пізніше.",
+      "USER_BLOCKED": "Користувача заблоковано.",
+      "AUTHENTICATION_FAILED": "Помилка автентифікації.",
+      "TOKEN_NOT_VALID": "Недійсний токен.",
+      "MISSING_COOKIE": "Недійсний або відсутній cookie.",
+      "SPREADSHEET_ID_EXISTS": "ID Google таблиці вже зареєстровано.",
+      "SPREADSHEET_NAME_EXISTS": "Назва профілю таблиці вже використовується.",
+      "SPREADSHEET_ACCESS_DENIED": "Доступ до Google таблиці не надано.",
+      "INVALID_PROMO_CODE": "Невірний, використаний або застарілий промокод.",
+      "NOT_ACTIVE_PROLONGATION_WINDOW": "Не активний період продовження підписки."
+    }
+  }
+}
