@@ -17,6 +17,8 @@ import CreateSheetProfilePage from "@/pages/sheets/CreateSheetProfilePage.tsx";
 import EditSheetProfilePage from "@/pages/sheets/EditSheetProfilePage.tsx";
 import ManageSheetProfileAccessPage from "@/pages/sheets/ManageSheetProfileAccessPage.tsx";
 import SubscriptionPage from "@/pages/subscriptions/SubscriptionPage.tsx";
+import CameraTest from "@/pages/CameraTest.tsx";
+import CameraTest2 from "@/pages/CameraTest2.tsx";
 
 const WelcomePage = React.lazy(() => import('@/pages/WelcomePage'))
 const HealthDashboard = React.lazy(() => import('@/pages/HealthDashboard'))
@@ -36,6 +38,8 @@ const App: React.FC = () => {
                 <Route path="password/reset" element={<DefaultLayout><ResetPasswordPage/></DefaultLayout>}/>
                 <Route path="login" element={<DefaultLayout><LoginPage/></DefaultLayout>}/>
                 <Route path="telegram/login" element={<DefaultLayout><LoginPage/></DefaultLayout>}/>
+                <Route path="camera1" element={<CameraTest/>}/>
+                <Route path="camera2" element={<CameraTest2/>}/>
                 <Route element={<PrivateRoute/>}>
                     <Route path="/" element={<WebLayout><WelcomePage/></WebLayout>}/>
                     <Route path="web" element={<WebLayout><Outlet/></WebLayout>}>
@@ -49,6 +53,7 @@ const App: React.FC = () => {
                         <Route path="sheet-profiles/manage-access/:uuid" element={<ManageSheetProfileAccessPage/>}/>
                         <Route path="settings" element={<SettingsPage/>}/>
                         <Route path="subscriptions" element={<SubscriptionPage/>}/>
+                        <Route path="camera" element={<CameraTest/>}/>
                     </Route>
                     <Route path="telegram" element={<TelegramLayout><Outlet/></TelegramLayout>}>
                         <Route path="sheet-profiles" element={<SheetProfilesPage/>}/>
@@ -57,6 +62,7 @@ const App: React.FC = () => {
                         <Route path="sheet-profiles/manage-access/:uuid" element={<ManageSheetProfileAccessPage/>}/>
                         <Route path="settings" element={<SettingsPage/>}/>
                         <Route path="subscriptions" element={<SubscriptionPage/>}/>
+                        <Route path="camera" element={<CameraTest/>}/>
                     </Route>
                     <Route path="*" element={<Navigate to="/" replace/>}/>
                 </Route>
